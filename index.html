@@ -163,7 +163,8 @@ input[type=range]{padding:0;accent-color:var(--gold)}
 <div id="ov" hidden></div>
 <div id="toast" hidden></div>
 
-<script>setTimeout(()=>{if(!window.__ok){const e=document.getElementById("err");e.hidden=false;e.textContent="Chưa tải được thư viện Firebase hoặc cấu hình bị lỗi. Hãy kiểm tra mạng, tắt VPN/trình chặn quảng cáo, và mở bằng link https (không mở file trực tiếp)."}},6000)</script>
+<script>addEventListener("error",ev=>{const e=document.getElementById("err");if(e){e.hidden=false;e.textContent="Lỗi trang: "+(ev.message||"")+" (dòng "+ev.lineno+")"}});
+setTimeout(()=>{const e=document.getElementById("err");if(!window.__ok&&e.hidden){e.hidden=false;e.textContent="Chưa tải được thư viện Firebase hoặc cấu hình bị lỗi. Hãy kiểm tra mạng, tắt VPN/trình chặn quảng cáo, và mở bằng link https (không mở file trực tiếp)."}},6000)</script>
 <script type="module">
 import{initializeApp}from'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
 import{getAuth,GoogleAuthProvider,signInWithPopup,signInAnonymously,signOut,onAuthStateChanged}from'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
@@ -368,7 +369,7 @@ $('#mkr').onclick=()=>{const A='abcdefghjkmnpqrstuvwxyz23456789';let c='';for(le
 $('#cs').onclick=send;$('#ci').onkeydown=e=>{if(e.key==='Enter')send()};
 $('#rset').onclick=rsM;$('#bOut').onclick=lo;
 $('#av').onclick=infoM;
-$('#cfg').hidden=OK;
+if($('#cfg'))$('#cfg').hidden=OK;
 $('#host').textContent=location.hostname||'(mở bằng file)';if(location.protocol==='file:')fail({code:'auth/operation-not-supported-in-this-environment'});
 $('#lg').onclick=async()=>{$('#err').hidden=true;if(!OK)return toast('Hãy điền firebaseConfig trước.');try{await signInWithPopup(auth,new GoogleAuthProvider())}catch(e){fail(e)}};
 $('#gs').onclick=async()=>{$('#err').hidden=true;if(!OK)return toast('Hãy điền firebaseConfig trước.');try{await signInAnonymously(auth)}catch(e){fail(e)}};
