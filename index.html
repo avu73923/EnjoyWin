@@ -66,6 +66,7 @@ input[type=range]{padding:0;accent-color:var(--gold)}
 .dice svg{margin:0 2px;filter:drop-shadow(0 3px 3px #0008)}
 .chip{border:3px dashed #fffc;box-shadow:0 3px 6px #000a,inset 0 0 0 5px #0003}
 .chip[data-c="1000"]{background:#1d6fd1}.chip[data-c="5000"]{background:#c8202f}.chip[data-c="10000"]{background:#23935a}.chip[data-c="50000"]{background:#222}
+.bl{font-size:11px;color:var(--tx);line-height:1.3;text-align:left;padding:2px 4px;overflow-wrap:anywhere;opacity:.9}.bl b{color:var(--gold)}
 .ptable{max-width:520px;margin:0 auto;background:radial-gradient(ellipse at 50% 30%,#1f7a4c,#0d3b26 80%);border:5px solid #6b4423;border-radius:18px;padding:16px 8px;box-shadow:inset 0 0 40px #000b,0 6px 18px #0009}
 .pcs{display:flex;gap:6px;justify-content:center;margin:8px 0 12px}
 .pc{width:clamp(54px,15vw,74px);aspect-ratio:5/7;perspective:700px}
@@ -111,7 +112,6 @@ input[type=range]{padding:0;accent-color:var(--gold)}
     <p class="mut" style="text-align:center">Chơi giải trí với tiền ảo 100%, 100M = 1K.</p>
     <p id="err" style="color:#ffb4b4;font-size:14px;overflow-wrap:anywhere;margin:0" hidden></p>
     <button class="btn" id="lg">🔐 Đăng nhập bằng Google</button>
-    <button class="btn" id="fb" style="background:linear-gradient(#4c7fe0,#1b4fb3);color:#fff">🔵 Đăng nhập bằng Facebook</button>
     <button class="btn alt" id="gs">👤 Chơi khách</button>
     <p class="mut" style="font-size:12px;text-align:center;margin:0">Tên miền trang: <b id="host"></b></p>
   </section>
@@ -169,7 +169,7 @@ input[type=range]{padding:0;accent-color:var(--gold)}
   </section>
 
   <section id="game" hidden>
-    <div class="bar"><span>👥 <b id="pc">1</b>/<b id="mx">10</b> người</span><span><button class="btn alt sm" id="mic">🎤 Mic</button> <button class="btn alt sm" id="rset">⚙️ Cài đặt phòng</button> <button class="btn alt sm" id="lv">Rời phòng</button></span></div>
+    <div class="bar"><span>👥 <b id="pc">1</b>/<b id="mx">10</b> người</span><span><button class="btn alt sm" id="stb">📊 Thống kê</button> <button class="btn alt sm" id="mic">🎤 Mic</button> <button class="btn alt sm" id="rset">⚙️ Cài đặt phòng</button> <button class="btn alt sm" id="lv">Rời phòng</button></span></div>
     <div class="gm">
       <div>
         <div class="dish"><div id="ph"></div><div id="cd"></div><div id="dd" class="dice"></div></div>
@@ -194,7 +194,7 @@ input[type=range]{padding:0;accent-color:var(--gold)}
 setTimeout(()=>{const e=document.getElementById("err");if(!window.__ok&&e.hidden){e.hidden=false;e.textContent="Chưa tải được thư viện Firebase hoặc cấu hình bị lỗi. Hãy kiểm tra mạng, tắt VPN/trình chặn quảng cáo, và mở bằng link https (không mở file trực tiếp)."}},6000)</script>
 <script type="module">
 import{initializeApp}from'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
-import{getAuth,GoogleAuthProvider,FacebookAuthProvider,signInWithPopup,signInAnonymously,signOut,onAuthStateChanged}from'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+import{getAuth,GoogleAuthProvider,signInWithPopup,signInAnonymously,signOut,onAuthStateChanged}from'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
 import{getFirestore,doc,getDoc,getDocs,getDocFromServer,where,setDoc,updateDoc,deleteDoc,addDoc,collection,query,orderBy,limit,limitToLast,onSnapshot,serverTimestamp,increment,arrayUnion}from'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
 /* ===== DÁN firebaseConfig CỦA BẠN VÀO ĐÂY (xem HUONG-DAN.md) ===== */
 const firebaseConfig={apiKey:'AIzaSyD_C-8sGqX1fulcJxM9Elz6iC4XReZmnik',authDomain:'baucuatruong-837d0.firebaseapp.com',projectId:'baucuatruong-837d0',appId:'1:739369121129:web:89130959bb8b025afa39f8'};
@@ -202,8 +202,8 @@ const OK=!firebaseConfig.apiKey.startsWith('DIEN');
 const app=initializeApp(OK?firebaseConfig:{apiKey:'x',projectId:'x',appId:'x'}),auth=getAuth(app),fdb=getFirestore(app);
 const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"']/g,c=>'&#'+c.charCodeAt(0)+';');
 const IT=[['🎃','Bầu'],['🦀','Cua'],['🐟','Cá'],['🐓','Gà'],['🦌','Nai'],['🦐','Tôm']];
-const DAILY=[5,10,25,50,75,100,100].map(x=>x*1000),CHIPS=[1000,5000,10000,50000],R=30000,BET=20000,VER='1.7';
-const NEWS=['💬 Chat sảnh cho cả lớp','🃏 Mini Poker (chơi một mình)','🎤 Chat thoại bằng mic trong phòng chơi','🔵 Đăng nhập bằng Facebook','🎨 Xúc xắc, bài, bàn cược và hồ cá nhìn thật hơn'];
+const DAILY=[5,10,25,50,75,100,100].map(x=>x*1000),CHIPS=[1000,5000,10000,50000],R=30000,BET=20000,VER='1.9';
+const NEWS=['📊 Mới: bảng thống kê 30 vòng gần nhất trong phòng (Bầu Cua, Tài Xỉu)','👀 Hiện tiền cược của từng người ở mỗi cửa','💬 Chat sảnh và 🎤 chat thoại trong phòng','🃏 Mini Poker','🐟 Bắn Cá 4 người'];
 const mult=()=>[0,6].includes(new Date().getDay())?5:2,AVS=['🎃','🦀','🐟','🐓','🦌','🦐','🐯','🐲'];
 const fmt=n=>(+n||0).toLocaleString('vi-VN'),day=d=>new Date(d).toLocaleDateString('sv');
 const ls=(k,v)=>{try{return v===undefined?localStorage.getItem(k):localStorage.setItem(k,v)}catch(e){return null}};
@@ -285,7 +285,7 @@ async function join(c){
     e=>chatAdd('Hệ thống','⚠️ Không đọc được chat: '+(e.code||''),false));
   hb=setInterval(()=>{updateDoc(mref,{s:Date.now(),m:me.money}).catch(()=>{});refresh()},60000);
 }
-function refresh(){const t=Date.now()-150000;peers=raw.filter(x=>x.presence.s>t);if(game==='fish')seatUp();plist();chk();voiceSync()}
+function refresh(){const t=Date.now()-150000;peers=raw.filter(x=>x.presence.s>t);if(game==='fish')seatUp();plist();chk();voiceSync();if(game!=='fish'&&!$('#game').hidden)board()}
 function leaveRoom(){micOff(true);clearInterval(hb);if(unM)unM();if(unC)unC();unM=unC=null;if(unK)unK();unK=null;if(mref){deleteDoc(mref).catch(()=>{});mref=null}raw=[];peers=[]}
 function chk(){
   const ps=peers.filter(x=>x.presence.t).sort((a,b)=>a.presence.t-b.presence.t||(a.peer<b.peer?-1:1));
@@ -327,9 +327,21 @@ async function syncT(){
   }
 }
 function beat(){updateDoc(ref,{seen:Date.now()}).catch(()=>{});if(++beatN%4===0)syncT()}
+let bpt=0,bsr=-1;
+function oth(i){
+  const l=peers.filter(p=>!p.isMe&&p.presence.bt===cur&&p.presence.b&&p.presence.b[i]>0).map(p=>[String(p.presence.n||'?').slice(0,9),p.presence.b[i]]);
+  if(!l.length)return '';
+  const tot=l.reduce((a,x)=>a+x[1],0)+(bets[i]||0),max=game==='tx'?6:3;
+  return '<div class="bl">'+l.slice(0,max).map(x=>esc(x[0])+' <b>'+fmt(x[1])+'</b>').join('<br>')+(l.length>max?'<br>+'+(l.length-max)+' người':'')+'<br>Tổng '+fmt(tot)+'</div>';
+}
+function pushBets(now_){
+  clearTimeout(bpt);
+  const go=()=>{if(mref&&game!=='fish')updateDoc(mref,{b:bets,bt:cur}).catch(()=>{})};
+  if(now_)go();else bpt=setTimeout(go,1500);
+}
 function board(){
   $('#bd').style.gridTemplateColumns=game==='tx'?'repeat(2,1fr)':'';const al=document.querySelector('.chip.all');if(al)al.hidden=game!=='tx';
-  $('#bd').innerHTML=tiles().map((x,i)=>'<div class="tile'+(dice&&(game==='tx'?wins(dice)===i:dice.includes(i))?' win':'')+'" data-i="'+i+'" tabindex="0"><b>'+x[0]+'</b>'+x[1]+(x[2]?'<small class="mut"> '+x[2]+'</small>':'')+'<div class="bet">'+(bets[i]?fmt(bets[i]):'&nbsp;')+'</div></div>').join('');
+  $('#bd').innerHTML=tiles().map((x,i)=>'<div class="tile'+(dice&&(game==='tx'?wins(dice)===i:dice.includes(i))?' win':'')+'" data-i="'+i+'" tabindex="0"><b>'+x[0]+'</b>'+x[1]+(x[2]?'<small class="mut"> '+x[2]+'</small>':'')+'<div class="bet">'+(bets[i]?fmt(bets[i]):'&nbsp;')+'</div>'+oth(i)+'</div>').join('');
 }
 function put(i){
   if(now()%R>=BET)return toast('Hết giờ đặt cược.');
@@ -337,7 +349,7 @@ function put(i){
   const tot=Object.values(bets).reduce((a,b)=>a+b,0);
   const amt=chip==='all'?(game==='tx'?me.money-tot:1000):chip;
   if(amt<=0||tot+amt>me.money)return toast('Không đủ tiền ảo.');
-  bets[i]=(bets[i]||0)+amt;board();
+  bets[i]=(bets[i]||0)+amt;board();pushBets();
 }
 function roll(c,id,ms){
   let h=2166136261;for(const ch of 'bc26'+c+'#'+id+'#'+ms){h=Math.imul(h^ch.charCodeAt(0),16777619)}
@@ -376,6 +388,7 @@ function tick(){
   }
   if(t<BET){$('#ph').textContent='ĐANG ĐẶT CƯỢC';$('#cd').textContent=Math.ceil((BET-t)/1000);$('#dd').innerHTML=game==='tx'?[2,4,5].map(n=>dieSvg(n,42)).join(''):'<span class="ad">❔</span><span class="ad">❔</span><span class="ad">❔</span>';$('#dd').className='dice shake'}
   else{
+    if(bsr!==id){bsr=id;pushBets(true)}
     if(!dice&&!busy){busy=true;getRound(id).then(d=>{busy=false;if(d&&cur===id&&!dice){dice=d;settle(d,bets,true)}})}
     $('#ph').textContent='KẾT QUẢ';$('#cd').textContent=Math.ceil((R-t)/1000);$('#dd').className='dice';
     $('#dd').innerHTML=dice?(game==='tx'?dice.map(v=>dieSvg(v+1,42)).join('')+'<div style="font-size:16px;font-weight:800">= '+sum(dice)+(trip(dice)?' (bão)':'')+'</div>':dice.map(i=>'<span class="ad">'+IT[i][0]+'</span>').join('')):'⏳';
@@ -728,15 +741,35 @@ function vConnect(p){
     });
   }
 }
+/* ---- Bảng thống kê (chỉ để xem, không dự đoán) ---- */
+async function statM(){
+  if(!rid||game==='fish')return;
+  let docs=[],err='';
+  try{docs=(await getDocs(query(collection(fdb,'rooms',rid,'rounds'),orderBy('ts','desc'),limit(30)))).docs}catch(e){err=e.code||'lỗi'}
+  const rs=docs.filter(d=>d.data().ts).map(d=>roll(rid,d.id,d.data().ts.toMillis()));   // mới nhất đứng đầu
+  const bar=(l,n,tot)=>'<div class="r"><span>'+l+'</span><span style="flex:1;margin:0 8px;align-self:center;height:8px;background:#34141b;border-radius:4px"><i style="display:block;height:100%;width:'+(tot?Math.round(n*100/tot):0)+'%;background:var(--gold);border-radius:4px"></i></span><b>'+n+'</b></div>';
+  let body;
+  if(err)body='<p class="mut">Không tải được: '+esc(err)+'</p>';
+  else if(!rs.length)body='<p class="mut">Phòng này chưa có vòng nào kết thúc.</p>';
+  else if(game==='tx'){
+    const lab=d=>trip(d)?'Bão':wins(d)===1?'Tài':'Xỉu',n=l=>rs.filter(d=>lab(d)===l).length;
+    body='<b>10 vòng gần nhất</b>'+rs.slice(0,10).map(d=>'<div class="r"><span>'+d.map(v=>dieSvg(v+1,26)).join('')+'</span><b>'+sum(d)+' · '+lab(d)+'</b></div>').join('')
+      +'<p style="margin:12px 0 4px"><b>Số lần ra ('+rs.length+' vòng)</b></p>'+bar('Tài',n('Tài'),rs.length)+bar('Xỉu',n('Xỉu'),rs.length)+bar('Bão',n('Bão'),rs.length);
+  }else{
+    body='<b>10 vòng gần nhất</b>'+rs.slice(0,10).map(d=>'<div class="r"><span>'+d.map(i=>'<span class="ad" style="width:30px;height:30px;font-size:18px">'+IT[i][0]+'</span>').join('')+'</span></div>').join('')
+      +'<p style="margin:12px 0 4px"><b>Số lần xuất hiện ('+rs.length+' vòng)</b></p>'+IT.map((x,i)=>bar(x[0]+' '+x[1],rs.reduce((a,d)=>a+d.filter(v=>v===i).length,0),rs.length*3)).join('');
+  }
+  modal('<h3>📊 Thống kê '+(game==='tx'?'Tài Xỉu':'Bầu Cua')+'</h3><p class="mut" style="margin:0 0 8px">Chỉ là thống kê các vòng đã qua trong phòng này (tối đa 30 vòng gần nhất). Mỗi vòng ra kết quả độc lập, thống kê <b>không giúp đoán trước</b> vòng sau.</p>'+body);
+}
+$('#stb').onclick=statM;
 $('#mic').onclick=micToggle;$('#mic2').onclick=micToggle;
-$('#fb').onclick=async()=>{$('#err').hidden=true;if(!OK)return toast('Hãy điền firebaseConfig trước.');try{await signInWithPopup(auth,new FacebookAuthProvider())}catch(e){fail(e)}};
 window.__ok=1;
 $('#jn').onclick=()=>enter($('#rcode').value);
 $('#rnd').onclick=()=>enter('sanh'+(1+Math.floor(Math.random()*5)));
 $('#lv').onclick=leave;
 $('#bd').onclick=e=>{const t=e.target.closest('.tile');if(t)put(+t.dataset.i)};
 $('#bd').onkeydown=e=>{if(e.key==='Enter'||e.key===' '){const t=e.target.closest('.tile');if(t){e.preventDefault();put(+t.dataset.i)}}};
-$('#clr').onclick=()=>{if(now()%R<BET){bets={};board()}};
+$('#clr').onclick=()=>{if(now()%R<BET){bets={};board();pushBets(true)}};
 $('#chips').innerHTML=CHIPS.map(c=>'<button class="chip'+(c===chip?' on':'')+'" data-c="'+c+'">'+c/1000+'k</button>').join('')+'<button class="chip all" data-c="all" style="background:#7a1522;font-size:13px">ALL</button>';
 $('#chips').onclick=e=>{const b=e.target.closest('.chip');if(!b)return;chip=b.dataset.c==='all'?'all':+b.dataset.c;if(chip==='all')toast('Cược tất cả: chạm vào Tài hoặc Xỉu.');document.querySelectorAll('.chip').forEach(x=>x.classList.toggle('on',x===b))};
 $('#bDaily').onclick=daily;$('#bLb').onclick=()=>lbm();$('#bNews').onclick=news;
