@@ -133,7 +133,7 @@ input[type=range]{padding:0;accent-color:var(--gold)}
       <button class="gc" id="gPk"><b>🃏</b>Mini Poker<small>Chơi một mình</small></button>
     </div>
     <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:14px">
-      <button class="btn alt" id="fr">👥 Bạn bè</button><button class="btn alt" id="lbb">🏆 Xếp hạng</button><button class="btn alt" id="fundb">💝 Quỹ lớp</button><button class="btn alt" id="wheelb">🎡 Vòng quay</button><button class="btn" id="adm" hidden>🛠️ Admin</button>
+      <button class="btn alt" id="fr">👥 Bạn bè</button><button class="btn alt" id="lbb">🏆 Xếp hạng</button><button class="btn alt" id="wheelb">🎡 Vòng quay</button><button class="btn" id="adm" hidden>🛠️ Admin</button>
     </div>
     <div class="chat" style="margin-top:14px"><b>💬 Chat sảnh</b><div id="hl" style="height:150px;overflow-y:auto;font-size:14px;overflow-wrap:anywhere"></div>
       <div class="cin"><input id="hi" maxlength="120" placeholder="Nhắn cho cả sảnh..." enterkeyhint="send"><button class="btn sm" id="hs">Gửi</button></div></div>
@@ -188,6 +188,7 @@ input[type=range]{padding:0;accent-color:var(--gold)}
     </div>
   </section>
 </div>
+<div id="ytp" hidden style="position:fixed;left:8px;bottom:calc(8px + env(safe-area-inset-bottom,0px));z-index:12;width:260px;background:#000;border:2px solid var(--gold);border-radius:10px;overflow:hidden"><div style="display:flex;justify-content:space-between;align-items:center;padding:2px 8px;font-size:12px;background:var(--card)"><span>🎧 Nhạc chill</span><button id="ytx" title="Tắt" style="border:0;background:transparent;color:var(--tx);cursor:pointer;font-weight:800">✕</button></div><div id="ytb" style="width:260px;height:200px"></div></div>
 <div id="ann" hidden style="position:fixed;top:calc(8px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);z-index:15;width:min(92%,480px);background:linear-gradient(90deg,#c8202f,#f6c744);color:#2a0a10;font-weight:700;padding:10px 40px 10px 14px;border-radius:12px;box-shadow:0 6px 18px #000a"><span id="annm"></span><button id="annx" style="position:absolute;right:8px;top:6px;border:0;background:#0002;border-radius:50%;width:26px;height:26px;cursor:pointer;font-weight:800">✕</button></div>
 <div id="rot" hidden><div style="font-size:64px">📱↻</div><h3>Hãy xoay ngang màn hình</h3><p class="mut" style="margin:0">Game chỉ hỗ trợ màn hình ngang. Hãy tắt khóa xoay màn hình rồi xoay máy ngang.</p><button class="btn" id="fsb">Bật toàn màn hình ngang</button></div>
 <div id="ov" hidden></div>
@@ -205,8 +206,8 @@ const OK=!firebaseConfig.apiKey.startsWith('DIEN');
 const app=initializeApp(OK?firebaseConfig:{apiKey:'x',projectId:'x',appId:'x'}),auth=getAuth(app),fdb=getFirestore(app);
 const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"']/g,c=>'&#'+c.charCodeAt(0)+';');
 const IT=[['🎃','Bầu'],['🦀','Cua'],['🐟','Cá'],['🐓','Gà'],['🦌','Nai'],['🦐','Tôm']];
-const DAILY=[5,10,25,50,75,100,100].map(x=>x*1000),CHIPS=[1000,5000,10000,50000,500000],R=30000,BET=20000,VER='2.2';
-const NEWS=['🎵 Mới: nhạc nền và hiệu ứng âm thanh (nút 🎵 trên thanh đầu trang)','💝 Mới: Quỹ lớp, góp tiền ảo cùng nhau đạt mục tiêu','🎡 Mới: Vòng quay may mắn, mỗi ngày quay miễn phí 1 lần','💰 Cược xong là trừ tiền ngay, có ô nhập tiền cược nhanh và mức 500.000','👤 Bấm vào tên để xem thông tin và kết bạn'];
+const DAILY=[5,10,25,50,75,100,100].map(x=>x*1000),CHIPS=[1000,5000,10000,50000,500000],R=30000,BET=20000,VER='2.3';
+const NEWS=['🎧 Mới: nghe nhạc chill từ YouTube (nút 🎵 → Nhạc chill từ YouTube)','🎡 Vòng quay may mắn, mỗi ngày quay miễn phí 1 lần','🎵 Nhạc nền và hiệu ứng âm thanh','💰 Cược xong là trừ tiền ngay, có ô nhập tiền cược nhanh và mức 500.000','👤 Bấm vào tên để xem thông tin và kết bạn'];
 const mult=()=>[0,6].includes(new Date().getDay())?5:2,AVS=['🎃','🦀','🐟','🐓','🦌','🦐','🐯','🐲'];
 const fmt=n=>(+n||0).toLocaleString('vi-VN'),day=d=>new Date(d).toLocaleDateString('sv');
 const ls=(k,v)=>{try{return v===undefined?localStorage.getItem(k):localStorage.setItem(k,v)}catch(e){return null}};
@@ -298,7 +299,7 @@ function chk(){
 function leave(){clearInterval(tm);cancelAnimationFrame(fs.raf);leaveRoom();code='';show('lobby')}
 const logout=()=>signOut(auth).then(()=>toast('Đã đăng xuất'));
 const lo=()=>{if(Date.now()-loT<3000)return logout();loT=Date.now();toast('Bấm 🚪 lần nữa để đăng xuất')};
-function cleanup(){clearInterval(tm);clearInterval(hbP);if(unMe){unMe();unMe=null}if(unAnn){unAnn();unAnn=null}cancelAnimationFrame(fs.raf);leaveRoom();code='';if(lbu){lbu();lbu=null}ref=me=null;db=0;lb=[];$('#top').hidden=true;$('#wk').hidden=true;show('login')}
+function cleanup(){clearInterval(tm);clearInterval(hbP);if(unMe){unMe();unMe=null}if(unAnn){unAnn();unAnn=null}ytStop();cancelAnimationFrame(fs.raf);leaveRoom();code='';if(lbu){lbu();lbu=null}ref=me=null;db=0;lb=[];$('#top').hidden=true;$('#wk').hidden=true;show('login')}
 function chatAdd(n,t,m,id='cl',u,ts){
   const l=$('#'+id),d=document.createElement('div'),b=document.createElement('b');
   d.className='cm'+(m?' me':'');b.textContent=n+': ';if(u){b.className='nm';b.dataset.pu=u}d.append(b,document.createTextNode(t));if(ts){const s=document.createElement('small');s.className='mut';s.style.marginLeft='6px';s.textContent=fmtT(ts);d.append(s)}l.append(d);
@@ -457,7 +458,7 @@ async function adminM(){
     admG=s.docs.filter(d=>d.data().guest&&d.id!==uid).map(d=>d.id);
     rows=s.docs.map(d=>{const p=d.data();return '<div class="r" style="flex-wrap:wrap"><span>'+esc(p.name)+' <small class="mut">('+esc(p.cls)+')'+(p.banned?' 🚫':'')+(d.id===uid?' (tôi)':'')+(p.guest?' · khách':'')+'</small></span><span><input data-u="'+d.id+'" type="number" min="0" value="'+(+p.money||0)+'" style="width:110px;padding:6px"> <button class="btn sm" data-sv="'+d.id+'">Lưu</button> <button class="btn alt sm" data-bn="'+d.id+'" data-b="'+(p.banned?1:0)+'">'+(p.banned?'Mở khóa':'Cấm')+'</button>'+(d.id===uid?'':' <button class="btn alt sm" data-dl="'+d.id+'">Xóa</button>')+'</span></div>'}).join('');
   }catch(e){rows='<p class="mut">Không tải được: '+esc(e.code||'')+'</p>'}
-  modal('<h3>🛠️ Admin</h3><div class="card" style="margin:8px 0"><b>📢 Thông báo cho tất cả</b><textarea id="annt" maxlength="300" rows="2" placeholder="Nội dung thông báo..." style="width:100%;background:#1a0a0e;color:var(--tx);border:1px solid var(--line);border-radius:10px;padding:8px;font:inherit;margin:6px 0"></textarea><button class="btn sm" data-an="1">Gửi</button></div><div class="card" style="margin:8px 0"><b>💝 Quỹ lớp (tiền ảo)</b><input id="ftt" placeholder="Tên quỹ, vd: Giúp bạn A" maxlength="60" style="width:100%;margin:6px 0"><input id="fgl" placeholder="Mục tiêu, vd: 50m" style="width:100%;margin-bottom:6px"><button class="btn sm" data-fs="1">Lưu quỹ</button></div><p class="mut" style="margin:0">Sửa tiền rồi bấm Lưu. Cấm = đăng xuất ngay. Xóa = xóa hồ sơ và chặn không cho đăng ký lại.</p>'+(admG.length?'<button class="btn alt sm" data-dg="1" style="margin:8px 0">🧹 Xóa '+admG.length+' tài khoản khách</button>':'')+rows);
+  modal('<h3>🛠️ Admin</h3><div class="card" style="margin:8px 0"><b>📢 Thông báo cho tất cả</b><textarea id="annt" maxlength="300" rows="2" placeholder="Nội dung thông báo..." style="width:100%;background:#1a0a0e;color:var(--tx);border:1px solid var(--line);border-radius:10px;padding:8px;font:inherit;margin:6px 0"></textarea><button class="btn sm" data-an="1">Gửi</button></div><p class="mut" style="margin:0">Sửa tiền rồi bấm Lưu. Cấm = đăng xuất ngay. Xóa = xóa hồ sơ và chặn không cho đăng ký lại.</p>'+(admG.length?'<button class="btn alt sm" data-dg="1" style="margin:8px 0">🧹 Xóa '+admG.length+' tài khoản khách</button>':'')+rows);
 }
 const fmtT=ms=>{const d=new Date(ms),n=new Date(),h=d.toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'});return d.toDateString()===n.toDateString()?h:d.toLocaleDateString('vi-VN',{day:'2-digit',month:'2-digit'})+' '+h};
 const ago=ms=>{const s=Math.max(0,(Date.now()-ms)/1000);if(s<90)return 'vừa xong';if(s<3600)return Math.round(s/60)+' phút trước';if(s<86400)return Math.round(s/3600)+' giờ trước';return new Date(ms).toLocaleDateString('vi-VN')+' ('+Math.round(s/86400)+' ngày trước)'};
@@ -517,11 +518,13 @@ document.addEventListener('click',e=>{const x=e.target.closest('[data-pu]');if(x
 $('#ov').addEventListener('click',async e=>{
   const g=k=>e.target.closest('['+k+']');let b;
   if(e.target.id==='fadd')return addF();
-  if(e.target.id==='fgo')return donate();
   if(e.target.id==='spin')return doSpin();
   if(g('data-mm')){mOn=!mOn;ls('bc_mus',mOn?'1':'0');if(mOn){aInit();mStart()}else mStop();return audM()}
   if(g('data-ms')){sOn=!sOn;ls('bc_sfx',sOn?'1':'0');return audM()}
   if(b=g('data-mt')){tk=+b.dataset.mt;ls('bc_trk',String(tk));mStep=0;mNext=0;if(mOn){aInit();mStart()}return audM()}
+  if(e.target.id==='ytg'){const u=$('#ytu').value;$('#ov').hidden=true;return ytPlay(u)}
+  if(b=g('data-yt')){$('#ov').hidden=true;return ytPlay('https://youtu.be/'+b.dataset.yt)}
+  if(g('data-yx')){ytStop();return audM()}
   if(b=g('data-lt'))return lbm(b.dataset.lt);
   if(g('data-rn')){
     const n=$('#nn').value.trim().slice(0,30),c=$('#nc').value.trim().slice(0,10);
@@ -540,7 +543,6 @@ $('#ov').addEventListener('click',async e=>{
     return;
   }
   if(g('data-ac')){try{await deleteDoc(doc(fdb,'config','announce'));toast('Đã xóa thông báo hiện tại.')}catch(err){toast('Lỗi: '+(err.code||''))}return}
-  if(g('data-fs')){const ti=$('#ftt').value.trim().slice(0,60),go=parseAmt($('#fgl').value);if(!ti||!go)return toast('Nhập tên quỹ và mục tiêu (vd 50m).');try{await setDoc(doc(fdb,'config','fund'),{title:ti,goal:go});toast('Đã lưu quỹ lớp.')}catch(err){toast('Lỗi: '+(err.code||''))}return}
   if(g('data-an')){const v=$('#annt').value.trim().slice(0,300);if(!v)return toast('Nhập nội dung thông báo.');try{await setDoc(doc(fdb,'config','announce'),{text:v,t:Date.now()});toast('Đã gửi thông báo cho tất cả.')}catch(err){toast('Lỗi: '+(err.code||''))}return}
   if(b=g('data-dl')){
     const id=b.dataset.dl;if(id===uid)return toast('Không thể tự xóa chính mình.');
@@ -867,7 +869,7 @@ function mTick(){
     mNext+=sd;mStep++;
   }
 }
-function mStart(){if(!aInit())return;clearInterval(mTm);if(mOn)mTm=setInterval(mTick,120)}
+function mStart(){if(!aInit())return;clearInterval(mTm);if(mOn&&!ytOn)mTm=setInterval(mTick,120)}
 function mStop(){clearInterval(mTm)}
 function sfx(k){
   if(!sOn||!ac||ac.state!=='running')return;const t0=ac.currentTime;
@@ -878,7 +880,7 @@ function sfx(k){
   else if(k==='shot')note(t0,70,0.05,'square',0.06,sG);
 }
 function audM(){
-  modal('<h3>🎵 Âm thanh</h3><div class="r"><span>Nhạc nền</span><button class="btn sm '+(mOn?'':'alt')+'" data-mm="1">'+(mOn?'Bật':'Tắt')+'</button></div><div class="r"><span>Hiệu ứng</span><button class="btn sm '+(sOn?'':'alt')+'" data-ms="1">'+(sOn?'Bật':'Tắt')+'</button></div><p class="mut" style="margin:8px 0 4px">Chọn bài:</p><div>'+TR.map((x,i)=>'<button class="btn sm '+(i===tk?'':'alt ')+'" data-mt="'+i+'" style="margin:2px">'+x.n+'</button>').join('')+'</div><p class="mut" style="margin:10px 0 2px">Âm lượng</p><input id="mvol" type="range" min="0" max="1" step="0.05" value="'+mvol+'" style="width:100%"><p class="mut" style="margin:6px 0 0;font-size:12px">Nhạc được tạo trực tiếp trên máy, không dùng file nhạc có bản quyền.</p>');
+  modal('<h3>🎵 Âm thanh</h3><div class="r"><span>Nhạc nền</span><button class="btn sm '+(mOn?'':'alt')+'" data-mm="1">'+(mOn?'Bật':'Tắt')+'</button></div><div class="r"><span>Hiệu ứng</span><button class="btn sm '+(sOn?'':'alt')+'" data-ms="1">'+(sOn?'Bật':'Tắt')+'</button></div><p class="mut" style="margin:8px 0 4px">Chọn bài:</p><div>'+TR.map((x,i)=>'<button class="btn sm '+(i===tk?'':'alt ')+'" data-mt="'+i+'" style="margin:2px">'+x.n+'</button>').join('')+'</div><p class="mut" style="margin:10px 0 2px">Âm lượng</p><input id="mvol" type="range" min="0" max="1" step="0.05" value="'+mvol+'" style="width:100%"><p class="mut" style="margin:6px 0 0;font-size:12px">Nhạc được tạo trực tiếp trên máy, không dùng file nhạc có bản quyền.</p><b style="display:block;margin-top:12px">🎧 Nhạc chill từ YouTube</b><div style="margin-top:4px"><button class="btn sm" data-yt="jfKfPfyJRdk" style="margin:2px">Lofi Girl radio</button><button class="btn sm" data-yt="5yx6BWlEVcY" style="margin:2px">Chillhop radio</button>'+(ytOn?'<button class="btn alt sm" data-yx="1" style="margin:2px">⏹ Tắt YouTube</button>':'')+'</div><div class="cin" style="margin-top:6px"><input id="ytu" placeholder="Hoặc dán link YouTube..."><button class="btn sm" id="ytg">Phát</button></div><p class="mut" style="margin:6px 0 0;font-size:12px">Trình phát YouTube hiện ở góc dưới bên trái. Video nào chủ kênh không cho nhúng thì sẽ không phát được.</p>');
 }
 $('#ov').addEventListener('input',e=>{if(e.target.id==='mvol'){mvol=+e.target.value;ls('bc_vol',String(mvol));aVol()}});
 document.addEventListener('pointerdown',()=>{if(!ac){aInit();if(mOn)mStart()}},{once:true});
@@ -891,26 +893,6 @@ function annM(){
   modal('<h3>📣 Gửi thông báo cho tất cả mọi người</h3><textarea id="annt" maxlength="300" rows="3" placeholder="Ví dụ: Chào mừng bản cập nhật mới!..." style="width:100%;background:#1a0a0e;color:var(--tx);border:1px solid var(--line);border-radius:10px;padding:8px;font:inherit;margin:6px 0"></textarea><button class="btn" data-an="1" style="width:100%">Gửi cho tất cả</button><button class="btn alt sm" data-ac="1" style="margin-top:8px">Xóa thông báo hiện tại</button><p class="mut" style="font-size:13px;margin:8px 0 0">Mọi người đang online (ở sảnh hay trong phòng) thấy ngay một dải thông báo ở đầu màn hình. Ai vào sau cũng thấy một lần.</p>');
 }
 $('#bAnn').onclick=annM;
-
-/* ---- Quỹ lớp (tiền ảo) ---- */
-async function fundM(){
-  let title='Quỹ lớp',goal=10000000,list=[],err='';
-  try{
-    const c=await getDoc(doc(fdb,'config','fund'));if(c.exists()){title=c.data().title||title;goal=+c.data().goal||goal}
-    list=(await getDocs(query(collection(fdb,'fundDonors'),orderBy('amt','desc'),limit(100)))).docs.map(d=>({...d.data(),id:d.id}));
-  }catch(e){err=e.code||'lỗi'}
-  const total=list.reduce((a,x)=>a+(+x.amt||0),0),pct=Math.min(100,Math.round(total*100/goal));
-  modal('<h3>💝 '+esc(title)+'</h3><p class="mut" style="margin:0">Góp bằng tiền ảo, không đổi ra tiền thật. Cùng nhau đạt mục tiêu nhé!</p><div style="margin:10px 0"><div style="height:16px;background:#34141b;border-radius:8px;overflow:hidden"><i style="display:block;height:100%;width:'+pct+'%;background:linear-gradient(90deg,#c8202f,#f6c744)"></i></div><div class="mut" style="text-align:center;margin-top:4px">'+fmt(total)+' / '+fmt(goal)+' ('+pct+'%)</div></div><div class="cin"><input id="fam" inputmode="numeric" placeholder="Số tiền ảo muốn góp (vd 5k)"><button class="btn sm" id="fgo">Góp</button></div><b style="display:block;margin-top:10px">Bảng vinh danh</b>'
-    +(err?'<p class="mut">Không tải được: '+esc(err)+'</p>':list.length?list.slice(0,10).map((x,i)=>'<div class="r"><span>'+(['🥇','🥈','🥉'][i]||i+1)+' <span class="nm" data-pu="'+x.id+'">'+esc(x.n)+'</span> <small class="mut">('+esc(x.c)+')</small></span><b>'+fmt(x.amt)+'</b></div>').join(''):'<p class="mut">Chưa ai góp. Hãy là người đầu tiên!</p>'));
-}
-async function donate(){
-  const v=parseAmt($('#fam').value);
-  if(!v)return toast('Nhập số tiền, ví dụ 5000 hoặc 5k.');
-  if(v>me.money)return toast('Không đủ tiền ảo.');
-  try{await setDoc(doc(fdb,'fundDonors',uid),{n:me.name,c:me.cls,amt:increment(v),t:Date.now()},{merge:true})}catch(e){return toast('Lỗi: '+(e.code||''))}
-  me.money-=v;head();save();sfx('win');toast('Cảm ơn bạn đã góp '+fmt(v)+'! 💝');fundM();
-}
-$('#fundb').onclick=fundM;
 
 /* ---- Vòng quay may mắn (mỗi ngày 1 lần, miễn phí) ---- */
 const WH=[[500,25],[1000,22],[2000,18],[3000,12],[5000,10],[10000,7],[20000,4],[50000,2]];
@@ -931,6 +913,20 @@ function doSpin(){
   setTimeout(()=>{sfx('win');toast('🎉 Bạn nhận '+fmt(WH[idx][0])+'!');const b=$('#spin');if(b)b.textContent='Hôm nay bạn đã quay rồi'},4300);
 }
 $('#wheelb').onclick=wheelM;
+/* ---- Nhạc từ YouTube (trình phát nhúng chính thức, luôn hiện ở góc màn hình) ---- */
+let ytOn=false;
+function ytPlay(url){
+  url=String(url||'').trim();let id=null,list=null,m;
+  if(m=/[?&]list=([\w-]+)/.exec(url))list=m[1];
+  if(m=/(?:v=|youtu\.be\/|embed\/|live\/|shorts\/)([\w-]{11})/.exec(url))id=m[1];
+  if(!id&&!list&&/^[\w-]{11}$/.test(url))id=url;
+  if(!id&&!list)return toast('Link YouTube không hợp lệ.');
+  const src=id?'https://www.youtube.com/embed/'+id+'?autoplay=1&playsinline=1&rel=0'+(list?'&list='+list:''):'https://www.youtube.com/embed/videoseries?list='+list+'&autoplay=1&playsinline=1';
+  $('#ytb').innerHTML='<iframe width="260" height="200" src="'+src+'" title="YouTube" allow="autoplay; encrypted-media; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="border:0"></iframe>';
+  $('#ytp').hidden=false;ytOn=true;mStop();
+}
+function ytStop(){$('#ytb').innerHTML='';$('#ytp').hidden=true;ytOn=false;if(mOn&&ac)mStart()}
+$('#ytx').onclick=ytStop;
 window.__ok=1;
 $('#jn').onclick=()=>enter($('#rcode').value);
 $('#rnd').onclick=()=>enter('sanh'+(1+Math.floor(Math.random()*5)));
