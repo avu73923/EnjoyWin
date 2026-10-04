@@ -68,6 +68,12 @@ input[type=range]{padding:0;accent-color:var(--gold)}
 .chip[data-c="1000"]{background:#1d6fd1}.chip[data-c="5000"]{background:#c8202f}.chip[data-c="10000"]{background:#23935a}.chip[data-c="50000"]{background:#222}.chip[data-c="500000"]{background:#7b3fe4}
 .nm{cursor:pointer;text-decoration:underline dotted;text-underline-offset:3px}
 .bl{font-size:11px;color:var(--tx);line-height:1.3;text-align:left;padding:2px 4px;overflow-wrap:anywhere;opacity:.9}.bl b{color:var(--gold)}
+.tc{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;width:46px;height:66px;background:#fff;color:#111;border-radius:8px;border:1px solid #999;font-weight:800;font-size:15px;line-height:1.1;box-shadow:0 2px 5px #0008;user-select:none;cursor:pointer}.tc.red{color:#c8202f}.tc.sel{transform:translateY(-14px);outline:3px solid var(--gold)}
+.uc{width:46px;height:68px;border-radius:8px;border:3px solid #fff;display:inline-flex;align-items:center;justify-content:center;flex-direction:column;font-weight:800;font-size:20px;box-shadow:0 3px 6px #0008;user-select:none}
+.uc.ok{cursor:pointer;transform:translateY(-6px);box-shadow:0 0 10px var(--gold)}
+#mjBoard{position:relative;margin:10px auto}
+.mj{position:absolute;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#fffdf2,#e8dfc0);border:1px solid #9a8f6a;border-radius:6px;box-shadow:2px 3px 0 #6b5f3a,0 4px 8px #0008;font-weight:800;cursor:pointer;user-select:none}
+.mj.dim{filter:brightness(.65);cursor:not-allowed}.mj.sel{outline:3px solid var(--gold);transform:translateY(-3px)}
 .ptable{max-width:520px;margin:0 auto;background:radial-gradient(ellipse at 50% 30%,#1f7a4c,#0d3b26 80%);border:5px solid #6b4423;border-radius:18px;padding:16px 8px;box-shadow:inset 0 0 40px #000b,0 6px 18px #0009}
 .pcs{display:flex;gap:6px;justify-content:center;margin:8px 0 12px}
 .pc{width:clamp(54px,15vw,74px);aspect-ratio:5/7;perspective:700px}
@@ -131,9 +137,13 @@ input[type=range]{padding:0;accent-color:var(--gold)}
       <button class="gc" id="gTx"><b>🎲</b>Tài Xỉu giải trí<small>Phòng 2 đến 10 người</small></button>
       <button class="gc" id="gFish"><b>🐟</b>Bắn Cá<small>Tối đa 4 người</small></button>
       <button class="gc" id="gPk"><b>🃏</b>Mini Poker<small>Chơi một mình</small></button>
+      <button class="gc" id="gUno"><b>🎴</b>UNO<small>2-4 người thật</small></button>
+      <button class="gc" id="gTl"><b>♠️</b>Tiến lên<small>Đấu với 3 bot</small></button>
+      <button class="gc" id="gXd"><b>♦️</b>Xì dách<small>Đấu với nhà cái</small></button>
+      <button class="gc" id="gMj"><b>🀄</b>Mạt chược<small>Xếp cặp quân bài</small></button>
     </div>
     <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:14px">
-      <button class="btn alt" id="fr">👥 Bạn bè</button><button class="btn alt" id="lbb">🏆 Xếp hạng</button><button class="btn alt" id="wheelb">🎡 Vòng quay</button><button class="btn" id="adm" hidden>🛠️ Admin</button>
+      <button class="btn alt" id="fr">👥 Bạn bè</button><button class="btn alt" id="lbb">🏆 Xếp hạng</button><button class="btn alt" id="wheelb">🎡 Vòng quay</button><button class="btn alt" id="codeb">🎁 Nhập code</button><button class="btn" id="adm" hidden>🛠️ Admin</button>
     </div>
     <div class="chat" style="margin-top:14px"><b>💬 Chat sảnh</b><div id="hl" style="height:150px;overflow-y:auto;font-size:14px;overflow-wrap:anywhere"></div>
       <div class="cin"><input id="hi" maxlength="120" placeholder="Nhắn cho cả sảnh..." enterkeyhint="send"><button class="btn sm" id="hs">Gửi</button></div></div>
@@ -143,6 +153,37 @@ input[type=range]{padding:0;accent-color:var(--gold)}
     <div class="bar"><button class="btn alt sm" id="fBack">← Sảnh</button><span id="fbs"><button class="btn alt sm" id="fset">⚙️</button> <button class="btn alt sm" id="mic2">🎤 Mic</button> Đạn: <button class="btn alt sm" data-fb="100">100</button> <button class="btn alt sm" data-fb="500">500</button> <button class="btn alt sm" data-fb="1000">1.000</button></span></div>
     <canvas id="cv" style="display:block;margin:0 auto;border:3px solid var(--gold);border-radius:14px;touch-action:none;max-width:100%"></canvas>
     <p class="mut" style="text-align:center">Mỗi người một súng ở một góc. Chạm vào màn hình để bắn, mỗi phát tốn tiền đạn, trúng cá nhận gấp 2 đến 25 lần (số xN dưới mỗi con cá). Cá bị ai bắn trúng trước thì người đó ăn.</p>
+  </section>
+
+  <section id="uno" hidden>
+    <div class="bar"><button class="btn alt sm" id="unoBack">← Sảnh</button><b id="unoSt"></b><span><button class="btn alt sm" id="unoRs">⚙️ Phòng</button> <button class="btn alt sm" id="unoBot" hidden>🤖 Thêm bot</button> <button class="btn sm" id="unoGo" hidden>▶ Bắt đầu</button> <button class="btn alt sm" id="unoSkip" hidden>⏭ Bỏ qua lượt</button></span></div>
+    <div id="unoBots" style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:6px 0"></div>
+    <div style="display:flex;justify-content:center;align-items:center;gap:16px;margin:10px 0;min-height:80px"><div id="unoDeck" style="cursor:pointer"></div><div id="unoTop"></div><div id="unoCol"></div></div>
+    <div id="unoHand" style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center"></div>
+    <p class="mut" style="text-align:center;font-size:13px">2 đến 4 người thật (chủ bàn có thể thêm bot). Đánh lá cùng màu hoặc cùng số/ký hiệu, hết bài trước là thắng (+3.000). Bấm bài úp để bốc. Ai chậm quá 40 giây thì người khác được bỏ qua lượt.</p>
+  </section>
+
+  <section id="tl" hidden>
+    <div class="bar"><button class="btn alt sm" id="tlBack">← Sảnh</button><b id="tlSt"></b><button class="btn alt sm" id="tlNew">Ván mới</button></div>
+    <div id="tlBots" style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:6px 0"></div>
+    <div class="ptable" style="min-height:120px"><div id="tlTable" style="display:flex;gap:4px;justify-content:center;flex-wrap:wrap;min-height:70px"></div><div id="tlTxt" class="mut" style="text-align:center;margin-top:6px"></div></div>
+    <div id="tlHand" style="display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin-top:20px"></div>
+    <div style="text-align:center;margin-top:10px"><button class="btn" id="tlPlay">Đánh</button> <button class="btn alt" id="tlPass">Bỏ lượt</button></div>
+    <p class="mut" style="text-align:center;font-size:13px">Tiến lên đấu với 3 bot. Đánh đơn, đôi, sám, tứ quý hoặc sảnh (từ 3 lá liên tiếp, không có lá 2). 2 là lá cao nhất, chất ♠ &lt; ♣ &lt; ♦ &lt; ♥. Ai giữ 3♠ đi trước. Chưa có chặt heo. Hết bài trước thắng +4.000.</p>
+  </section>
+
+  <section id="xd" hidden>
+    <div class="bar"><button class="btn alt sm" id="xdBack">← Sảnh</button><span id="xds">Cược: <button class="btn alt sm" data-xb="500">500</button> <button class="btn alt sm" data-xb="1000">1.000</button> <button class="btn alt sm" data-xb="5000">5.000</button> <button class="btn alt sm" data-xb="10000">10.000</button></span></div>
+    <div class="ptable"><div class="mut" style="text-align:center">Nhà cái <span id="xdDp"></span></div><div class="pcs" id="xdD"></div><div class="mut" style="text-align:center">Bạn <span id="xdPp"></span></div><div class="pcs" id="xdP"></div>
+      <div id="xdMsg" style="text-align:center;font-weight:800;font-size:18px;min-height:26px;color:var(--gold)"></div>
+      <div style="text-align:center;margin-top:8px"><button class="btn" id="xdDeal">Chia bài</button> <button class="btn" id="xdHit">Rút</button> <button class="btn alt" id="xdStand">Dừng</button></div></div>
+    <p class="mut" style="text-align:center;font-size:13px">Xì dách đấu với nhà cái. Đủ 16 điểm mới được dừng, quá 21 là quắc. Thắng thường nhận x2 (gồm tiền cược), Xì dách (Át + 10/J/Q/K) x2,5, Xì bàng (2 Át) và Ngũ linh (5 lá không quá 21) x3. Nhà cái rút khi dưới 17 điểm.</p>
+  </section>
+
+  <section id="mj" hidden>
+    <div class="bar"><button class="btn alt sm" id="mjBack">← Sảnh</button><b id="mjSt"></b><span><button class="btn alt sm" id="mjHint">💡 Gợi ý</button> <button class="btn alt sm" id="mjNew">Ván mới</button></span></div>
+    <div id="mjBoard"></div>
+    <p class="mut" style="text-align:center;font-size:13px">Chọn 2 quân giống nhau còn trống 1 bên (trái hoặc phải) và không bị đè để xóa. Xóa hết là thắng (+3.000).</p>
   </section>
 
   <section id="poker" hidden>
@@ -199,24 +240,24 @@ setTimeout(()=>{const e=document.getElementById("err");if(!window.__ok&&e.hidden
 <script type="module">
 import{initializeApp}from'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
 import{getAuth,GoogleAuthProvider,signInWithPopup,signInAnonymously,signOut,onAuthStateChanged}from'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
-import{getFirestore,doc,getDoc,getDocs,getDocFromServer,where,setDoc,updateDoc,deleteDoc,addDoc,collection,query,orderBy,limit,limitToLast,onSnapshot,serverTimestamp,increment,arrayUnion}from'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+import{getFirestore,doc,getDoc,getDocs,getDocFromServer,where,setDoc,updateDoc,deleteDoc,addDoc,collection,query,orderBy,limit,limitToLast,onSnapshot,serverTimestamp,increment,arrayUnion,runTransaction}from'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
 /* ===== DÁN firebaseConfig CỦA BẠN VÀO ĐÂY (xem HUONG-DAN.md) ===== */
 const firebaseConfig={apiKey:'AIzaSyD_C-8sGqX1fulcJxM9Elz6iC4XReZmnik',authDomain:'baucuatruong-837d0.firebaseapp.com',projectId:'baucuatruong-837d0',appId:'1:739369121129:web:89130959bb8b025afa39f8'};
 const OK=!firebaseConfig.apiKey.startsWith('DIEN');
 const app=initializeApp(OK?firebaseConfig:{apiKey:'x',projectId:'x',appId:'x'}),auth=getAuth(app),fdb=getFirestore(app);
 const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"']/g,c=>'&#'+c.charCodeAt(0)+';');
 const IT=[['🎃','Bầu'],['🦀','Cua'],['🐟','Cá'],['🐓','Gà'],['🦌','Nai'],['🦐','Tôm']];
-const DAILY=[5,10,25,50,75,100,100].map(x=>x*1000),CHIPS=[1000,5000,10000,50000,500000],R=30000,BET=20000,VER='2.3';
-const NEWS=['🎧 Mới: nghe nhạc chill từ YouTube (nút 🎵 → Nhạc chill từ YouTube)','🎡 Vòng quay may mắn, mỗi ngày quay miễn phí 1 lần','🎵 Nhạc nền và hiệu ứng âm thanh','💰 Cược xong là trừ tiền ngay, có ô nhập tiền cược nhanh và mức 500.000','👤 Bấm vào tên để xem thông tin và kết bạn'];
+const DAILY=[5,10,25,50,75,100,100].map(x=>x*1000),CHIPS=[1000,5000,10000,50000,500000],R=30000,BET=20000,VER='2.5';
+const NEWS=['🎴 UNO chơi với người thật (2-4 người, chủ bàn có thể thêm bot)','♠️ Mới: Tiến lên đấu với 3 bot','♦️ Mới: Xì dách đấu với nhà cái','🏆 Mỗi tuần người đứng top 1 bảng Tổng tiền bị giảm còn 15.000','🎁 Nhập code, 🀄 Mạt chược xếp cặp, 🎡 vòng quay may mắn'];
 const mult=()=>[0,6].includes(new Date().getDay())?5:2,AVS=['🎃','🦀','🐟','🐓','🦌','🦐','🐯','🐲'];
 const fmt=n=>(+n||0).toLocaleString('vi-VN'),day=d=>new Date(d).toLocaleDateString('sv');
 const ls=(k,v)=>{try{return v===undefined?localStorage.getItem(k):localStorage.setItem(k,v)}catch(e){return null}};
 let uid,unM,unC,hb,mref,raw=[],game='bc',rid='',off=0,unMe,ft,hbP,beatN=0,lastAdj=0,busy=false,pendE=0,unK;
 let db,ref,me,code,nr,lbu,joinT=0,lastC=0,loT=0,peers=[],lb=[],bets={},chip=1000,cur=-1,dice=null,tm;
-const show=id=>{for(const s of['login','prof','hub','poker','lobby','game','fish'])$('#'+s).hidden=s!==id;if(id==='hub')hubOn();else hubOff()};
+const show=id=>{for(const s of['login','prof','hub','poker','lobby','game','fish','uno','mj','tl','xd'])$('#'+s).hidden=s!==id;if(id==='hub')hubOn();else hubOff()};
 function toast(t){const e=$('#toast');e.textContent=t;e.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>e.hidden=true,2600)}
 function modal(h,l='Đóng'){return new Promise(r=>{$('#ov').innerHTML='<div class="m">'+h+'<button class="btn" style="width:100%;margin-top:12px" id="ok">'+l+'</button></div>';$('#ov').hidden=false;$('#ok').onclick=()=>{$('#ov').hidden=true;r()}})}
-const cap=c=>{if(game==='fish')return 4;const m=/-(\d{1,2})$/.exec(c||'');const n=m?+m[1]:10;return n>=2&&n<=10?n:10};
+const cap=c=>{if(game==='fish')return 4;const m=/-(\d{1,2})$/.exec(c||'');const n=m?+m[1]:10,v=n>=2&&n<=10?n:10;return game==='uno'?Math.min(4,v):v};
 function head(){$('#who').textContent=me.name+' · '+me.cls;$('#av').textContent=me.av||(me.name.trim().split(/\s+/).pop()[0]||'?').toUpperCase();$('#wk').hidden=false;$('#wk').textContent=mult()===5?'🔥 Cuối tuần: đoán trúng nhận x5 tiền cược!':'Đoán trúng nhận x2 tiền cược (thứ 7, chủ nhật x5)';$('#mny').textContent=fmt(me.money);$('#rs').hidden=!(me.money<1000&&me.lastRescue!==day(Date.now()))}
 function fail(e,pre=''){
   const c=(e&&e.code)||String(e);
@@ -232,7 +273,7 @@ function fail(e,pre=''){
   const el=$('#err');el.hidden=false;el.textContent=pre+'Lỗi '+c+'. '+h;
 }
 function save(){
-  const u={money:me.money,streak:me.streak,lastDay:me.lastDay,lastRescue:me.lastRescue||'',av:me.av||'',createdAt:me.createdAt||Date.now(),spinDay:me.spinDay||''};
+  const u={money:me.money,streak:me.streak,lastDay:me.lastDay,lastRescue:me.lastRescue||'',av:me.av||'',createdAt:me.createdAt||Date.now(),spinDay:me.spinDay||'',codes:me.codes||[],wclaim:me.wclaim||''};
   if(pendE){const k=pkeys();u['e.'+k.d]=increment(pendE);u['e.'+k.w]=increment(pendE);u['e.'+k.m]=increment(pendE);pendE=0}
   updateDoc(ref,u).catch(()=>toast('Chưa lưu được, kiểm tra mạng hoặc Firestore rules.'));
   head();
@@ -251,6 +292,7 @@ async function start(){
   clearInterval(hbP);beat();hbP=setInterval(beat,90000);
   if(ls('bc_ver')!==VER){await news();ls('bc_ver',VER)}
   await daily();
+  if(isAdm())weeklyReset(false);
 }
 const news=()=>modal('<h3>📢 Cập nhật v'+VER+'</h3><ul>'+NEWS.map(n=>'<li>'+n+'</li>').join('')+'</ul>');
 function nextDay(){const t=day(Date.now());if(me.lastDay===t)return 0;return me.lastDay===day(Date.now()-864e5)?me.streak%7+1:1}
@@ -261,8 +303,8 @@ async function daily(){
   if(n){me.streak=n;me.lastDay=day(Date.now());me.money+=DAILY[n-1];save();toast('Nhận +'+fmt(DAILY[n-1]))}
 }
 const pad=n=>String(n).padStart(2,'0'),earn=n=>{pendE+=n};
-function pkeys(){
-  const d=new Date(now()),Y=d.getFullYear(),M=pad(d.getMonth()+1),w=new Date(d);
+function pkeys(ms=now()){
+  const d=new Date(ms),Y=d.getFullYear(),M=pad(d.getMonth()+1),w=new Date(d);
   w.setDate(d.getDate()-((d.getDay()+6)%7));
   return{d:'d'+Y+M+pad(d.getDate()),w:'w'+w.getFullYear()+pad(w.getMonth()+1)+pad(w.getDate()),m:'m'+Y+M};
 }
@@ -291,7 +333,7 @@ async function join(c){
   hb=setInterval(()=>{updateDoc(mref,{s:Date.now(),m:me.money}).catch(()=>{});refresh()},60000);
 }
 function refresh(){const t=Date.now()-150000;peers=raw.filter(x=>x.presence.s>t);if(game==='fish')seatUp();plist();chk();voiceSync();if(game!=='fish'&&!$('#game').hidden)board()}
-function leaveRoom(){if(game==='bc'||game==='tx')dropBets();pubRoom(false);micOff(true);clearInterval(hb);if(unM)unM();if(unC)unC();unM=unC=null;if(unK)unK();unK=null;if(mref){deleteDoc(mref).catch(()=>{});mref=null}raw=[];peers=[]}
+function leaveRoom(){if(game==='uno')uExit();clearInterval(uTm);if(unU){unU();unU=null}if(game==='bc'||game==='tx')dropBets();pubRoom(false);micOff(true);clearInterval(hb);if(unM)unM();if(unC)unC();unM=unC=null;if(unK)unK();unK=null;if(mref){deleteDoc(mref).catch(()=>{});mref=null}raw=[];peers=[]}
 function chk(){
   const ps=peers.filter(x=>x.presence.t).sort((a,b)=>a.presence.t-b.presence.t||(a.peer<b.peer?-1:1));
   if(ps.findIndex(x=>x.isMe)>=cap(code)){toast('Phòng đã đủ '+cap(code)+' người, hãy chọn phòng khác.');leave()}
@@ -458,7 +500,7 @@ async function adminM(){
     admG=s.docs.filter(d=>d.data().guest&&d.id!==uid).map(d=>d.id);
     rows=s.docs.map(d=>{const p=d.data();return '<div class="r" style="flex-wrap:wrap"><span>'+esc(p.name)+' <small class="mut">('+esc(p.cls)+')'+(p.banned?' 🚫':'')+(d.id===uid?' (tôi)':'')+(p.guest?' · khách':'')+'</small></span><span><input data-u="'+d.id+'" type="number" min="0" value="'+(+p.money||0)+'" style="width:110px;padding:6px"> <button class="btn sm" data-sv="'+d.id+'">Lưu</button> <button class="btn alt sm" data-bn="'+d.id+'" data-b="'+(p.banned?1:0)+'">'+(p.banned?'Mở khóa':'Cấm')+'</button>'+(d.id===uid?'':' <button class="btn alt sm" data-dl="'+d.id+'">Xóa</button>')+'</span></div>'}).join('');
   }catch(e){rows='<p class="mut">Không tải được: '+esc(e.code||'')+'</p>'}
-  modal('<h3>🛠️ Admin</h3><div class="card" style="margin:8px 0"><b>📢 Thông báo cho tất cả</b><textarea id="annt" maxlength="300" rows="2" placeholder="Nội dung thông báo..." style="width:100%;background:#1a0a0e;color:var(--tx);border:1px solid var(--line);border-radius:10px;padding:8px;font:inherit;margin:6px 0"></textarea><button class="btn sm" data-an="1">Gửi</button></div><p class="mut" style="margin:0">Sửa tiền rồi bấm Lưu. Cấm = đăng xuất ngay. Xóa = xóa hồ sơ và chặn không cho đăng ký lại.</p>'+(admG.length?'<button class="btn alt sm" data-dg="1" style="margin:8px 0">🧹 Xóa '+admG.length+' tài khoản khách</button>':'')+rows);
+  modal('<h3>🛠️ Admin</h3><div class="card" style="margin:8px 0"><b>🏆 Reset top 1 tuần</b><p class="mut" style="margin:4px 0">Tự chạy một lần mỗi tuần khi bạn đăng nhập. Người đứng đầu bảng Tổng tiền bị giảm còn 15.000.</p><button class="btn alt sm" data-wr="1">Chạy ngay (bấm 2 lần)</button></div><div class="card" style="margin:8px 0"><b>📢 Thông báo cho tất cả</b><textarea id="annt" maxlength="300" rows="2" placeholder="Nội dung thông báo..." style="width:100%;background:#1a0a0e;color:var(--tx);border:1px solid var(--line);border-radius:10px;padding:8px;font:inherit;margin:6px 0"></textarea><button class="btn sm" data-an="1">Gửi</button></div><p class="mut" style="margin:0">Sửa tiền rồi bấm Lưu. Cấm = đăng xuất ngay. Xóa = xóa hồ sơ và chặn không cho đăng ký lại.</p>'+(admG.length?'<button class="btn alt sm" data-dg="1" style="margin:8px 0">🧹 Xóa '+admG.length+' tài khoản khách</button>':'')+rows);
 }
 const fmtT=ms=>{const d=new Date(ms),n=new Date(),h=d.toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'});return d.toDateString()===n.toDateString()?h:d.toLocaleDateString('vi-VN',{day:'2-digit',month:'2-digit'})+' '+h};
 const ago=ms=>{const s=Math.max(0,(Date.now()-ms)/1000);if(s<90)return 'vừa xong';if(s<3600)return Math.round(s/60)+' phút trước';if(s<86400)return Math.round(s/3600)+' giờ trước';return new Date(ms).toLocaleDateString('vi-VN')+' ('+Math.round(s/86400)+' ngày trước)'};
@@ -519,6 +561,7 @@ $('#ov').addEventListener('click',async e=>{
   const g=k=>e.target.closest('['+k+']');let b;
   if(e.target.id==='fadd')return addF();
   if(e.target.id==='spin')return doSpin();
+  if(e.target.id==='cgo')return redeem();
   if(g('data-mm')){mOn=!mOn;ls('bc_mus',mOn?'1':'0');if(mOn){aInit();mStart()}else mStop();return audM()}
   if(g('data-ms')){sOn=!sOn;ls('bc_sfx',sOn?'1':'0');return audM()}
   if(b=g('data-mt')){tk=+b.dataset.mt;ls('bc_trk',String(tk));mStep=0;mNext=0;if(mOn){aInit();mStart()}return audM()}
@@ -543,6 +586,7 @@ $('#ov').addEventListener('click',async e=>{
     return;
   }
   if(g('data-ac')){try{await deleteDoc(doc(fdb,'config','announce'));toast('Đã xóa thông báo hiện tại.')}catch(err){toast('Lỗi: '+(err.code||''))}return}
+  if(g('data-wr')){if(!b2dbl(e.target))return;await weeklyReset(true);return}
   if(g('data-an')){const v=$('#annt').value.trim().slice(0,300);if(!v)return toast('Nhập nội dung thông báo.');try{await setDoc(doc(fdb,'config','announce'),{text:v,t:Date.now()});toast('Đã gửi thông báo cho tất cả.')}catch(err){toast('Lỗi: '+(err.code||''))}return}
   if(b=g('data-dl')){
     const id=b.dataset.dl;if(id===uid)return toast('Không thể tự xóa chính mình.');
@@ -565,7 +609,7 @@ const FISH=[['🐟',2,46],['🐠',3,50],['🐡',5,44],['🦑',8,56],['🐙',12,6
 const FW=900,FH=560,SLOT=1500,GP=[[70,FH-40],[FW-70,FH-40],[70,40],[FW-70,40]],GC=['#f6c744','#38d98a','#5aa9ff','#ff7ab6'];
 const fs={b:[],f:[],k:[],raf:0,cd:0,tx:FW/2,ty:FH/2,bet:100,last:0,dirty:false,dead:new Set(),pend:new Set(),aims:{},init:true};
 const dsave=()=>{clearTimeout(ft);ft=setTimeout(save,4000)};
-const enter=c=>game==='fish'?joinFish(c):join(c);
+const enter=c=>game==='fish'?joinFish(c):game==='uno'?joinUno(c):join(c);
 function rngS(s){let h=2166136261;for(const ch of s)h=Math.imul(h^ch.charCodeAt(0),16777619);let a=h>>>0;return()=>{a=a+1831565813|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
 function fishList(T){
   const out=[],km=Math.floor(T/SLOT);
@@ -677,12 +721,12 @@ $('#fbs').onclick=e=>{const b=e.target.closest('[data-fb]');if(b){fs.bet=+b.data
 $('#fBack').onclick=()=>exitFish('hub');
 $('#fset').onclick=rsM;
 /* ---- Sảnh ---- */
-$('#gBc').onclick=()=>{game='bc';$('#gname').textContent='🎃 Bầu Cua';$('#mxr').disabled=false;$('#mxr').value=6;$('#mxv').textContent=6;show('lobby')};
-$('#gTx').onclick=()=>{game='tx';$('#gname').textContent='🎲 Tài Xỉu giải trí';$('#mxr').disabled=false;$('#mxr').value=6;$('#mxv').textContent=6;show('lobby')};
-$('#gFish').onclick=()=>{game='fish';$('#gname').textContent='🐟 Bắn Cá (tối đa 4 người)';$('#mxr').value=4;$('#mxv').textContent=4;$('#mxr').disabled=true;show('lobby')};
+$('#gBc').onclick=()=>{game='bc';$('#gname').textContent='🎃 Bầu Cua';$('#mxr').max=10;$('#mxr').disabled=false;$('#mxr').value=6;$('#mxv').textContent=6;show('lobby')};
+$('#gTx').onclick=()=>{game='tx';$('#gname').textContent='🎲 Tài Xỉu giải trí';$('#mxr').max=10;$('#mxr').disabled=false;$('#mxr').value=6;$('#mxv').textContent=6;show('lobby')};
+$('#gFish').onclick=()=>{game='fish';$('#gname').textContent='🐟 Bắn Cá (tối đa 4 người)';$('#mxr').max=10;$('#mxr').value=4;$('#mxv').textContent=4;$('#mxr').disabled=true;show('lobby')};
 $('#toHub').onclick=()=>show('hub');
 $('#fr').onclick=friendsM;$('#lbb').onclick=()=>lbm();$('#adm').onclick=adminM;
-$('#bHome').onclick=()=>{if(!$('#fish').hidden)return exitFish('hub');if(!$('#game').hidden)leave();show('hub')};
+$('#bHome').onclick=()=>{if(!$('#fish').hidden)return exitFish('hub');if(!$('#game').hidden)leave();if(!$('#uno').hidden){leaveRoom();code=''}show('hub')};
 let admG=[];
 const touch=matchMedia('(pointer:coarse)').matches;
 function chkRot(){$('#rot').hidden=!(touch&&innerHeight>innerWidth)}
@@ -927,6 +971,347 @@ function ytPlay(url){
 }
 function ytStop(){$('#ytb').innerHTML='';$('#ytp').hidden=true;ytOn=false;if(mOn&&ac)mStart()}
 $('#ytx').onclick=ytStop;
+/* ---- Nhập code nhận quà ---- */
+const CODES={'336dfbf6dc05556b07225c89accb25aa213e4f4dab8a987851e2f5804aebc2fe':5000000};
+async function sha(s){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}
+function codeM(){modal('<h3>🎁 Nhập code</h3><p class="mut" style="margin:0 0 6px">Nhập code để nhận quà tiền ảo. Mỗi code chỉ dùng được một lần cho mỗi tài khoản.</p><div class="cin"><input id="cin2" placeholder="Nhập code" maxlength="40" autocomplete="off"><button class="btn sm" id="cgo">Nhận</button></div>')}
+async function redeem(){
+  const v=$('#cin2').value.trim().toLowerCase();if(!v)return toast('Nhập code nhé.');
+  let h;try{h=await sha(v)}catch(e){return toast('Trình duyệt không hỗ trợ, hãy mở bằng link https.')}
+  const amt=CODES[h];if(!amt)return toast('Code không đúng.');
+  me.codes=me.codes||[];if(me.codes.includes(h.slice(0,12)))return toast('Bạn đã dùng code này rồi.');
+  me.codes.push(h.slice(0,12));me.money+=amt;save();sfx('win');$('#ov').hidden=true;toast('🎉 Nhận '+fmt(amt)+' tiền ảo!');
+}
+$('#codeb').onclick=codeM;
+
+/* ---- Mỗi tuần: người đứng top 1 (tổng tiền) bị giảm còn 15.000 tiền ảo — admin đăng nhập sẽ tự chạy ---- */
+const RESET_TO=15000;
+async function weeklyReset(force){
+  if(!isAdm())return;
+  const k=pkeys().w,wr=doc(fdb,'weekly',k);
+  try{
+    if(!force&&(await getDoc(wr)).exists())return;
+    const top=(await getDocs(query(collection(fdb,'players'),orderBy('money','desc'),limit(1)))).docs[0];
+    if(!top)return;const d=top.data();
+    if((+d.money||0)>RESET_TO){
+      await updateDoc(doc(fdb,'players',top.id),{money:RESET_TO,adj:Date.now()});
+      if(top.id===uid){me.money=RESET_TO;lastAdj=Date.now()+5000;head()}
+      await setDoc(doc(fdb,'config','announce'),{text:'🏆 '+d.name+' ('+d.cls+') đứng top 1 bảng xếp hạng tuần qua với '+fmt(d.money)+' và bị giảm còn '+fmt(RESET_TO)+' tiền ảo. Tuần mới chúc mọi người may mắn!',t:Date.now()});
+      toast('Đã reset top 1: '+d.name+' còn '+fmt(RESET_TO));
+    }else toast('Top 1 hiện chỉ có '+fmt(d.money)+', không cần giảm.');
+    await setDoc(wr,{u:top.id,n:d.name,before:+d.money||0,t:Date.now()});
+  }catch(e){toast('Lỗi reset tuần: '+(e.code||''))}
+}
+
+/* ---- UNO nhiều người (2-4 người thật, chủ bàn có thể thêm bot) ---- */
+const UCOL={R:'#d62839',Y:'#f6c744',G:'#23935a',B:'#1d6fd1'};
+let UG=null,unU=null,rewT=0,botTok=0,uPick='',uTm=0;
+function shuf(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(rnd()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+const uP=s=>({c:s[0],v:s.slice(1)});
+function uDeck(){const d=[];for(const c of 'RYGB'){d.push(c+'0');for(let n=1;n<=9;n++)d.push(c+n,c+n);for(const v of['S','R','+2'])d.push(c+v,c+v)}for(let i=0;i<4;i++)d.push('WW','W+4');return shuf(d)}
+const uLab=c=>({S:'⛔',R:'⇄','+2':'+2',W:'★','+4':'+4'}[c.v]||c.v);
+const uTopS=s=>uP(s.disc[s.disc.length-1]);
+const uOkS=(s,card)=>{const c=uP(card);return c.c==='W'||c.c===s.col||c.v===uTopS(s).v};
+const uNxt=(s,i,k)=>(((i+s.dir*k)%s.pl.length)+s.pl.length)%s.pl.length;
+function uDrawS(s,u,n){for(let i=0;i<n;i++){if(!s.deck.length){const t0=s.disc.pop();s.deck=shuf(s.disc);s.disc=[t0]}if(s.deck.length)s.h[u].push(s.deck.pop())}}
+function uStart(s){
+  s.deck=uDeck();s.disc=[];s.h={};s.pl.forEach(p=>{s.h[p.u]=[]});s.pl.forEach(p=>uDrawS(s,p.u,7));
+  let c0;do{c0=s.deck.pop();const q=uP(c0);if(q.c==='W'||!/^\d$/.test(q.v)){s.deck.unshift(c0);c0=null}}while(!c0);
+  s.disc.push(c0);s.col=uP(c0).c;s.cur=0;s.dir=1;s.st='play';s.win=null;s.t=Date.now();
+}
+function uMove(s,u,a){      // trả về chuỗi lỗi hoặc null nếu hợp lệ; sửa trực tiếp state s
+  if(s.st!=='play')return 'Ván chưa bắt đầu.';
+  const p=s.pl[s.cur];
+  if(a.k==='skip'){uDrawS(s,p.u,1);s.cur=uNxt(s,s.cur,1);s.t=Date.now();return null}
+  if(p.u!==u)return 'Chưa tới lượt bạn.';
+  if(a.k==='draw'){uDrawS(s,u,1);s.cur=uNxt(s,s.cur,1);s.t=Date.now();return null}
+  const hand=s.h[u],i=hand.indexOf(a.card);
+  if(i<0)return 'Lá bài không hợp lệ.';
+  if(!uOkS(s,a.card))return 'Lá này chưa đánh được.';
+  const q=uP(a.card);hand.splice(i,1);s.disc.push(a.card);
+  s.col=q.c==='W'?('RYGB'.includes(a.col)&&a.col?a.col:'R'):q.c;
+  if(!hand.length){s.st='over';s.win=u;s.t=Date.now();return null}
+  let step=1;
+  if(q.v==='R'){s.dir*=-1;if(s.pl.length===2)step=2}
+  else if(q.v==='S')step=2;
+  else if(q.v==='+2'||q.v==='+4'){uDrawS(s,s.pl[uNxt(s,s.cur,1)].u,q.v==='+2'?2:4);step=2}
+  s.cur=uNxt(s,s.cur,step);s.t=Date.now();return null;
+}
+function uBotAct(s,u){
+  const h=s.h[u],ok=h.filter(c=>uOkS(s,c));
+  if(!ok.length)return{k:'draw'};
+  const non=ok.filter(c=>c[0]!=='W'),card=non.length?non[Math.floor(rnd()*non.length)]:ok[0];
+  let col;if(card[0]==='W'){const n={R:0,Y:0,G:0,B:0};h.forEach(c=>{if(n[c[0]]!==undefined)n[c[0]]++});col=Object.keys(n).sort((a,b)=>n[b]-n[a])[0]}
+  return{k:'play',card,col};
+}
+async function uRun(fn){
+  const r=doc(fdb,'rooms',rid,'state','uno');
+  try{await runTransaction(fdb,async tx=>{const sn=await tx.get(r),out=fn(sn.exists()?sn.data():null);if(out&&out.err)throw new Error(out.err);if(out&&out.s)tx.set(r,out.s)})}
+  catch(e){toast(String(e.message||e.code||'Lỗi').replace(/^Error: /,'').slice(0,70))}
+}
+const uAct=a=>uRun(s=>{if(!s)return{err:'Chưa có ván.'};if(a.k==='skip'&&now()-s.t<=40000)return{err:'Chưa hết 40 giây.'};const e=uMove(s,uid,a);return e?{err:e}:{s}});
+function uExit(){
+  if(!rid||!uid||!rid.startsWith('uno_'))return;const r=doc(fdb,'rooms',rid,'state','uno');
+  runTransaction(fdb,async tx=>{
+    const sn=await tx.get(r);if(!sn.exists())return;const s=sn.data();if(s.st==='play')return;
+    s.pl=s.pl.filter(p=>p.u!==uid);
+    if(!s.pl.some(p=>!p.b)){tx.delete(r);return}
+    if(s.host===uid)s.host=s.pl.find(p=>!p.b).u;
+    s.t=Date.now();tx.set(r,s);
+  }).catch(()=>{});
+}
+async function joinUno(c){
+  c=(c||'').toLowerCase().replace(/[^a-z0-9_.-]/g,'').replace(/^[^a-z0-9]+/,'').slice(0,20);
+  if(!c)return toast('Nhập mã phòng gồm chữ hoặc số nhé.');
+  leaveRoom();game='uno';code=c;rid='uno_'+c;joinT=Date.now();UG=null;rewT=0;botTok=0;uPick='';
+  show('uno');uRender();
+  mref=doc(fdb,'rooms',rid,'members',uid);
+  try{await setDoc(mref,{n:me.name,c:me.cls,m:me.money,t:joinT,s:Date.now()})}
+  catch(e){toast('Không vào được phòng: '+(e.code||''));mref=null;show('lobby');return}
+  pubRoom(true);
+  unM=onSnapshot(collection(fdb,'rooms',rid,'members'),s=>{raw=s.docs.map(d=>({isMe:d.id===uid,peer:d.id,presence:d.data()}));refresh()});
+  unU=onSnapshot(doc(fdb,'rooms',rid,'state','uno'),sn=>{
+    UG=sn.exists()?sn.data():null;uRender();uBotTick();
+    if(UG&&UG.st==='over'&&UG.win===uid&&rewT!==UG.t){rewT=UG.t;me.money+=3000;earn(3000);save();sfx('win')}
+  },e=>toast('Lỗi bàn UNO: '+(e.code||'')));
+  clearInterval(hb);hb=setInterval(()=>{updateDoc(mref,{s:Date.now()}).catch(()=>{});refresh()},60000);
+  clearInterval(uTm);uTm=setInterval(uRender,4000);
+  await uRun(s=>{
+    if(!s||now()-s.t>180000)return{s:{st:'wait',host:uid,pl:[{u:uid,n:me.name}],cap:cap(code),t:Date.now()}};
+    const m=s.pl.find(p=>p.u===uid);
+    if(m){m.n=me.name;return{s}}
+    if(s.st!=='wait')return{err:'Ván đang chơi, hãy chờ ván sau.'};
+    if(s.pl.length>=cap(code))return{err:'Bàn đã đủ người.'};
+    s.pl.push({u:uid,n:me.name});s.t=Date.now();return{s};
+  });
+}
+function uBotTick(){
+  const s=UG;if(!s||s.st!=='play'||s.host!==uid)return;
+  const p=s.pl[s.cur];if(!p||!p.b)return;
+  const tok=s.t;if(botTok===tok)return;botTok=tok;
+  setTimeout(()=>uRun(x=>{
+    if(!x||x.st!=='play'||x.t!==tok||!x.pl[x.cur].b)return null;
+    const u=x.pl[x.cur].u,e=uMove(x,u,uBotAct(x,u));return e?{err:e}:{s:x};
+  }),1100);
+}
+const uCard=(c,ok,raw)=>'<div class="uc'+(ok?' ok':'')+'"'+(raw?' data-ui="'+raw+'"':'')+' style="background:'+(c.c==='W'?'conic-gradient(#d62839 0 25%,#f6c744 0 50%,#23935a 0 75%,#1d6fd1 0)':UCOL[c.c])+';color:'+(c.c==='Y'?'#222':'#fff')+'">'+uLab(c)+'</div>';
+function uRender(){
+  const s=UG,st=$('#unoSt');
+  $('#unoGo').hidden=true;$('#unoBot').hidden=true;$('#unoSkip').hidden=true;
+  if(!s){st.textContent='Đang vào bàn...';['unoBots','unoTop','unoDeck','unoCol','unoHand'].forEach(i=>$('#'+i).innerHTML='');return}
+  const host=s.host===uid,cp=s.pl[s.cur];
+  $('#unoBots').innerHTML=s.pl.filter(p=>p.u!==uid).map(p=>{const n=(s.h&&s.h[p.u])?s.h[p.u].length:0;return '<div class="card" style="text-align:center;min-width:92px'+(s.st==='play'&&cp&&cp.u===p.u?';border-color:var(--gold)':'')+'"><b>'+esc(p.n)+(p.b?' 🤖':'')+(s.host===p.u?' 👑':'')+'</b><br>'+(s.st==='wait'?'đang chờ':'🎴 '+n+(n===1?' · UNO!':''))+'</div>'}).join('');
+  if(s.st==='wait'){
+    st.textContent='Chờ người chơi ('+s.pl.length+'/'+s.cap+')';
+    $('#unoGo').hidden=!(host&&s.pl.length>=2);$('#unoGo').textContent='▶ Bắt đầu';$('#unoBot').hidden=!(host&&s.pl.length<s.cap);
+    $('#unoTop').innerHTML='';$('#unoDeck').innerHTML='';$('#unoHand').innerHTML='';
+    $('#unoCol').innerHTML='<div class="mut" style="max-width:220px">Bấm ⚙️ Phòng để lấy mã gửi bạn bè, hoặc thêm bot rồi bắt đầu.</div>';return;
+  }
+  const tp=uTopS(s),mine=(s.h&&s.h[uid])||[],myTurn=s.st==='play'&&cp&&cp.u===uid;
+  $('#unoTop').innerHTML=uCard({c:tp.c==='W'?s.col:tp.c,v:tp.v},false,'');
+  $('#unoDeck').innerHTML='<div class="uc" style="background:#222;color:#fff;border-color:#f6c744;font-size:14px">🎴<br>Bốc</div>';
+  if(!uPick)$('#unoCol').innerHTML='<div class="mut">Màu: <b style="color:'+UCOL[s.col]+'">⬤</b></div>';
+  $('#unoHand').innerHTML=mine.map(c=>uCard(uP(c),myTurn&&uOkS(s,c),c)).join('');
+  if(s.st==='over'){const w=s.pl.find(p=>p.u===s.win);st.textContent=s.win===uid?'🎉 Bạn thắng! +3.000':'🏁 '+(w?w.n:'?')+' thắng';$('#unoGo').hidden=!host;$('#unoGo').textContent='🔁 Chơi lại'}
+  else{st.textContent=myTurn?'Lượt của bạn':'Lượt '+(cp?cp.n:'')+'...';$('#unoSkip').hidden=!(cp&&cp.u!==uid&&now()-s.t>40000)}
+}
+$('#unoHand').onclick=e=>{
+  const el=e.target.closest('[data-ui]');if(!el||!UG||UG.st!=='play'||UG.pl[UG.cur].u!==uid)return;
+  const card=el.dataset.ui;
+  if(!uOkS(UG,card))return toast('Lá này chưa đánh được.');
+  if(card[0]==='W'){uPick=card;$('#unoCol').innerHTML='<div class="mut">Chọn màu: '+['R','Y','G','B'].map(k=>'<button class="btn sm" data-uc="'+k+'" style="background:'+UCOL[k]+';color:'+(k==='Y'?'#222':'#fff')+';margin:2px">⬤</button>').join('')+'</div>';return}
+  uAct({k:'play',card});
+};
+$('#unoCol').onclick=e=>{const b=e.target.closest('[data-uc]');if(b&&uPick){const c=uPick;uPick='';uAct({k:'play',card:c,col:b.dataset.uc})}};
+$('#unoDeck').onclick=()=>{if(UG&&UG.st==='play'&&UG.pl[UG.cur].u===uid&&!uPick)uAct({k:'draw'})};
+$('#unoSkip').onclick=()=>uAct({k:'skip'});
+$('#unoGo').onclick=()=>uRun(s=>{if(!s||s.host!==uid)return{err:'Chỉ chủ bàn mới bắt đầu.'};if(s.pl.length<2)return{err:'Cần ít nhất 2 người.'};uStart(s);return{s}});
+$('#unoBot').onclick=()=>uRun(s=>{if(!s||s.host!==uid||s.st==='play')return null;if(s.pl.length>=s.cap)return{err:'Bàn đã đủ.'};const n=s.pl.filter(p=>p.b).length+1;s.pl.push({u:'bot'+n,n:'Bot '+n,b:true});s.t=Date.now();return{s}});
+$('#unoRs').onclick=rsM;
+$('#unoBack').onclick=()=>{leaveRoom();code='';show('hub')};
+$('#gUno').onclick=()=>{game='uno';$('#gname').textContent='🎴 UNO (2-4 người)';$('#mxr').max=4;$('#mxr').disabled=false;$('#mxr').value=4;$('#mxv').textContent=4;show('lobby')};
+
+/* ---- Tiến lên (đánh bài, đấu với 3 bot) ---- */
+const TLR=['3','4','5','6','7','8','9','10','J','Q','K','A','2'],TLS=['♠','♣','♦','♥'],TLN=['Bạn','Bot An','Bot Bình','Bot Chi'];
+let TL=null;
+const tlStr=c=>c.v*4+c.s;
+function tlDeal(){const d=[];for(let v=0;v<13;v++)for(let s=0;s<4;s++)d.push({v,s});shuf(d);return[0,1,2,3].map(i=>d.slice(i*13,i*13+13).sort((a,b)=>tlStr(a)-tlStr(b)))}
+function tlKind(cs){
+  const n=cs.length;if(!n)return null;
+  const s=[...cs].sort((a,b)=>tlStr(a)-tlStr(b)),top=tlStr(s[n-1]);
+  if(n===1)return{t:'single',n,top};
+  const same=s.every(c=>c.v===s[0].v);
+  if(same&&n===2)return{t:'pair',n,top};if(same&&n===3)return{t:'triple',n,top};if(same&&n===4)return{t:'quad',n,top};
+  if(n>=3&&s.every((c,i)=>i===0||c.v===s[i-1].v+1)&&s[n-1].v<=11)return{t:'straight',n,top};
+  return null;
+}
+const tlBeats=(k,T)=>!T||(k.t===T.t&&k.n===T.n&&k.top>T.top);
+function tlOptions(h){
+  const out=[],by={};h.forEach(c=>(by[c.v]=by[c.v]||[]).push(c));
+  h.forEach(c=>out.push([c]));
+  for(const v in by){const g=by[v];
+    for(let i=0;i<g.length;i++)for(let j=i+1;j<g.length;j++){out.push([g[i],g[j]]);for(let k=j+1;k<g.length;k++)out.push([g[i],g[j],g[k]])}
+    if(g.length===4)out.push([...g]);
+  }
+  for(let v=0;v<=9;v++)for(let L=3;v+L-1<=11;L++){const seq=[];for(let x=v;x<v+L;x++){if(by[x])seq.push(by[x][0]);else break}if(seq.length===L)out.push(seq)}
+  return out;
+}
+const tl3=cs=>cs.some(c=>c.v===0&&c.s===0);
+function tlBot(p){
+  let opts=tlOptions(TL.h[p]).map(cs=>({cs,k:tlKind(cs)})).filter(o=>o.k&&tlBeats(o.k,TL.T));
+  if(TL.first)opts=opts.filter(o=>tl3(o.cs));
+  if(!opts.length)return null;
+  if(TL.T){opts.sort((a,b)=>a.k.top-b.k.top);return opts[0].cs}
+  opts.sort((a,b)=>(b.k.n-a.k.n)||(a.k.top-b.k.top));
+  const nz=opts.filter(o=>!o.cs.some(c=>c.v===12));return(nz[0]||opts[0]).cs;
+}
+function tlNew(){
+  const hs=tlDeal();
+  TL={h:hs,T:null,cur:hs.findIndex(h=>h.some(c=>c.v===0&&c.s===0)),pass:[false,false,false,false],over:false,sel:[],first:true};
+  tlRender();tlTurn();
+}
+function tlPlay(p,cs){
+  const k=tlKind(cs);TL.h[p]=TL.h[p].filter(c=>!cs.includes(c));TL.T={...k,by:p,cards:cs};TL.first=false;TL.sel=[];sfx('chip');tlAdv(p);
+}
+function tlPass(p){if(!TL.T)return;TL.pass[p]=true;tlAdv(p)}
+function tlAdv(p){
+  if(!TL.h[p].length)return tlEnd(p);
+  let q=p;for(let i=0;i<4;i++){q=(q+1)%4;if(!TL.pass[q])break}
+  if(TL.T&&q===TL.T.by){TL.T=null;TL.pass=[false,false,false,false]}
+  TL.cur=q;tlRender();tlTurn();
+}
+function tlTurn(){
+  if(TL.over||TL.cur===0)return;
+  const g=TL,p=TL.cur;
+  setTimeout(()=>{if(TL!==g||g.over||g.cur!==p)return;const cs=tlBot(p);if(cs)tlPlay(p,cs);else tlPass(p)},900);
+}
+function tlEnd(p){
+  TL.over=true;
+  if(p===0){me.money+=4000;earn(4000);head();dsave();sfx('win')}else sfx('lose');
+  tlRender();
+}
+const tlC=(c,sel,i)=>'<div class="tc'+(c.s>=2?' red':'')+(sel?' sel':'')+'"'+(i!==undefined?' data-ti="'+i+'"':'')+'><span>'+TLR[c.v]+'</span><span>'+TLS[c.s]+'</span></div>';
+function tlRender(){
+  const st=$('#tlSt');
+  $('#tlBots').innerHTML=[1,2,3].map(p=>'<div class="card" style="text-align:center;min-width:92px'+(TL.cur===p&&!TL.over?';border-color:var(--gold)':'')+'"><b>'+TLN[p]+'</b><br>🎴 '+TL.h[p].length+(TL.pass[p]?' · bỏ':'')+'</div>').join('');
+  $('#tlTable').innerHTML=TL.T?TL.T.cards.slice().sort((a,b)=>tlStr(a)-tlStr(b)).map(c=>tlC(c,false)).join(''):'';
+  $('#tlTxt').textContent=TL.T?'Bài của '+TLN[TL.T.by]:(TL.over?'':'Bàn trống: người có lượt được đánh bất kỳ bộ nào');
+  $('#tlHand').innerHTML=TL.h[0].map((c,i)=>tlC(c,TL.sel.includes(i),i)).join('');
+  st.textContent=TL.over?(TL.h[0].length?'🏁 '+TLN[TL.h.findIndex(h=>!h.length)]+' thắng':'🎉 Bạn thắng! +4.000'):(TL.cur===0?'Lượt của bạn':'Lượt '+TLN[TL.cur]+'...');
+  $('#tlPass').disabled=TL.over||TL.cur!==0||!TL.T;$('#tlPlay').disabled=TL.over||TL.cur!==0;
+}
+$('#tlHand').onclick=e=>{const el=e.target.closest('[data-ti]');if(!el||!TL||TL.over)return;const i=+el.dataset.ti,k=TL.sel.indexOf(i);if(k>=0)TL.sel.splice(k,1);else TL.sel.push(i);tlRender()};
+$('#tlPlay').onclick=()=>{
+  if(!TL||TL.over||TL.cur!==0)return;
+  const cs=TL.sel.map(i=>TL.h[0][i]),k=tlKind(cs);
+  if(!cs.length)return toast('Hãy chọn bài để đánh.');
+  if(!k)return toast('Bộ bài này không hợp lệ.');
+  if(TL.first&&!tl3(cs))return toast('Nước đầu phải có lá 3♠.');
+  if(!tlBeats(k,TL.T))return toast('Chưa chặn được bài trên bàn.');
+  tlPlay(0,cs);
+};
+$('#tlPass').onclick=()=>{if(TL&&!TL.over&&TL.cur===0&&TL.T){TL.sel=[];tlPass(0)}};
+$('#gTl').onclick=()=>{show('tl');tlNew()};
+$('#tlNew').onclick=tlNew;$('#tlBack').onclick=()=>{TL=null;show('hub')};
+
+/* ---- Xì dách (đấu với nhà cái) ---- */
+const xd={bet:1000,st:'bet',p:[],d:[],deck:[],stake:0,msg:''};
+const xdV=c=>c.r===14?1:c.r>=11?10:c.r;
+function xdPts(h){const base=h.reduce((a,c)=>a+xdV(c),0),a=h.filter(c=>c.r===14).length;let best=base;for(let k=0;k<=a;k++)for(let m=0;m<=a-k;m++){const t0=base+10*k+9*m;if(t0<=21&&t0>best)best=t0}return best}
+function xdRank(h){const p=xdPts(h);if(p>21)return[0,p];if(h.length===2&&h[0].r===14&&h[1].r===14)return[4,p];if(h.length===2&&p===21)return[3,p];if(h.length>=5)return[2,p];return[1,p]}
+function xdDeal(){
+  if(xd.st==='play')return;
+  if(me.money<xd.bet)return toast('Không đủ tiền ảo.');
+  me.money-=xd.bet;earn(-xd.bet);head();dsave();
+  const deck=[];for(let s=0;s<4;s++)for(let r=2;r<=14;r++)deck.push({r,s});shuf(deck);
+  xd.deck=deck;xd.p=[deck.pop(),deck.pop()];xd.d=[deck.pop(),deck.pop()];xd.st='play';xd.stake=xd.bet;xd.msg='';
+  if(xdRank(xd.p)[0]>=3||xdRank(xd.d)[0]>=3)return xdFinish();
+  xdRender();
+}
+function xdHit(){if(xd.st!=='play')return;xd.p.push(xd.deck.pop());sfx('chip');if(xdRank(xd.p)[0]===0||xd.p.length>=5)return xdFinish();xdRender()}
+function xdStand(){if(xd.st!=='play')return;if(xdPts(xd.p)<16)return toast('Chưa đủ 16 điểm, bạn phải rút thêm.');xdFinish()}
+function xdFinish(){
+  const pr=xdRank(xd.p);
+  if(pr[0]!==0&&pr[0]<3)while(xdPts(xd.d)<17&&xd.d.length<5&&xdRank(xd.d)[0]<3)xd.d.push(xd.deck.pop());
+  xd.st='over';const dr=xdRank(xd.d);let res='push';
+  if(pr[0]===0)res='lose';
+  else if(dr[0]===0)res='win';
+  else if(pr[0]!==dr[0])res=pr[0]>dr[0]?'win':'lose';
+  else if(pr[0]===1)res=pr[1]>dr[1]?'win':pr[1]<dr[1]?'lose':'push';
+  else if(pr[0]===2)res=pr[1]<dr[1]?'win':pr[1]>dr[1]?'lose':'push';
+  const mult=res==='win'?{1:2,2:3,3:2.5,4:3}[pr[0]]:res==='push'?1:0,ret=Math.round(xd.stake*mult);
+  me.money+=ret;earn(ret);head();dsave();
+  xd.msg=res==='win'?'🎉 Bạn thắng +'+fmt(ret-xd.stake):res==='lose'?'😢 Bạn thua -'+fmt(xd.stake):'Hòa, hoàn lại tiền cược';
+  sfx(res==='win'?'win':res==='lose'?'lose':'chip');xdRender();
+}
+const xdCard=(c,i,up)=>cardHtml(c,i).replace('class="pc"','class="pc'+(up?' up':'')+'"');
+function xdRender(){
+  const over=xd.st!=='play';
+  $('#xdP').innerHTML=xd.p.map((c,i)=>xdCard(c,20+i,true)).join('');
+  $('#xdD').innerHTML=xd.d.map((c,i)=>xdCard(c,30+i,over||i===0)).join('');
+  $('#xdPp').textContent=xd.p.length?'('+xdPts(xd.p)+' điểm'+(xdRank(xd.p)[0]===0?' · quắc':xdRank(xd.p)[0]===4?' · xì bàng':xdRank(xd.p)[0]===3?' · xì dách':xdRank(xd.p)[0]===2?' · ngũ linh':'')+')':'';
+  $('#xdDp').textContent=over&&xd.d.length?'('+xdPts(xd.d)+' điểm)':'';
+  $('#xdMsg').textContent=xd.msg;
+  $('#xdDeal').hidden=xd.st==='play';$('#xdHit').hidden=xd.st!=='play';$('#xdStand').hidden=xd.st!=='play';
+}
+$('#xdDeal').onclick=xdDeal;$('#xdHit').onclick=xdHit;$('#xdStand').onclick=xdStand;
+$('#xds').onclick=e=>{const b=e.target.closest('[data-xb]');if(b){xd.bet=+b.dataset.xb;toast('Cược: '+fmt(xd.bet))}};
+$('#gXd').onclick=()=>{show('xd');xd.st='bet';xd.p=[];xd.d=[];xd.msg='';xdRender()};
+$('#xdBack').onclick=()=>{if(xd.st==='play')return toast('Hãy kết thúc ván này trước.');clearTimeout(ft);save();show('hub')};
+
+const b2dbl=el=>{if(el.dataset.s)return true;el.dataset.s=1;el.textContent='Bấm lần nữa để xác nhận';return false};
+/* ---- Mạt chược xếp cặp ---- */
+const MJS=['一','二','三','四','五','六','七','八','九','東','南','西','北','中','發','白','①','②'];
+const MJC=['#c8202f','#c8202f','#c8202f','#c8202f','#c8202f','#c8202f','#c8202f','#c8202f','#c8202f','#1d6fd1','#1d6fd1','#1d6fd1','#1d6fd1','#c8202f','#23935a','#555','#0f7b8a','#0f7b8a'];
+let M=null;
+function mjNew(){
+  const pos=[];
+  for(let r=0;r<6;r++)for(let c=0;c<8;c++)pos.push({x:2*c,y:2*r,z:0});
+  for(let r=0;r<4;r++)for(let c=0;c<6;c++)pos.push({x:2*c+2,y:2*r+2,z:1});
+  const free=(i,live)=>{
+    const a=pos[i];
+    if(live.some(j=>pos[j].z>a.z&&pos[j].x===a.x&&pos[j].y===a.y))return false;
+    const L=live.some(j=>pos[j].z===a.z&&pos[j].y===a.y&&pos[j].x===a.x-2),R2=live.some(j=>pos[j].z===a.z&&pos[j].y===a.y&&pos[j].x===a.x+2);
+    return !L||!R2;
+  };
+  for(let tries=0;tries<30;tries++){   // xếp ngược để chắc chắn ván nào cũng giải được
+    const live=pos.map((_,i)=>i),ty=Array(pos.length).fill(-1),pairs=shuf([...Array(18).keys(),...Array(18).keys()]);let ok=true;
+    while(live.length){
+      const f=live.filter(i=>free(i,live));if(f.length<2){ok=false;break}
+      const a=f.splice(Math.floor(rnd()*f.length),1)[0],b=f[Math.floor(rnd()*f.length)],ty0=pairs.pop();
+      ty[a]=ty[b]=ty0;live.splice(live.indexOf(a),1);live.splice(live.indexOf(b),1);
+    }
+    if(ok){M={pos,ty,live:pos.map((_,i)=>i),sel:-1,hl:-1,t0:Date.now(),done:false,free};mjRender();return}
+  }
+  toast('Không tạo được ván, hãy thử lại.');
+}
+function mjMoves(){const f=M.live.filter(i=>M.free(i,M.live)),r=[];for(let a=0;a<f.length;a++)for(let b=a+1;b<f.length;b++)if(M.ty[f[a]]===M.ty[f[b]])r.push([f[a],f[b]]);return r}
+function mjRender(){
+  const tw=Math.max(24,Math.min(46,(innerWidth-30)/8.4,(innerHeight-150)/7.9)),th=tw*1.3,b=$('#mjBoard');
+  b.style.width=(tw*8+6)+'px';b.style.height=(th*6+6)+'px';
+  b.innerHTML=M.live.map(i=>{
+    const p=M.pos[i],f=M.free(i,M.live),ty=M.ty[i];
+    return '<div class="mj'+(f?'':' dim')+(M.sel===i||M.hl===i?' sel':'')+'" data-mi="'+i+'" style="left:'+(p.x*tw/2+p.z*3)+'px;top:'+(p.y*th/2-p.z*3)+'px;width:'+tw+'px;height:'+th+'px;font-size:'+Math.round(tw*0.6)+'px;color:'+MJC[ty]+';z-index:'+(p.z*100+p.y)+'">'+MJS[ty]+'</div>';
+  }).join('');
+  if(!M.done)$('#mjSt').textContent='Còn '+M.live.length+' quân';
+}
+function mjWin(){
+  M.done=true;const s=Math.round((Date.now()-M.t0)/1000);
+  me.money+=3000;earn(3000);head();dsave();sfx('win');$('#mjSt').textContent='🎉 Xong sau '+s+' giây! +3.000';
+}
+$('#mjBoard').onclick=e=>{
+  const el=e.target.closest('[data-mi]');if(!el||!M||M.done)return;const i=+el.dataset.mi;
+  M.hl=-1;
+  if(!M.free(i,M.live))return toast('Quân này đang bị chặn.');
+  if(M.sel===-1||M.sel===i){M.sel=M.sel===i?-1:i;return mjRender()}
+  if(M.ty[M.sel]===M.ty[i]){
+    M.live=M.live.filter(j=>j!==i&&j!==M.sel);M.sel=-1;sfx('chip');mjRender();
+    if(!M.live.length)mjWin();else if(!mjMoves().length)$('#mjSt').textContent='Hết nước đi, bấm Ván mới';
+  }else{M.sel=i;mjRender()}
+};
+$('#mjHint').onclick=()=>{if(!M||M.done)return;const mv=mjMoves();if(!mv.length)return toast('Không còn nước đi, hãy bấm Ván mới.');M.sel=mv[0][0];M.hl=mv[0][1];mjRender()};
+$('#gMj').onclick=()=>{show('mj');mjNew()};
+$('#mjNew').onclick=mjNew;$('#mjBack').onclick=()=>{M=null;show('hub')};
 window.__ok=1;
 $('#jn').onclick=()=>enter($('#rcode').value);
 $('#rnd').onclick=()=>enter('sanh'+(1+Math.floor(Math.random()*5)));
