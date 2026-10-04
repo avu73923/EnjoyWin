@@ -104,7 +104,7 @@ input[type=range]{padding:0;accent-color:var(--gold)}
 <div class="wrap">
   <div id="top" hidden>
     <div style="display:flex;align-items:center;gap:10px;min-width:0"><button id="av" title="Thông tin của tôi"></button><div style="min-width:0"><b id="who"></b><div class="mut">💰 <span id="mny"></span> <button id="rs" class="btn sm" hidden>🆘 Xin 5.000</button></div></div></div>
-    <div><button class="btn alt sm" id="bHome" title="Về sảnh">🏠</button> <button class="btn alt sm" id="bDaily" title="Điểm danh">🎁</button> <button class="btn alt sm" id="bLb" title="Bảng xếp hạng">🏆</button> <button class="btn alt sm" id="bNews" title="Cập nhật">📢</button> <button class="btn alt sm" id="bOut" title="Đăng xuất">🚪</button></div>
+    <div><button class="btn alt sm" id="bHome" title="Về sảnh">🏠</button> <button class="btn alt sm" id="bDaily" title="Điểm danh">🎁</button> <button class="btn alt sm" id="bLb" title="Bảng xếp hạng">🏆</button> <button class="btn alt sm" id="bNews" title="Cập nhật">📢</button> <button class="btn alt sm" id="bMus" title="Âm thanh">🎵</button> <button class="btn alt sm" id="bAnn" title="Gửi thông báo cho tất cả" hidden>📣</button> <button class="btn alt sm" id="bOut" title="Đăng xuất">🚪</button></div>
   </div>
 
   <div id="wk" class="wk" hidden></div>
@@ -133,7 +133,7 @@ input[type=range]{padding:0;accent-color:var(--gold)}
       <button class="gc" id="gPk"><b>🃏</b>Mini Poker<small>Chơi một mình</small></button>
     </div>
     <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:14px">
-      <button class="btn alt" id="fr">👥 Bạn bè</button><button class="btn alt" id="lbb">🏆 Xếp hạng</button><button class="btn" id="adm" hidden>🛠️ Admin</button>
+      <button class="btn alt" id="fr">👥 Bạn bè</button><button class="btn alt" id="lbb">🏆 Xếp hạng</button><button class="btn alt" id="fundb">💝 Quỹ lớp</button><button class="btn alt" id="wheelb">🎡 Vòng quay</button><button class="btn" id="adm" hidden>🛠️ Admin</button>
     </div>
     <div class="chat" style="margin-top:14px"><b>💬 Chat sảnh</b><div id="hl" style="height:150px;overflow-y:auto;font-size:14px;overflow-wrap:anywhere"></div>
       <div class="cin"><input id="hi" maxlength="120" placeholder="Nhắn cho cả sảnh..." enterkeyhint="send"><button class="btn sm" id="hs">Gửi</button></div></div>
@@ -205,8 +205,8 @@ const OK=!firebaseConfig.apiKey.startsWith('DIEN');
 const app=initializeApp(OK?firebaseConfig:{apiKey:'x',projectId:'x',appId:'x'}),auth=getAuth(app),fdb=getFirestore(app);
 const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"']/g,c=>'&#'+c.charCodeAt(0)+';');
 const IT=[['🎃','Bầu'],['🦀','Cua'],['🐟','Cá'],['🐓','Gà'],['🦌','Nai'],['🦐','Tôm']];
-const DAILY=[5,10,25,50,75,100,100].map(x=>x*1000),CHIPS=[1000,5000,10000,50000,500000],R=30000,BET=20000,VER='2.1';
-const NEWS=['👤 Bấm vào tên bất kỳ để xem thông tin và kết bạn; bạn bè bấm "Vào phòng" để vào cùng phòng','💰 Cược xong là trừ tiền ngay; có ô nhập tiền cược nhanh và mức 500.000','🕒 Chat hiện giờ gửi tin; thông tin người chơi có "Online lần cuối"','📊 Thống kê 30 vòng gần nhất','👀 Hiện tiền cược từng người ở mỗi cửa'];
+const DAILY=[5,10,25,50,75,100,100].map(x=>x*1000),CHIPS=[1000,5000,10000,50000,500000],R=30000,BET=20000,VER='2.2';
+const NEWS=['🎵 Mới: nhạc nền và hiệu ứng âm thanh (nút 🎵 trên thanh đầu trang)','💝 Mới: Quỹ lớp, góp tiền ảo cùng nhau đạt mục tiêu','🎡 Mới: Vòng quay may mắn, mỗi ngày quay miễn phí 1 lần','💰 Cược xong là trừ tiền ngay, có ô nhập tiền cược nhanh và mức 500.000','👤 Bấm vào tên để xem thông tin và kết bạn'];
 const mult=()=>[0,6].includes(new Date().getDay())?5:2,AVS=['🎃','🦀','🐟','🐓','🦌','🦐','🐯','🐲'];
 const fmt=n=>(+n||0).toLocaleString('vi-VN'),day=d=>new Date(d).toLocaleDateString('sv');
 const ls=(k,v)=>{try{return v===undefined?localStorage.getItem(k):localStorage.setItem(k,v)}catch(e){return null}};
@@ -231,7 +231,7 @@ function fail(e,pre=''){
   const el=$('#err');el.hidden=false;el.textContent=pre+'Lỗi '+c+'. '+h;
 }
 function save(){
-  const u={money:me.money,streak:me.streak,lastDay:me.lastDay,lastRescue:me.lastRescue||'',av:me.av||'',createdAt:me.createdAt||Date.now()};
+  const u={money:me.money,streak:me.streak,lastDay:me.lastDay,lastRescue:me.lastRescue||'',av:me.av||'',createdAt:me.createdAt||Date.now(),spinDay:me.spinDay||''};
   if(pendE){const k=pkeys();u['e.'+k.d]=increment(pendE);u['e.'+k.w]=increment(pendE);u['e.'+k.m]=increment(pendE);pendE=0}
   updateDoc(ref,u).catch(()=>toast('Chưa lưu được, kiểm tra mạng hoặc Firestore rules.'));
   head();
@@ -244,7 +244,7 @@ async function mk(){
   start();
 }
 async function start(){
-  show('hub');$('#top').hidden=false;$('#adm').hidden=!isAdm();if(!me.createdAt){me.createdAt=Date.now();save()}head();
+  show('hub');$('#top').hidden=false;$('#adm').hidden=!isAdm();$('#bAnn').hidden=!isAdm();if(!me.createdAt){me.createdAt=Date.now();save()}head();
   db=1;syncT();watchMe();watchAnn();
   if(!me.fid){me.fid=gc(6);updateDoc(ref,{fid:me.fid}).catch(()=>{})}
   clearInterval(hbP);beat();hbP=setInterval(beat,90000);
@@ -353,7 +353,7 @@ function put(i){
   const amt=chip==='all'?(game==='tx'?me.money:1000):chip;
   if(amt<=0||amt>me.money)return toast('Không đủ tiền ảo.');
   me.money-=amt;earn(-amt);head();dsave();
-  bets[i]=(bets[i]||0)+amt;board();pushBets();
+  bets[i]=(bets[i]||0)+amt;board();pushBets();sfx('chip');
 }
 function roll(c,id,ms){
   let h=2166136261;for(const ch of 'bc26'+c+'#'+id+'#'+ms){h=Math.imul(h^ch.charCodeAt(0),16777619)}
@@ -383,6 +383,7 @@ function settle(d,b,curRound,g=game){
   if(!stake)return;
   me.money+=ret;earn(ret);save();
   const net=ret-stake;
+  sfx(net>0?'win':net<0?'lose':'chip');
   toast(net>0?'🎉 Thắng +'+fmt(net):net<0?'😢 Thua '+fmt(net):'Hòa vốn');
 }
 function dropBets(){
@@ -456,7 +457,7 @@ async function adminM(){
     admG=s.docs.filter(d=>d.data().guest&&d.id!==uid).map(d=>d.id);
     rows=s.docs.map(d=>{const p=d.data();return '<div class="r" style="flex-wrap:wrap"><span>'+esc(p.name)+' <small class="mut">('+esc(p.cls)+')'+(p.banned?' 🚫':'')+(d.id===uid?' (tôi)':'')+(p.guest?' · khách':'')+'</small></span><span><input data-u="'+d.id+'" type="number" min="0" value="'+(+p.money||0)+'" style="width:110px;padding:6px"> <button class="btn sm" data-sv="'+d.id+'">Lưu</button> <button class="btn alt sm" data-bn="'+d.id+'" data-b="'+(p.banned?1:0)+'">'+(p.banned?'Mở khóa':'Cấm')+'</button>'+(d.id===uid?'':' <button class="btn alt sm" data-dl="'+d.id+'">Xóa</button>')+'</span></div>'}).join('');
   }catch(e){rows='<p class="mut">Không tải được: '+esc(e.code||'')+'</p>'}
-  modal('<h3>🛠️ Admin</h3><div class="card" style="margin:8px 0"><b>📢 Thông báo cho tất cả</b><textarea id="annt" maxlength="300" rows="2" placeholder="Nội dung thông báo..." style="width:100%;background:#1a0a0e;color:var(--tx);border:1px solid var(--line);border-radius:10px;padding:8px;font:inherit;margin:6px 0"></textarea><button class="btn sm" data-an="1">Gửi</button></div><p class="mut" style="margin:0">Sửa tiền rồi bấm Lưu. Cấm = đăng xuất ngay. Xóa = xóa hồ sơ và chặn không cho đăng ký lại.</p>'+(admG.length?'<button class="btn alt sm" data-dg="1" style="margin:8px 0">🧹 Xóa '+admG.length+' tài khoản khách</button>':'')+rows);
+  modal('<h3>🛠️ Admin</h3><div class="card" style="margin:8px 0"><b>📢 Thông báo cho tất cả</b><textarea id="annt" maxlength="300" rows="2" placeholder="Nội dung thông báo..." style="width:100%;background:#1a0a0e;color:var(--tx);border:1px solid var(--line);border-radius:10px;padding:8px;font:inherit;margin:6px 0"></textarea><button class="btn sm" data-an="1">Gửi</button></div><div class="card" style="margin:8px 0"><b>💝 Quỹ lớp (tiền ảo)</b><input id="ftt" placeholder="Tên quỹ, vd: Giúp bạn A" maxlength="60" style="width:100%;margin:6px 0"><input id="fgl" placeholder="Mục tiêu, vd: 50m" style="width:100%;margin-bottom:6px"><button class="btn sm" data-fs="1">Lưu quỹ</button></div><p class="mut" style="margin:0">Sửa tiền rồi bấm Lưu. Cấm = đăng xuất ngay. Xóa = xóa hồ sơ và chặn không cho đăng ký lại.</p>'+(admG.length?'<button class="btn alt sm" data-dg="1" style="margin:8px 0">🧹 Xóa '+admG.length+' tài khoản khách</button>':'')+rows);
 }
 const fmtT=ms=>{const d=new Date(ms),n=new Date(),h=d.toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'});return d.toDateString()===n.toDateString()?h:d.toLocaleDateString('vi-VN',{day:'2-digit',month:'2-digit'})+' '+h};
 const ago=ms=>{const s=Math.max(0,(Date.now()-ms)/1000);if(s<90)return 'vừa xong';if(s<3600)return Math.round(s/60)+' phút trước';if(s<86400)return Math.round(s/3600)+' giờ trước';return new Date(ms).toLocaleDateString('vi-VN')+' ('+Math.round(s/86400)+' ngày trước)'};
@@ -516,6 +517,11 @@ document.addEventListener('click',e=>{const x=e.target.closest('[data-pu]');if(x
 $('#ov').addEventListener('click',async e=>{
   const g=k=>e.target.closest('['+k+']');let b;
   if(e.target.id==='fadd')return addF();
+  if(e.target.id==='fgo')return donate();
+  if(e.target.id==='spin')return doSpin();
+  if(g('data-mm')){mOn=!mOn;ls('bc_mus',mOn?'1':'0');if(mOn){aInit();mStart()}else mStop();return audM()}
+  if(g('data-ms')){sOn=!sOn;ls('bc_sfx',sOn?'1':'0');return audM()}
+  if(b=g('data-mt')){tk=+b.dataset.mt;ls('bc_trk',String(tk));mStep=0;mNext=0;if(mOn){aInit();mStart()}return audM()}
   if(b=g('data-lt'))return lbm(b.dataset.lt);
   if(g('data-rn')){
     const n=$('#nn').value.trim().slice(0,30),c=$('#nc').value.trim().slice(0,10);
@@ -533,6 +539,8 @@ $('#ov').addEventListener('click',async e=>{
     try{await updateDoc(doc(fdb,'players',id),{money:v,adj:Date.now()});if(id===uid){me.money=v;lastAdj=Date.now()+5000;head()}toast('Đã đặt tiền = '+fmt(v))}catch(err){toast('Lỗi: '+(err.code||''))}
     return;
   }
+  if(g('data-ac')){try{await deleteDoc(doc(fdb,'config','announce'));toast('Đã xóa thông báo hiện tại.')}catch(err){toast('Lỗi: '+(err.code||''))}return}
+  if(g('data-fs')){const ti=$('#ftt').value.trim().slice(0,60),go=parseAmt($('#fgl').value);if(!ti||!go)return toast('Nhập tên quỹ và mục tiêu (vd 50m).');try{await setDoc(doc(fdb,'config','fund'),{title:ti,goal:go});toast('Đã lưu quỹ lớp.')}catch(err){toast('Lỗi: '+(err.code||''))}return}
   if(g('data-an')){const v=$('#annt').value.trim().slice(0,300);if(!v)return toast('Nhập nội dung thông báo.');try{await setDoc(doc(fdb,'config','announce'),{text:v,t:Date.now()});toast('Đã gửi thông báo cho tất cả.')}catch(err){toast('Lỗi: '+(err.code||''))}return}
   if(b=g('data-dl')){
     const id=b.dataset.dl;if(id===uid)return toast('Không thể tự xóa chính mình.');
@@ -609,7 +617,7 @@ function fire(){
   const st=mySeat();if(st<0)return;
   if(Date.now()-fs.cd<220)return;
   if(me.money<fs.bet)return toast('Hết tiền ảo để bắn.');
-  fs.cd=Date.now();me.money-=fs.bet;earn(-fs.bet);head();dsave();fs.dirty=true;
+  fs.cd=Date.now();me.money-=fs.bet;earn(-fs.bet);head();dsave();fs.dirty=true;sfx('shot');
   const g=GP[st],a=Math.atan2(fs.ty-g[1],fs.tx-g[0]);
   fs.b.push({x:g[0],y:g[1],dx:Math.cos(a)*650,dy:Math.sin(a)*650,bet:fs.bet});
 }
@@ -618,7 +626,7 @@ async function claim(f,bet){
   fs.pend.add(f.k);const w=bet*f.m;
   try{
     await setDoc(doc(fdb,'rooms',rid,'kills',''+f.k),{k:f.k,u:uid,n:me.name,w});
-    fs.dead.add(f.k);me.money+=w;earn(w);head();dsave();fs.dirty=true;fs.f.push({x:f.x,y:f.y,t:55,s:'+'+fmt(w)});
+    fs.dead.add(f.k);me.money+=w;earn(w);head();dsave();fs.dirty=true;sfx('chip');fs.f.push({x:f.x,y:f.y,t:55,s:'+'+fmt(w)});
   }catch(e){}
   fs.pend.delete(f.k);
 }
@@ -733,6 +741,7 @@ function pkSpin(){
   setTimeout(()=>{
     const w=bet*mult;me.money+=w;earn(w);head();dsave();pk.busy=false;
     $('#pr').textContent=HANDS[k][0]+(mult>1?' — nhận '+fmt(w):mult===1?' — hòa vốn':' — thua');
+    sfx(mult>1?'win':mult===0?'lose':'chip');
     if(mult>=20)toast('🎉 '+HANDS[k][0]+'! +'+fmt(w));
   },250+5*280+350);
 }
@@ -826,6 +835,102 @@ function watchAnn(){
   },()=>{});
 }
 $('#annx').onclick=()=>{$('#ann').hidden=true};
+
+/* ---- Nhạc nền + hiệu ứng (tạo trực tiếp bằng WebAudio, không dùng file nhạc) ---- */
+const TR=[
+ {n:'Vui vẻ',bpm:118,root:60,lead:'triangle',pent:[0,2,4,7,9],prog:[[0,4,7],[9,12,16],[5,9,12],[7,11,14]]},
+ {n:'Lo-fi chill',bpm:76,root:57,lead:'sine',pent:[0,3,5,7,10],prog:[[0,3,7],[-4,0,3],[3,7,10],[-2,2,5]]},
+ {n:'Sôi động',bpm:136,root:62,lead:'sawtooth',pent:[0,2,4,7,9],prog:[[0,4,7],[7,11,14],[9,12,16],[5,9,12]]}
+];
+let ac=null,mG=null,sG=null,mOn=ls('bc_mus')!=='0',sOn=ls('bc_sfx')!=='0',tk=+ls('bc_trk')||0,mvol=ls('bc_vol')===null?0.5:+ls('bc_vol'),mTm=0,mNext=0,mStep=0,mIdx=2;
+function aInit(){
+  if(!ac){const C=window.AudioContext||window.webkitAudioContext;if(!C)return false;ac=new C();mG=ac.createGain();sG=ac.createGain();mG.connect(ac.destination);sG.connect(ac.destination);aVol()}
+  if(ac.state==='suspended')ac.resume();return true;
+}
+function aVol(){if(mG){mG.gain.value=0.22*mvol;sG.gain.value=0.5*mvol+0.1}}
+function note(t0,m,d,type,v,dst){
+  const o=ac.createOscillator(),g=ac.createGain();o.type=type;o.frequency.value=440*Math.pow(2,(m-69)/12);
+  g.gain.setValueAtTime(0.0001,t0);g.gain.linearRampToValueAtTime(v,t0+0.02);g.gain.exponentialRampToValueAtTime(0.0001,t0+d);
+  o.connect(g);g.connect(dst);o.start(t0);o.stop(t0+d+0.05);
+}
+function mTick(){
+  if(!ac||!mOn)return;const T=TR[tk],sd=60/T.bpm/4;
+  if(mNext<ac.currentTime)mNext=ac.currentTime+0.05;
+  while(mNext<ac.currentTime+0.4){
+    const s=mStep%64,ch=T.prog[s>>4],b=s&15;
+    if(b===0)ch.forEach(iv=>note(mNext,T.root+iv,sd*15,'triangle',0.05,mG));
+    if(b%8===0)note(mNext,T.root+ch[0]-12,sd*6,'sine',0.14,mG);
+    if(b%2===0&&Math.random()<0.65){
+      mIdx=Math.max(0,Math.min(9,mIdx+Math.floor(Math.random()*5)-2));
+      note(mNext,T.root+T.pent[mIdx%5]+12*Math.floor(mIdx/5),sd*3,T.lead,T.lead==='sawtooth'?0.045:0.09,mG);
+    }
+    mNext+=sd;mStep++;
+  }
+}
+function mStart(){if(!aInit())return;clearInterval(mTm);if(mOn)mTm=setInterval(mTick,120)}
+function mStop(){clearInterval(mTm)}
+function sfx(k){
+  if(!sOn||!ac||ac.state!=='running')return;const t0=ac.currentTime;
+  if(k==='chip'){note(t0,88,0.06,'square',0.15,sG);note(t0+0.03,95,0.05,'square',0.1,sG)}
+  else if(k==='win')[72,76,79,84].forEach((m,i)=>note(t0+i*0.09,m,0.25,'triangle',0.25,sG));
+  else if(k==='lose')[67,62,57].forEach((m,i)=>note(t0+i*0.12,m,0.25,'sawtooth',0.12,sG));
+  else if(k==='spin'){for(let i=0;i<14;i++)note(t0+i*0.28,90+(i%3),0.04,'square',0.1,sG)}
+  else if(k==='shot')note(t0,70,0.05,'square',0.06,sG);
+}
+function audM(){
+  modal('<h3>🎵 Âm thanh</h3><div class="r"><span>Nhạc nền</span><button class="btn sm '+(mOn?'':'alt')+'" data-mm="1">'+(mOn?'Bật':'Tắt')+'</button></div><div class="r"><span>Hiệu ứng</span><button class="btn sm '+(sOn?'':'alt')+'" data-ms="1">'+(sOn?'Bật':'Tắt')+'</button></div><p class="mut" style="margin:8px 0 4px">Chọn bài:</p><div>'+TR.map((x,i)=>'<button class="btn sm '+(i===tk?'':'alt ')+'" data-mt="'+i+'" style="margin:2px">'+x.n+'</button>').join('')+'</div><p class="mut" style="margin:10px 0 2px">Âm lượng</p><input id="mvol" type="range" min="0" max="1" step="0.05" value="'+mvol+'" style="width:100%"><p class="mut" style="margin:6px 0 0;font-size:12px">Nhạc được tạo trực tiếp trên máy, không dùng file nhạc có bản quyền.</p>');
+}
+$('#ov').addEventListener('input',e=>{if(e.target.id==='mvol'){mvol=+e.target.value;ls('bc_vol',String(mvol));aVol()}});
+document.addEventListener('pointerdown',()=>{if(!ac){aInit();if(mOn)mStart()}},{once:true});
+document.addEventListener('visibilitychange',()=>{if(ac)document.hidden?ac.suspend():ac.resume()});
+$('#bMus').onclick=audM;
+
+/* ---- Gửi thông báo cho tất cả (admin) ---- */
+function annM(){
+  if(!isAdm())return;
+  modal('<h3>📣 Gửi thông báo cho tất cả mọi người</h3><textarea id="annt" maxlength="300" rows="3" placeholder="Ví dụ: Chào mừng bản cập nhật mới!..." style="width:100%;background:#1a0a0e;color:var(--tx);border:1px solid var(--line);border-radius:10px;padding:8px;font:inherit;margin:6px 0"></textarea><button class="btn" data-an="1" style="width:100%">Gửi cho tất cả</button><button class="btn alt sm" data-ac="1" style="margin-top:8px">Xóa thông báo hiện tại</button><p class="mut" style="font-size:13px;margin:8px 0 0">Mọi người đang online (ở sảnh hay trong phòng) thấy ngay một dải thông báo ở đầu màn hình. Ai vào sau cũng thấy một lần.</p>');
+}
+$('#bAnn').onclick=annM;
+
+/* ---- Quỹ lớp (tiền ảo) ---- */
+async function fundM(){
+  let title='Quỹ lớp',goal=10000000,list=[],err='';
+  try{
+    const c=await getDoc(doc(fdb,'config','fund'));if(c.exists()){title=c.data().title||title;goal=+c.data().goal||goal}
+    list=(await getDocs(query(collection(fdb,'fundDonors'),orderBy('amt','desc'),limit(100)))).docs.map(d=>({...d.data(),id:d.id}));
+  }catch(e){err=e.code||'lỗi'}
+  const total=list.reduce((a,x)=>a+(+x.amt||0),0),pct=Math.min(100,Math.round(total*100/goal));
+  modal('<h3>💝 '+esc(title)+'</h3><p class="mut" style="margin:0">Góp bằng tiền ảo, không đổi ra tiền thật. Cùng nhau đạt mục tiêu nhé!</p><div style="margin:10px 0"><div style="height:16px;background:#34141b;border-radius:8px;overflow:hidden"><i style="display:block;height:100%;width:'+pct+'%;background:linear-gradient(90deg,#c8202f,#f6c744)"></i></div><div class="mut" style="text-align:center;margin-top:4px">'+fmt(total)+' / '+fmt(goal)+' ('+pct+'%)</div></div><div class="cin"><input id="fam" inputmode="numeric" placeholder="Số tiền ảo muốn góp (vd 5k)"><button class="btn sm" id="fgo">Góp</button></div><b style="display:block;margin-top:10px">Bảng vinh danh</b>'
+    +(err?'<p class="mut">Không tải được: '+esc(err)+'</p>':list.length?list.slice(0,10).map((x,i)=>'<div class="r"><span>'+(['🥇','🥈','🥉'][i]||i+1)+' <span class="nm" data-pu="'+x.id+'">'+esc(x.n)+'</span> <small class="mut">('+esc(x.c)+')</small></span><b>'+fmt(x.amt)+'</b></div>').join(''):'<p class="mut">Chưa ai góp. Hãy là người đầu tiên!</p>'));
+}
+async function donate(){
+  const v=parseAmt($('#fam').value);
+  if(!v)return toast('Nhập số tiền, ví dụ 5000 hoặc 5k.');
+  if(v>me.money)return toast('Không đủ tiền ảo.');
+  try{await setDoc(doc(fdb,'fundDonors',uid),{n:me.name,c:me.cls,amt:increment(v),t:Date.now()},{merge:true})}catch(e){return toast('Lỗi: '+(e.code||''))}
+  me.money-=v;head();save();sfx('win');toast('Cảm ơn bạn đã góp '+fmt(v)+'! 💝');fundM();
+}
+$('#fundb').onclick=fundM;
+
+/* ---- Vòng quay may mắn (mỗi ngày 1 lần, miễn phí) ---- */
+const WH=[[500,25],[1000,22],[2000,18],[3000,12],[5000,10],[10000,7],[20000,4],[50000,2]];
+function wheelM(){
+  const done=me.spinDay===day(now()),sl=360/WH.length,cols=['#c8202f','#f6c744','#23935a','#1d6fd1','#7b3fe4','#e07b1d','#d1478b','#2a9d8f'];
+  const bg='conic-gradient('+WH.map((w,i)=>cols[i]+' '+i*sl+'deg '+(i+1)*sl+'deg').join(',')+')';
+  const lb=WH.map((w,i)=>'<div style="position:absolute;inset:0;transform:rotate('+(i*sl+sl/2)+'deg)"><span style="position:absolute;top:12px;left:50%;transform:translateX(-50%);font:800 13px sans-serif;color:#fff;text-shadow:0 1px 3px #000">'+(w[0]>=1000?w[0]/1000+'k':w[0])+'</span></div>').join('');
+  modal('<h3>🎡 Vòng quay may mắn</h3><p class="mut" style="margin:0">Mỗi ngày quay miễn phí 1 lần.</p><div style="position:relative;width:230px;height:230px;margin:16px auto"><div style="position:absolute;left:50%;top:-12px;transform:translateX(-50%);font-size:26px;z-index:2">🔻</div><div id="whl" style="position:absolute;inset:0;border-radius:50%;border:6px solid #f6c744;background:'+bg+';transition:transform 4s cubic-bezier(.15,.7,.1,1);box-shadow:0 6px 18px #000a">'+lb+'</div></div><div style="text-align:center"><button class="btn" id="spin"'+(done?' disabled':'')+'>'+(done?'Hôm nay bạn đã quay rồi':'QUAY')+'</button></div>');
+}
+function doSpin(){
+  const today=day(now());if(me.spinDay===today)return;
+  const tot=WH.reduce((a,w)=>a+w[1],0);let r=rnd()*tot,idx=0;
+  for(;idx<WH.length-1;idx++){if(r<WH[idx][1])break;r-=WH[idx][1]}
+  me.spinDay=today;me.money+=WH[idx][0];save();
+  const sl=360/WH.length;$('#spin').disabled=true;$('#spin').textContent='Đang quay...';
+  $('#whl').style.transform='rotate('+(360*5+(360-(idx*sl+sl/2))+(rnd()-.5)*sl*0.6)+'deg)';
+  sfx('spin');
+  setTimeout(()=>{sfx('win');toast('🎉 Bạn nhận '+fmt(WH[idx][0])+'!');const b=$('#spin');if(b)b.textContent='Hôm nay bạn đã quay rồi'},4300);
+}
+$('#wheelb').onclick=wheelM;
 window.__ok=1;
 $('#jn').onclick=()=>enter($('#rcode').value);
 $('#rnd').onclick=()=>enter('sanh'+(1+Math.floor(Math.random()*5)));
