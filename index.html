@@ -200,12 +200,18 @@ h1{background:linear-gradient(180deg,#fff3b0,#f6c744 55%,#c58e12);-webkit-backgr
 .t3o{max-height:120px;overflow:auto;font-size:13px;margin-top:6px}
 @media (prefers-reduced-motion:reduce){.gk i,.fight .gk,.fight .dgvs,.gk.win i,.t3k{animation:none!important}}
 @media (orientation:landscape) and (max-height:540px){.dgring{height:110px}.gk i{font-size:54px}.t3k{width:40px;height:56px;font-size:16px}.stage{padding:8px}}
+
+/* ===== v2.9: huy hiệu ESP, ô chọn ===== */
+.espb{display:inline-block;margin-left:6px;padding:2px 9px;border-radius:12px;font-size:12px;font-weight:800;color:#06222a;background:linear-gradient(90deg,#7ef,#a5ecff);box-shadow:0 0 12px #7ef9;animation:espPulse 2.4s ease-in-out infinite alternate;vertical-align:middle}
+@keyframes espPulse{to{box-shadow:0 0 3px #7ef5}}
+@media (prefers-reduced-motion:reduce){.espb{animation:none}}
+select{background:#1a0a0e;color:var(--tx);border:1px solid var(--line);border-radius:10px;padding:8px;font:inherit;max-width:100%}
 </style>
 </head>
 <body>
 <div class="wrap">
   <div id="top" hidden>
-    <div style="display:flex;align-items:center;gap:10px;min-width:0"><button id="av" title="Thông tin của tôi"></button><div style="min-width:0"><b id="who"></b><div class="mut">💰 <span id="mny"></span> <b id="dbt" style="color:#ff5a5a"></b> <button id="ln" class="btn sm" title="Vay tiền">🏦 Vay</button> <button id="rs" class="btn sm" hidden>🆘 Xin 5.000</button></div></div></div>
+    <div style="display:flex;align-items:center;gap:10px;min-width:0"><button id="av" title="Thông tin của tôi"></button><div style="min-width:0"><b id="who"></b><div class="mut">💰 <span id="mny"></span> <b id="dbt" style="color:#ff5a5a"></b> <span id="espb" class="espb" hidden></span> <button id="ln" class="btn sm" title="Vay tiền">🏦 Vay</button> <button id="rs" class="btn sm" hidden>🆘 Xin 5.000</button></div></div></div>
     <div><button class="btn alt sm" id="bHome" title="Về sảnh">🏠</button> <button class="btn alt sm" id="bDaily" title="Điểm danh">🎁</button> <button class="btn alt sm" id="bLb" title="Bảng xếp hạng">🏆</button> <button class="btn alt sm" id="bNews" title="Cập nhật">📢</button> <button class="btn alt sm" id="bMus" title="Âm thanh">🎵</button> <button class="btn alt sm" id="bAnn" title="Gửi thông báo cho tất cả" hidden>📣</button> <button class="btn alt sm" id="bOut" title="Đăng xuất">🚪</button></div>
   </div>
 
@@ -371,18 +377,18 @@ const OK=!firebaseConfig.apiKey.startsWith('DIEN');
 const app=initializeApp(OK?firebaseConfig:{apiKey:'x',projectId:'x',appId:'x'}),auth=getAuth(app),fdb=getFirestore(app);
 const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"']/g,c=>'&#'+c.charCodeAt(0)+';');
 const IT=[['🎃','Bầu'],['🦀','Cua'],['🐟','Cá'],['🐓','Gà'],['🦌','Nai'],['🦐','Tôm']];
-const DAILY=[5,10,25,50,75,100,100].map(x=>x*1000),CHIPS=[1000,5000,10000,50000,500000],R=30000,BET=20000,VER='2.8';
-const NEWS=['🐓 Mới: Đá gà và 3 cây nhiều người · 🎰 Mini Poker và Jackpot có quay nhanh và tự động quay · sảnh game kéo ngang','♞ Mới: Cờ vua 2 người cược tiền ảo · 🏦 nút Vay tiền (nợ hiện số âm màu đỏ, người đang nợ không được lên bảng xếp hạng) · 🥣 bát che xúc xắc, kéo để xem','🎰 Mới: Nổ hũ Jackpot, hũ chung cả lớp, ai nổ 3 số 7 ăn cả hũ','🧹 Tin nhắn chat quá 1 giờ và phòng không hoạt động quá 1 giờ sẽ tự xóa để trang nhẹ hơn','🎴 UNO chơi với người thật (2-4 người)','♠️ Tiến lên · ♦️ Xì dách · 🀄 Mạt chược','🏆 Mỗi tuần người đứng top 1 bảng Tổng tiền bị giảm còn 15.000 (chỉ 1 lần mỗi tuần)'];
+const DAILY=[5,10,25,50,75,100,100].map(x=>x*1000),CHIPS=[1000,5000,10000,50000,500000],R=30000,BET=20000,VER='2.9';
+const NEWS=['🎁 Mới: admin có thể tặng ESP dự đoán trước cho người chơi (có thời hạn, hiện huy hiệu 🔮 trên thanh tiền)','🐓 Mới: Đá gà và 3 cây nhiều người · 🎰 Mini Poker và Jackpot có quay nhanh và tự động quay · sảnh game kéo ngang','♞ Mới: Cờ vua 2 người cược tiền ảo · 🏦 nút Vay tiền (nợ hiện số âm màu đỏ, người đang nợ không được lên bảng xếp hạng) · 🥣 bát che xúc xắc, kéo để xem','🎰 Mới: Nổ hũ Jackpot, hũ chung cả lớp, ai nổ 3 số 7 ăn cả hũ','🧹 Tin nhắn chat quá 1 giờ và phòng không hoạt động quá 1 giờ sẽ tự xóa để trang nhẹ hơn','🎴 UNO chơi với người thật (2-4 người)','♠️ Tiến lên · ♦️ Xì dách · 🀄 Mạt chược','🏆 Mỗi tuần người đứng top 1 bảng Tổng tiền bị giảm còn 15.000 (chỉ 1 lần mỗi tuần)'];
 const mult=()=>[0,6].includes(new Date().getDay())?5:2,AVS=['🎃','🦀','🐟','🐓','🦌','🦐','🐯','🐲'];
 const fmt=n=>(+n||0).toLocaleString('vi-VN'),day=d=>new Date(d).toLocaleDateString('sv');
 const ls=(k,v)=>{try{return v===undefined?localStorage.getItem(k):localStorage.setItem(k,v)}catch(e){return null}};
-let shown=false,pend=null;let uid,unM,unC,hb,mref,raw=[],game='bc',rid='',off=0,unMe,ft,hbP,beatN=0,lastAdj=0,busy=false,pendE=0,unK;
+let shown=false,pend=null,espTm=0,admP=[];let uid,unM,unC,hb,mref,raw=[],game='bc',rid='',off=0,unMe,ft,hbP,beatN=0,lastAdj=0,busy=false,pendE=0,unK;
 let db,ref,me,code,nr,lbu,joinT=0,lastC=0,loT=0,peers=[],lb=[],bets={},chip=1000,cur=-1,dice=null,tm;
 const show=id=>{for(const s of['login','prof','hub','poker','lobby','game','fish','uno','mj','tl','xd','jp','chess'])$('#'+s).hidden=s!==id;if(id==='hub')hubOn();else hubOff();if(id!=='jp'&&jp.un){jp.un();jp.un=null}};
 function toast(t){const e=$('#toast');e.textContent=t;e.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>e.hidden=true,2600)}
 function modal(h,l='Đóng'){return new Promise(r=>{$('#ov').innerHTML='<div class="m">'+h+'<button class="btn" style="width:100%;margin-top:12px" id="ok">'+l+'</button></div>';$('#ov').hidden=false;$('#ok').onclick=()=>{$('#ov').hidden=true;r()}})}
 const cap=c=>{if(game==='fish')return 4;if(game==='chess')return 2;const m=/-(\d{1,2})$/.exec(c||'');const n=m?+m[1]:10,v=n>=2&&n<=10?n:10;return game==='uno'?Math.min(4,v):v};
-function head(){$('#who').textContent=me.name+' · '+me.cls;$('#av').textContent=me.av||(me.name.trim().split(/\s+/).pop()[0]||'?').toUpperCase();$('#wk').hidden=false;$('#wk').textContent=mult()===5?'🔥 Cuối tuần: đoán trúng nhận x5 tiền cược!':'Đoán trúng nhận x2 tiền cược (thứ 7, chủ nhật x5)';$('#mny').textContent=fmt(me.money);$('#dbt').textContent=me.debt?'-'+fmt(me.debt):'';$('#rs').hidden=!(me.money<1000&&me.lastRescue!==day(Date.now()))}
+function head(){$('#who').textContent=me.name+' · '+me.cls;$('#av').textContent=me.av||(me.name.trim().split(/\s+/).pop()[0]||'?').toUpperCase();$('#wk').hidden=false;$('#wk').textContent=mult()===5?'🔥 Cuối tuần: đoán trúng nhận x5 tiền cược!':'Đoán trúng nhận x2 tiền cược (thứ 7, chủ nhật x5)';$('#mny').textContent=fmt(me.money);$('#dbt').textContent=me.debt?'-'+fmt(me.debt):'';espBadge();$('#rs').hidden=!(me.money<1000&&me.lastRescue!==day(Date.now()))}
 function fail(e,pre=''){
   const c=(e&&e.code)||String(e);
   const h=c==='auth/unauthorized-domain'?'Vào Firebase → Authentication → Settings → Authorized domains → Add domain, thêm: '+location.hostname
@@ -414,9 +420,9 @@ async function start(){
   db=1;syncT();watchMe();watchAnn();
   if(!me.fid){me.fid=gc(6);updateDoc(ref,{fid:me.fid}).catch(()=>{})}
   clearInterval(hbP);beat();hbP=setInterval(beat,90000);
-  clearInterval(maTm);maTm=setInterval(maint,300000);sweepRooms();
+  clearInterval(maTm);maTm=setInterval(maint,300000);sweepRooms();clearInterval(espTm);espTm=setInterval(()=>{if(me)head()},20000);
   if(ls('bc_ver')!==VER){await news();ls('bc_ver',VER)}
-  await daily();
+  await daily();espNotice();
   if(isAdm())weeklyReset(false);
 }
 const news=()=>modal('<h3>📢 Cập nhật v'+VER+'</h3><ul>'+NEWS.map(n=>'<li>'+n+'</li>').join('')+'</ul>');
@@ -466,7 +472,7 @@ function chk(){
 function leave(){clearInterval(tm);cancelAnimationFrame(fs.raf);leaveRoom();code='';show('lobby')}
 const logout=()=>signOut(auth).then(()=>toast('Đã đăng xuất'));
 const lo=()=>{if(Date.now()-loT<3000)return logout();loT=Date.now();toast('Bấm 🚪 lần nữa để đăng xuất')};
-function cleanup(){clearInterval(tm);clearInterval(hbP);clearInterval(maTm);if(unMe){unMe();unMe=null}if(unAnn){unAnn();unAnn=null}ytStop();cancelAnimationFrame(fs.raf);leaveRoom();code='';if(lbu){lbu();lbu=null}ref=me=null;db=0;lb=[];$('#top').hidden=true;$('#wk').hidden=true;show('login')}
+function cleanup(){clearInterval(espTm);clearInterval(tm);clearInterval(hbP);clearInterval(maTm);if(unMe){unMe();unMe=null}if(unAnn){unAnn();unAnn=null}ytStop();cancelAnimationFrame(fs.raf);leaveRoom();code='';if(lbu){lbu();lbu=null}ref=me=null;db=0;lb=[];$('#top').hidden=true;$('#wk').hidden=true;show('login')}
 function chatAdd(n,t,m,id='cl',u,ts){
   const l=$('#'+id),d=document.createElement('div'),b=document.createElement('b');
   d.className='cm'+(m?' me':'');b.textContent=n+': ';if(u){b.className='nm';b.dataset.pu=u}if(ts)d.dataset.t=ts;d.append(b,document.createTextNode(t));if(ts){const s=document.createElement('small');s.className='mut';s.style.marginLeft='6px';s.textContent=fmtT(ts);d.append(s)}l.append(d);
@@ -620,6 +626,7 @@ function watchMe(){
     const d=s.data();
     if(d.banned){signOut(auth).then(()=>{const el=$('#err');el.hidden=false;el.textContent='🚫 Tài khoản này đã bị admin khóa.'});return}
     if((d.adj||0)>lastAdj){lastAdj=d.adj;me.money=d.money;head();toast('Admin đã chỉnh tiền của bạn: '+fmt(d.money))}
+    const ne=+d.esp||0;if(ne!==(+me.esp||0)){me.esp=ne;head();espNotice()}
   },()=>{});
 }
 async function adminM(){
@@ -627,10 +634,10 @@ async function adminM(){
   let rows='';
   try{
     const s=await getDocs(query(collection(fdb,'players'),orderBy('money','desc'),limit(100)));
-    admG=s.docs.filter(d=>d.data().guest&&d.id!==uid).map(d=>d.id);
-    rows=s.docs.map(d=>{const p=d.data();return '<div class="r" style="flex-wrap:wrap"><span>'+esc(p.name)+' <small class="mut">('+esc(p.cls)+')'+(p.banned?' 🚫':'')+(d.id===uid?' (tôi)':'')+(p.guest?' · khách':'')+'</small></span><span><input data-u="'+d.id+'" type="number" min="0" value="'+(+p.money||0)+'" style="width:110px;padding:6px"> <button class="btn sm" data-sv="'+d.id+'">Lưu</button> <button class="btn alt sm" data-bn="'+d.id+'" data-b="'+(p.banned?1:0)+'">'+(p.banned?'Mở khóa':'Cấm')+'</button>'+(d.id===uid?'':' <button class="btn alt sm" data-dl="'+d.id+'">Xóa</button>')+'</span></div>'}).join('');
+    admG=s.docs.filter(d=>d.data().guest&&d.id!==uid).map(d=>d.id);admP=s.docs.map(d=>({id:d.id,...d.data()}));
+    rows=s.docs.map(d=>{const p=d.data();return '<div class="r" style="flex-wrap:wrap"><span>'+esc(p.name)+' <small class="mut">('+esc(p.cls)+')'+(p.banned?' 🚫':'')+(+p.esp>now()?' 🔮':'')+(d.id===uid?' (tôi)':'')+(p.guest?' · khách':'')+'</small></span><span><input data-u="'+d.id+'" type="number" min="0" value="'+(+p.money||0)+'" style="width:110px;padding:6px"> <button class="btn sm" data-sv="'+d.id+'">Lưu</button> <button class="btn alt sm" data-bn="'+d.id+'" data-b="'+(p.banned?1:0)+'">'+(p.banned?'Mở khóa':'Cấm')+'</button>'+(d.id===uid?'':' <button class="btn alt sm" data-dl="'+d.id+'">Xóa</button>')+'</span></div>'}).join('');
   }catch(e){rows='<p class="mut">Không tải được: '+esc(e.code||'')+'</p>'}
-  modal('<h3>🛠️ Admin</h3>'+espCard()+'<div class="card" style="margin:8px 0"><b>🏆 Reset top 1 tuần</b><p class="mut" style="margin:4px 0">Tự chạy một lần mỗi tuần khi bạn đăng nhập. Người đứng đầu bảng Tổng tiền bị giảm còn 15.000.</p><button class="btn alt sm" data-wr="1">Chạy ngay (bấm 2 lần)</button></div><div class="card" style="margin:8px 0"><b>📢 Thông báo cho tất cả</b><textarea id="annt" maxlength="300" rows="2" placeholder="Nội dung thông báo..." style="width:100%;background:#1a0a0e;color:var(--tx);border:1px solid var(--line);border-radius:10px;padding:8px;font:inherit;margin:6px 0"></textarea><button class="btn sm" data-an="1">Gửi</button></div><p class="mut" style="margin:0">Sửa tiền rồi bấm Lưu. Cấm = đăng xuất ngay. Xóa = xóa hồ sơ và chặn không cho đăng ký lại.</p>'+(admG.length?'<button class="btn alt sm" data-dg="1" style="margin:8px 0">🧹 Xóa '+admG.length+' tài khoản khách</button>':'')+rows);
+  modal('<h3>🛠️ Admin</h3>'+espCard()+espGiftCard()+'<div class="card" style="margin:8px 0"><b>🏆 Reset top 1 tuần</b><p class="mut" style="margin:4px 0">Tự chạy một lần mỗi tuần khi bạn đăng nhập. Người đứng đầu bảng Tổng tiền bị giảm còn 15.000.</p><button class="btn alt sm" data-wr="1">Chạy ngay (bấm 2 lần)</button></div><div class="card" style="margin:8px 0"><b>📢 Thông báo cho tất cả</b><textarea id="annt" maxlength="300" rows="2" placeholder="Nội dung thông báo..." style="width:100%;background:#1a0a0e;color:var(--tx);border:1px solid var(--line);border-radius:10px;padding:8px;font:inherit;margin:6px 0"></textarea><button class="btn sm" data-an="1">Gửi</button></div><p class="mut" style="margin:0">Sửa tiền rồi bấm Lưu. Cấm = đăng xuất ngay. Xóa = xóa hồ sơ và chặn không cho đăng ký lại.</p>'+(admG.length?'<button class="btn alt sm" data-dg="1" style="margin:8px 0">🧹 Xóa '+admG.length+' tài khoản khách</button>':'')+rows);
 }
 const fmtT=ms=>{const d=new Date(ms),n=new Date(),h=d.toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'});return d.toDateString()===n.toDateString()?h:d.toLocaleDateString('vi-VN',{day:'2-digit',month:'2-digit'})+' '+h};
 const ago=ms=>{const s=Math.max(0,(Date.now()-ms)/1000);if(s<90)return 'vừa xong';if(s<3600)return Math.round(s/60)+' phút trước';if(s<86400)return Math.round(s/3600)+' giờ trước';return new Date(ms).toLocaleDateString('vi-VN')+' ('+Math.round(s/86400)+' ngày trước)'};
@@ -700,7 +707,7 @@ $('#ov').addEventListener('click',async e=>{
   if(g('data-yx')){ytStop();return audM()}
   if(b=g('data-ln')){loanDo(+b.dataset.ln);return}
   if(g('data-rp')){loanRepay();return}
-  if(b=g('data-esp')){if(!isAdm())return;ls('bc_esp',espOn()?'0':'1');b.textContent='ESP: '+(espOn()?'Bật':'Tắt');b.classList.toggle('alt',!espOn());return}
+  if(b=g('data-esp')){if(!isAdm())return;ls('bc_esp',espAdm()?'0':'1');b.textContent='ESP: '+(espAdm()?'Bật':'Tắt');b.classList.toggle('alt',!espAdm());return}
   if(b=g('data-lk')){if(!isAdm())return;ls('bc_lk',luckOn()?'0':'1');b.textContent='May mắn: '+(luckOn()?'Bật':'Tắt');b.classList.toggle('alt',!luckOn());return}
   if(b=g('data-lt'))return lbm(b.dataset.lt);
   if(g('data-rn')){
@@ -714,6 +721,17 @@ $('#ov').addEventListener('click',async e=>{
   if(b=g('data-fx')){try{await deleteDoc(doc(fdb,'pairs',b.dataset.fx))}catch(err){toast('Lỗi: '+(err.code||''))}return b.dataset.back?profM(b.dataset.back):friendsM()}
   if(b=g('data-jr')){const[gm,c]=b.dataset.jr.split('|');$('#ov').hidden=true;game=gm;return enter(c)}
   if(!isAdm())return;
+  if(b=g('data-eg')){
+    const id=$('#egu').value,dur=+$('#egd').value;if(!id)return toast('Chọn người nhận trước.');
+    const pl=admP.find(x=>x.id===id),until=now()+dur;
+    try{
+      await updateDoc(doc(fdb,'players',id),{esp:until});
+      if($('#egn').checked){const lab=ESPD.find(x=>x[0]===dur);await setDoc(doc(fdb,'config','announce'),{text:'🎂 Hôm nay là sinh nhật '+(pl?pl.name:'bạn')+'! Admin tặng ESP dự đoán trước ('+(lab?lab[1].replace(' (sinh nhật)',''):durTxt(dur))+'). Chúc mừng sinh nhật! 🎉',t:Date.now()})}
+      toast('Đã tặng ESP cho '+(pl?pl.name:'người chơi')+' ('+durTxt(dur)+')');
+    }catch(err){toast('Lỗi: '+(err.code||''))}
+    return adminM();
+  }
+  if(b=g('data-er')){try{await updateDoc(doc(fdb,'players',b.dataset.er),{esp:0});toast('Đã thu hồi ESP.')}catch(err){toast('Lỗi: '+(err.code||''))}return adminM()}
   if(b=g('data-sv')){
     const id=b.dataset.sv,v=Math.max(0,Math.floor(+document.querySelector('[data-u="'+id+'"]').value||0));
     try{await updateDoc(doc(fdb,'players',id),{money:v,adj:Date.now()});if(id===uid){me.money=v;lastAdj=Date.now()+5000;head()}toast('Đã đặt tiền = '+fmt(v))}catch(err){toast('Lỗi: '+(err.code||''))}
@@ -1276,7 +1294,7 @@ function uRender(){
   $('#unoGo').hidden=true;$('#unoBot').hidden=true;$('#unoSkip').hidden=true;
   if(!s){st.textContent='Đang vào bàn...';['unoBots','unoTop','unoDeck','unoCol','unoHand'].forEach(i=>$('#'+i).innerHTML='');return}
   const host=s.host===uid,cp=s.pl[s.cur];
-  $('#unoBots').innerHTML=s.pl.filter(p=>p.u!==uid).map(p=>{const n=(s.h&&s.h[p.u])?s.h[p.u].length:0;return '<div class="card" style="text-align:center;min-width:92px'+(s.st==='play'&&cp&&cp.u===p.u?';border-color:var(--gold)':'')+'"><b>'+esc(p.n)+(p.b?' 🤖':'')+(s.host===p.u?' 👑':'')+'</b><br>'+(s.st==='wait'?'đang chờ':'🎴 '+n+(n===1?' · UNO!':'')+(espOn()&&s.h&&s.h[p.u]?'<br><small>'+s.h[p.u].map(unoName).join(' ')+'</small>':''))+'</div>'}).join('');
+  $('#unoBots').innerHTML=s.pl.filter(p=>p.u!==uid).map(p=>{const n=(s.h&&s.h[p.u])?s.h[p.u].length:0;return '<div class="card" style="text-align:center;min-width:92px'+(s.st==='play'&&cp&&cp.u===p.u?';border-color:var(--gold)':'')+'"><b>'+esc(p.n)+(p.b?' 🤖':'')+(s.host===p.u?' 👑':'')+'</b><br>'+(s.st==='wait'?'đang chờ':'🎴 '+n+(n===1?' · UNO!':'')+(espFull()&&s.h&&s.h[p.u]?'<br><small>'+s.h[p.u].map(unoName).join(' ')+'</small>':''))+'</div>'}).join('');
   if(s.st==='wait'){
     st.textContent='Chờ người chơi ('+s.pl.length+'/'+s.cap+')';
     $('#unoGo').hidden=!(host&&s.pl.length>=2);$('#unoGo').textContent='▶ Bắt đầu';$('#unoBot').hidden=!(host&&s.pl.length<s.cap);
@@ -1539,8 +1557,8 @@ function loanRepay(){const p=Math.min(me.debt||0,Math.max(0,me.money));if(p<=0)r
 $('#ln').onclick=loanM;
 
 /* ---- ESP + may mắn (chỉ tài khoản admin) ---- */
-const espOn=()=>isAdm()&&ls('bc_esp')==='1',luckOn=()=>isAdm()&&ls('bc_lk')!=='0';
-function espCard(){return '<div class="card" style="margin:8px 0"><b>🔮 ESP và may mắn (chỉ tài khoản admin)</b><p class="mut" style="margin:4px 0">ESP: thấy trước kết quả vòng Bầu Cua/Tài Xỉu đang cược, ván Poker và lượt quay Jackpot kế tiếp, bài úp nhà cái Xì dách, bài đối thủ UNO và bot Tiến lên, gợi ý nước cờ vua. May mắn: game quay/rút bài được chọn kết quả tốt hơn, hoàn 25% khi thua Bầu Cua/Tài Xỉu, bắn cá dễ trúng hơn.</p><button class="btn '+(espOn()?'':'alt ')+'sm" data-esp="1">ESP: '+(espOn()?'Bật':'Tắt')+'</button> <button class="btn '+(luckOn()?'':'alt ')+'sm" data-lk="1">May mắn: '+(luckOn()?'Bật':'Tắt')+'</button></div>'}
+const espAdm=()=>isAdm()&&ls('bc_esp')==='1',espGift=()=>!!me&&(+me.esp||0)>now(),espOn=()=>espAdm()||espGift(),espFull=()=>espAdm(),luckOn=()=>isAdm()&&ls('bc_lk')!=='0';
+function espCard(){return '<div class="card" style="margin:8px 0"><b>🔮 ESP và may mắn (chỉ tài khoản admin)</b><p class="mut" style="margin:4px 0">ESP đầy đủ: thấy trước kết quả vòng Bầu Cua/Tài Xỉu/Đá gà/3 cây, ván Poker và lượt quay Jackpot kế tiếp, bài úp nhà cái Xì dách, bài đối thủ UNO và bot Tiến lên, gợi ý nước cờ vua. May mắn: game quay/rút bài được chọn kết quả tốt hơn, hoàn 25% khi thua các game cược theo vòng, bắn cá dễ trúng hơn.</p><button class="btn '+(espAdm()?'':'alt ')+'sm" data-esp="1">ESP: '+(espAdm()?'Bật':'Tắt')+'</button> <button class="btn '+(luckOn()?'':'alt ')+'sm" data-lk="1">May mắn: '+(luckOn()?'Bật':'Tắt')+'</button></div>'}
 const espM={};
 function espTxt(d){
   if(game==='tx')return d.map(v=>v+1).join(' - ')+' = '+sum(d)+' → '+(trip(d)?'BÃO':wins(d)===1?'TÀI':'XỈU');
@@ -1801,7 +1819,7 @@ function chSync(){
 }
 function chRender(){
   const s=CS,st=$('#chSt'),B=$('#chB'),A=$('#chAct');
-  $('#chEsp').hidden=!espOn();
+  $('#chEsp').hidden=!espFull();
   if(!s){st.textContent='Đang vào bàn...';B.innerHTML='';A.innerHTML='';$('#chTop').textContent='';$('#chBot').textContent='';return}
   const host=s.w===uid,mc=s.bl===uid?'b':'w';
   const sn=chFrom({b:s.b||CH0,turn:s.turn||'w',cas:s.cas||'',ep:s.ep==null?-1:s.ep,hm:s.hm||0});
@@ -1886,7 +1904,7 @@ $('#chAct').onclick=e=>{
   if(k==='again')return chRun(s=>{if(!s||s.st!=='over')return null;[s.w,s.bl]=[s.bl,s.w];[s.wn,s.bn]=[s.bn,s.wn];s.st='wait';s.ok=false;s.t=now();return{s}});
 };
 $('#chEsp').onclick=()=>{
-  if(!espOn()||!CS||CS.st!=='play')return;
+  if(!espFull()||!CS||CS.st!=='play')return;
   const mc=CS.w===uid?'w':'b',s=chFrom(CS);if(s.turn!==mc)return toast('Chưa tới lượt bạn.');
   toast('🔮 Đang tính nước đi...');
   setTimeout(()=>{const r=chBestMove(s);if(!r.m)return;chBest=r.m;chRender();toast('🔮 ESP gợi ý: '+chSqN(r.m.f)+' → '+chSqN(r.m.t)+(r.m.p?' ='+r.m.p.toUpperCase():''))},30);
@@ -1974,6 +1992,32 @@ document.querySelectorAll('.gart').forEach(e=>{e.innerHTML=hubArt()});
   g.addEventListener('wheel',e=>{if(Math.abs(e.deltaY)>Math.abs(e.deltaX)){g.scrollLeft+=e.deltaY;e.preventDefault()}},{passive:false});
 })();
 $('#dd').onclick=()=>{if(pend&&!bowlOn()&&(pend.g==='bc'||pend.g==='tx'))revealNow()};
+
+/* ---- Tặng ESP (quà từ admin) ---- */
+const ESPD=[[3600e3,'1 giờ'],[6*3600e3,'6 giờ'],[86400e3,'24 giờ (sinh nhật)'],[3*86400e3,'3 ngày'],[7*86400e3,'7 ngày'],[30*86400e3,'30 ngày']];
+const durTxt=ms=>{const m=Math.max(1,Math.ceil(ms/60000));return m>=1440?Math.floor(m/1440)+' ngày'+(m%1440>=60?' '+Math.floor(m%1440/60)+' giờ':''):m>=60?Math.floor(m/60)+' giờ'+(m%60?' '+(m%60)+' phút':''):m+' phút'};
+function espBadge(){
+  const e=$('#espb');if(!e)return;
+  if(!me||!espGift()){e.hidden=true;return}
+  e.hidden=false;e.textContent='🔮 ESP · còn '+durTxt((+me.esp||0)-now());e.title='Bạn đang được admin tặng ESP dự đoán trước';
+}
+function espNotice(){
+  if(!me||!uid)return;
+  const ne=+me.esp||0;if(ne<=now())return;
+  const k='bc_espseen_'+uid;if(ls(k)===String(ne))return;ls(k,String(ne));
+  const t=new Date(ne),fm=pad(t.getHours())+':'+pad(t.getMinutes())+' ngày '+pad(t.getDate())+'/'+pad(t.getMonth()+1);
+  sfx('win');
+  modal('<h3>🎁 Quà từ admin!</h3><p style="margin:6px 0">Bạn được tặng <b>🔮 ESP dự đoán trước</b>, dùng được đến <b>'+fm+'</b> (còn '+durTxt(ne-now())+').</p><ul style="margin:6px 0;padding-left:18px"><li>Bầu Cua, Tài Xỉu, Đá gà, 3 cây: thấy trước kết quả vòng đang đặt cược (dòng 🔮 phía trên bàn cược).</li><li>Mini Poker và Jackpot: thấy trước ván và lượt quay kế tiếp.</li><li>Xì dách: thấy bài úp của nhà cái và lá rút kế.</li></ul><p class="mut" style="margin:6px 0 0">Hết hạn thì ESP tự tắt. Chúc bạn chơi vui vẻ! 🎉</p>','Nhận quà 🎁');
+}
+function espGiftCard(){
+  const who=admP.filter(p=>p.id!==uid&&!p.banned).sort((a,b)=>String(a.name).localeCompare(String(b.name),'vi')),act=admP.filter(p=>+p.esp>now());
+  return '<div class="card" style="margin:8px 0"><b>🎁 Tặng ESP dự đoán trước</b><p class="mut" style="margin:4px 0">Người được tặng thấy trước kết quả vòng Bầu Cua, Tài Xỉu, Đá gà, 3 cây, ván Poker và lượt Jackpot kế tiếp, bài úp nhà cái Xì dách. Họ không xem được bài của người chơi khác và không có may mắn. Hết hạn là tự tắt, người nhận được báo ngay khi đang online.</p>'
+   +'<div style="display:flex;gap:6px;flex-wrap:wrap;margin:6px 0"><select id="egu" style="flex:1;min-width:150px">'+(who.length?who.map(p=>'<option value="'+p.id+'">'+esc(p.name)+' ('+esc(p.cls)+')'+(+p.esp>now()?' 🔮':'')+'</option>').join(''):'<option value="">Chưa có người chơi khác</option>')+'</select>'
+   +'<select id="egd">'+ESPD.map(x=>'<option value="'+x[0]+'"'+(x[0]===86400e3?' selected':'')+'>'+x[1]+'</option>').join('')+'</select></div>'
+   +'<label class="mut" style="display:flex;gap:6px;align-items:center;margin:4px 0"><input type="checkbox" id="egn" style="width:auto"> Đăng thông báo chúc mừng sinh nhật cho cả lớp</label>'
+   +'<button class="btn sm" data-eg="1">🎁 Tặng ESP</button>'
+   +(act.length?'<div style="margin-top:8px"><b>Đang có ESP ('+act.length+')</b>'+act.map(p=>'<div class="r"><span>'+esc(p.name)+' <small class="mut">('+esc(p.cls)+') · còn '+durTxt(p.esp-now())+'</small></span><button class="btn alt sm" data-er="'+p.id+'">Thu hồi</button></div>').join('')+'</div>':'')+'</div>';
+}
 
 window.__ok=1;
 $('#jn').onclick=()=>enter($('#rcode').value);
