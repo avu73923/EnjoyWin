@@ -350,6 +350,7 @@ section:not([hidden]){animation:sIn .3s ease both}
       <button class="gc" id="gCh" style="--g1:#8a5a2b"><div class="gart"></div><div class="gbig" style="font-size:clamp(44px,6.5vw,60px)">♞♛</div><div class="gt"><span>Cờ vua</span><small>2 người, cược tiền ảo</small></div></button>
       <button class="gc" id="gJp" style="--g1:#e0a800"><div class="gart"></div><div class="gtag">HOT</div><div class="gbig" style="font-size:clamp(60px,9vw,82px)">🎰</div><div class="gt"><span>Nổ hũ Jackpot</span><small>Quay nhanh, tự động quay</small></div></button>
       <button class="gc" id="gPk" style="--g1:#23935a"><div class="gart"></div><div class="gbig" style="font-size:clamp(44px,6.5vw,60px)">🃏♠️</div><div class="gt"><span>Mini Poker</span><small>Quay nhanh, tự động quay</small></div></button>
+      <button class="gc" id="gBl" style="--g1:#16708f"><div class="gart"></div><div class="gbig" style="font-size:clamp(44px,6.5vw,60px)">🎱🎯</div><div class="gt"><span>Bi-a</span><small>9 bi · có ESP dự đoán</small></div></button>
       <button class="gc" id="gUno" style="--g1:#e04a2f"><div class="gart"></div><div class="gbig" style="font-size:clamp(60px,9vw,82px)">🎴</div><div class="gt"><span>UNO</span><small>2 đến 4 người thật</small></div></button>
       <button class="gc" id="gTl" style="--g1:#2a8a8a"><div class="gart"></div><div class="gbig" style="font-size:clamp(44px,6.5vw,60px)">♠️♥️</div><div class="gt"><span>Tiến lên</span><small>Đấu với 3 bot</small></div></button>
       <button class="gc" id="gXd" style="--g1:#b8286a"><div class="gart"></div><div class="gbig" style="font-size:clamp(44px,6.5vw,60px)">♦️🂡</div><div class="gt"><span>Xì dách</span><small>Đấu với nhà cái</small></div></button>
@@ -411,6 +412,16 @@ section:not([hidden]){animation:sIn .3s ease both}
     <div class="bar"><button class="btn alt sm" id="mjBack">← Sảnh</button><b id="mjSt"></b><span><button class="btn alt sm" id="mjHint">💡 Gợi ý</button> <button class="btn alt sm" id="mjNew">Ván mới</button></span></div>
     <div id="mjBoard"></div>
     <p class="mut" style="text-align:center;font-size:13px">Chọn 2 quân giống nhau còn trống 1 bên (trái hoặc phải) và không bị đè để xóa. Xóa hết là thắng (+3.000).</p>
+  </section>
+
+
+  <section id="bl" hidden>
+    <div class="bar"><button class="btn alt sm" id="blBack">← Sảnh</button><span id="bls">Cược: <button class="btn alt sm" data-lb="1000">1.000</button> <button class="btn alt sm" data-lb="5000">5.000</button> <button class="btn alt sm" data-lb="10000">10.000</button> <button class="btn alt sm" data-lb="100000">100.000</button> <button class="btn sm" data-oth="bl">✏️ Khác</button></span></div>
+    <div id="blInfo" style="text-align:center;margin:6px 0;font-weight:800;color:var(--gold)"></div>
+    <canvas id="blCv" style="display:block;margin:0 auto;border:3px solid #d7b25a;border-radius:16px;box-shadow:0 10px 30px #000a;touch-action:none;max-width:100%"></canvas>
+    <div id="blEsp" hidden style="text-align:center;font-weight:800;color:#7ef;margin:6px 0"></div>
+    <div style="text-align:center;margin:8px 0"><button class="btn" id="blGo">🎱 Ván mới</button> <button class="btn alt" id="blAim" hidden>🎯 Tự ngắm (ESP)</button> <button class="btn" id="blFire" hidden>🔥 Bắn theo ESP</button></div>
+    <p class="mut" style="text-align:center;font-size:13px;margin:0 16px">Đặt cược rồi bấm Ván mới. Bạn có 10 lượt. Nhấn giữ trên bàn, kéo ngược hướng muốn bắn (kéo càng xa càng mạnh) rồi thả. Bi vào lỗ được thêm 1 lượt. Mỗi bi vào +0,3 lần cược, vét sạch 9 bi thưởng thêm +3 lần cược. Đánh bi trắng xuống lỗ là lỗi, bi trắng đặt lại.</p>
   </section>
 
   <section id="poker" hidden>
@@ -486,17 +497,17 @@ const OK=!firebaseConfig.apiKey.startsWith('DIEN');
 const app=initializeApp(OK?firebaseConfig:{apiKey:'x',projectId:'x',appId:'x'}),auth=getAuth(app),fdb=getFirestore(app);
 const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"']/g,c=>'&#'+c.charCodeAt(0)+';');
 const IT=[['🎃','Bầu'],['🦀','Cua'],['🐟','Cá'],['🐓','Gà'],['🦌','Nai'],['🦐','Tôm']];
-const DAILY=[5,10,25,50,75,100,100].map(x=>x*1000),CHIPS=[1000,5000,10000,50000,500000],R=30000,BET=20000,VER='3.0';
-const NEWS=['♞ Cờ vua làm lại: quân cờ vẽ đẹp, tọa độ, hiệu ứng đi quân, quân bị ăn, danh sách nước đi, chọn quân khi phong cấp','🔑 Đăng ký / đăng nhập bằng email hoặc tên đăng nhập + mật khẩu (bấm ảnh đại diện → Tài khoản đăng nhập để nâng cấp tài khoản khách hoặc Google, giữ nguyên tiền) · 🤖 Admin có nút Auto cược ở Bầu Cua, Tài Xỉu, Đá gà, 3 cây','🎨 Sảnh game căn lại, cuộn ngang mượt hơn (nút ‹ › nằm riêng, có thanh tiến trình) · giao diện bàn cược, chip, sảnh đẹp hơn · số tiền quá lớn được rút gọn (1,35e22)','🎁 Mới: admin có thể tặng ESP dự đoán trước cho người chơi (có thời hạn, hiện huy hiệu 🔮 trên thanh tiền)','🐓 Mới: Đá gà và 3 cây nhiều người · 🎰 Mini Poker và Jackpot có quay nhanh và tự động quay · sảnh game kéo ngang','♞ Mới: Cờ vua 2 người cược tiền ảo · 🏦 nút Vay tiền (nợ hiện số âm màu đỏ, người đang nợ không được lên bảng xếp hạng) · 🥣 bát che xúc xắc, kéo để xem','🎰 Mới: Nổ hũ Jackpot, hũ chung cả lớp, ai nổ 3 số 7 ăn cả hũ','🧹 Tin nhắn chat quá 1 giờ và phòng không hoạt động quá 1 giờ sẽ tự xóa để trang nhẹ hơn','🎴 UNO chơi với người thật (2-4 người)','♠️ Tiến lên · ♦️ Xì dách · 🀄 Mạt chược','🏆 Mỗi tuần người đứng top 1 bảng Tổng tiền bị giảm còn 15.000 (chỉ 1 lần mỗi tuần)'];
+const DAILY=[5,10,25,50,75,100,100].map(x=>x*1000),CHIPS=[1000,5000,10000,50000,500000],R=30000,BET=20000,VER='3.1';
+const NEWS=['🎱 Trò mới: Bi-a (9 bi, 10 lượt, thưởng theo số bi vào lỗ) có ESP dự đoán đường bi cho admin và người được tặng ESP, admin có thêm Tự ngắm','♞ Cờ vua làm lại: quân cờ vẽ đẹp, tọa độ, hiệu ứng đi quân, quân bị ăn, danh sách nước đi, chọn quân khi phong cấp','🔑 Đăng ký / đăng nhập bằng email hoặc tên đăng nhập + mật khẩu (bấm ảnh đại diện → Tài khoản đăng nhập để nâng cấp tài khoản khách hoặc Google, giữ nguyên tiền) · 🤖 Admin có nút Auto cược ở Bầu Cua, Tài Xỉu, Đá gà, 3 cây','🎨 Sảnh game căn lại, cuộn ngang mượt hơn (nút ‹ › nằm riêng, có thanh tiến trình) · giao diện bàn cược, chip, sảnh đẹp hơn · số tiền quá lớn được rút gọn (1,35e22)','🎁 Mới: admin có thể tặng ESP dự đoán trước cho người chơi (có thời hạn, hiện huy hiệu 🔮 trên thanh tiền)','🐓 Mới: Đá gà và 3 cây nhiều người · 🎰 Mini Poker và Jackpot có quay nhanh và tự động quay · sảnh game kéo ngang','♞ Mới: Cờ vua 2 người cược tiền ảo · 🏦 nút Vay tiền (nợ hiện số âm màu đỏ, người đang nợ không được lên bảng xếp hạng) · 🥣 bát che xúc xắc, kéo để xem','🎰 Mới: Nổ hũ Jackpot, hũ chung cả lớp, ai nổ 3 số 7 ăn cả hũ','🧹 Tin nhắn chat quá 1 giờ và phòng không hoạt động quá 1 giờ sẽ tự xóa để trang nhẹ hơn','🎴 UNO chơi với người thật (2-4 người)','♠️ Tiến lên · ♦️ Xì dách · 🀄 Mạt chược','🏆 Mỗi tuần người đứng top 1 bảng Tổng tiền bị giảm còn 15.000 (chỉ 1 lần mỗi tuần)'];
 const mult=()=>[0,6].includes(new Date().getDay())?5:2,AVS=['🎃','🦀','🐟','🐓','🦌','🦐','🐯','🐲'];
 const fmt=n=>{n=+n||0;return Math.abs(n)>=1e15?n.toExponential(2).replace('.',',').replace('e+','e'):n.toLocaleString('vi-VN')},day=d=>new Date(d).toLocaleDateString('sv');
 const ls=(k,v)=>{try{return v===undefined?localStorage.getItem(k):localStorage.setItem(k,v)}catch(e){return null}};
-let shown=false,pend=null,espTm=0,admP=[],hubUpd=()=>{};
+let shown=false,pend=null,espTm=0,admP=[],hubUpd=()=>{};let blEnd=()=>{};
 const abLd=()=>{try{return JSON.parse(ls('bc_ab')||'{}')||{}}catch(e){return{}}};
 let ab=Object.assign({mode:'esp',amt:1000,max:0,tiles:{bc:[0],tx:[1],dg:[0]}},abLd(),{on:false,n:0,net:0,k:''});
 let uid,unM,unC,hb,mref,raw=[],game='bc',rid='',off=0,unMe,ft,hbP,beatN=0,lastAdj=0,busy=false,pendE=0,unK;
 let db,ref,me,code,nr,lbu,joinT=0,lastC=0,loT=0,peers=[],lb=[],bets={},chip=1000,cur=-1,dice=null,tm;
-const show=id=>{for(const s of['login','prof','hub','poker','lobby','game','fish','uno','mj','tl','xd','jp','chess'])$('#'+s).hidden=s!==id;if(id==='hub'){hubOn();setTimeout(hubUpd,30)}else hubOff();if(id!=='jp'&&jp.un){jp.un();jp.un=null}};
+const show=id=>{for(const s of['login','prof','hub','poker','lobby','game','fish','uno','mj','tl','xd','jp','chess','bl'])$('#'+s).hidden=s!==id;if(id!=='bl')blEnd();if(id==='hub'){hubOn();setTimeout(hubUpd,30)}else hubOff();if(id!=='jp'&&jp.un){jp.un();jp.un=null}};
 function toast(t){const e=$('#toast');e.textContent=t;e.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>e.hidden=true,2600)}
 function modal(h,l='Đóng'){return new Promise(r=>{$('#ov').innerHTML='<div class="m">'+h+'<button class="btn" style="width:100%;margin-top:12px" id="ok">'+l+'</button></div>';$('#ov').hidden=false;$('#ok').onclick=()=>{$('#ov').hidden=true;r()}})}
 const cap=c=>{if(game==='fish')return 4;if(game==='chess')return 2;const m=/-(\d{1,2})$/.exec(c||'');const n=m?+m[1]:10,v=n>=2&&n<=10?n:10;return game==='uno'?Math.min(4,v):v};
@@ -904,13 +915,13 @@ $('#ov').addEventListener('click',async e=>{
   if(b=g('data-jr')){const[gm,c]=b.dataset.jr.split('|');$('#ov').hidden=true;game=gm;return enter(c)}
   if(!isAdm())return;
   if(b=g('data-abm')){abRead();ab.mode=b.dataset.abm;abSave();return abM()}
-  if(b=g('data-aba')){abRead();ab.amt=+b.dataset.aba;abSave();return abM()}
+  if(b=g('data-aba')){abRead();ab.amt=b.dataset.aba==='all'?'all':+b.dataset.aba;abSave();return abM()}
   if(b=g('data-abt')){abRead();const i=+b.dataset.abt,s=ab.tiles[game]||[];ab.tiles[game]=game==='bc'?(s.includes(i)?s.filter(x=>x!==i):[...s,i]):[i];abSave();return abM()}
   if(g('data-abg')){
     abRead();
     if(!AB_G.includes(game)||$('#game').hidden)return toast('Hãy vào phòng Bầu Cua, Tài Xỉu, Đá gà hoặc 3 cây trước.');
     if(ab.mode==='fix'&&game!=='tc'&&!(ab.tiles[game]||[]).length)return toast('Chọn ít nhất 1 cửa.');
-    if(!(ab.amt>0))return toast('Nhập số tiền cược hợp lệ.');
+    if(ab.amt!=='all'&&!(ab.amt>0))return toast('Nhập số tiền cược hợp lệ.');
     abSave();ab.on=true;ab.n=0;ab.net=0;ab.k='';$('#ov').hidden=true;abUi();toast('🤖 Đã bật auto cược');return;
   }
   if(b=g('data-eg')){
@@ -1803,20 +1814,21 @@ function abUi(){
   const t=ab.on?'⏹ Dừng auto · '+ab.n+(ab.max?'/'+ab.max:'')+' ván · '+(ab.net>=0?'+':'')+fmt(ab.net):'🤖 Auto cược';
   if(b.textContent!==t)b.textContent=t;b.classList.toggle('alt',!ab.on);
 }
+const abA=n=>ab.amt==='all'?Math.floor(me.money/n):ab.amt;
 function abPick(d){
-  const a=ab.amt;
-  if(game==='bc')return[...new Set(d)].map(i=>[i,a]);
+  let a=abA(1);
+  if(game==='bc'){const u=[...new Set(d)];a=abA(u.length);return u.map(i=>[i,a])}
   if(game==='tx'){const w=wins(d);return w<0?[]:[[w,a]]}
   if(game==='dg')return[[dgWin(d),a]];
   const hh=tcPts(tcHand(d[1],d[2],d[0],'house')),mm=tcPts(tcHand(d[1],d[2],d[0],uid));
   return mm>hh?[[0,a]]:[];
 }
-const abFix=()=>game==='tc'?[[0,ab.amt]]:(ab.tiles[game]||[]).map(i=>[i,ab.amt]);
+const abFix=()=>{if(game==='tc')return[[0,abA(1)]];const t=ab.tiles[game]||[],a=abA(t.length||1);return t.map(i=>[i,a])};
 function abPlace(list,id,g,r){
   if(!ab.on||cur!==id||game!==g||rid!==r||now()%R>=BET)return;
   if(!list.length)return;
   const tot=list.reduce((s,x)=>s+x[1],0);
-  if(tot>me.money)return abStop('Không đủ tiền ảo, đã dừng auto cược.');
+  if(tot<=0||tot>me.money)return abStop('Không đủ tiền ảo, đã dừng auto cược.');
   for(const[i,a]of list){me.money-=a;earn(-a);bets[i]=(bets[i]||0)+a}
   ab.n++;head();dsave();board();pushBets();sfx('chip');abUi();
 }
@@ -1832,7 +1844,7 @@ function abTick(id,t){
   else abPlace(abFix(),id,g,r);
 }
 function abRead(){
-  const a=$('#abA');if(a){const v=parseAmt(a.value);if(v>0)ab.amt=v}
+  const a=$('#abA');if(a){const v=parseAmt(a.value);if(v>0)ab.amt=v;else if(/^(all|tất cả)$/i.test(a.value.trim()))ab.amt='all'}
   const n=$('#abN');if(n)ab.max=Math.max(0,Math.min(9999,parseInt(n.value)||0));
 }
 function abM(){
@@ -1846,7 +1858,7 @@ function abM(){
      ?'<p class="mut" style="margin:8px 0">ESP: xem trước kết quả ván và chỉ đặt vào cửa thắng'+(g==='tx'?' (gặp bão thì bỏ qua)':g==='tc'?' (nếu bạn thua nhà cái thì bỏ qua)':'')+'.</p>'
      :g==='tc'?'<p class="mut" style="margin:8px 0">Cược mọi ván vào bài của bạn.</p>'
      :'<p class="mut" style="margin:8px 0 2px">Chọn cửa'+(g==='bc'?' (được chọn nhiều)':'')+':</p><div>'+ts.map((x,i)=>'<button class="btn sm'+(sel.includes(i)?'':' alt')+'" data-abt="'+i+'" style="margin:2px">'+lab(x)+'</button>').join('')+'</div>')
-   +'<p class="mut" style="margin:8px 0 2px">Tiền cược mỗi cửa:</p><div>'+A.map(a=>'<button class="btn sm'+(a===ab.amt?'':' alt')+'" data-aba="'+a+'" style="margin:2px">'+sh(a)+'</button>').join('')+'</div>'
+   +'<p class="mut" style="margin:8px 0 2px">Tiền cược mỗi cửa (ALL = đặt cả số tiền đang có, Bầu Cua chia đều các cửa):</p><div>'+A.map(a=>'<button class="btn sm'+(a===ab.amt?'':' alt')+'" data-aba="'+a+'" style="margin:2px">'+sh(a)+'</button>').join('')+'<button class="btn sm'+(ab.amt==='all'?'':' alt')+'" data-aba="all" style="margin:2px">ALL (cả tiền)</button></div>'
    +'<div class="cin" style="margin-top:6px"><input id="abA" value="'+ab.amt+'" inputmode="text" placeholder="Số tiền, ví dụ 20k, 2m"><input id="abN" value="'+(ab.max||'')+'" inputmode="numeric" placeholder="Số ván (trống = không giới hạn)"></div>'
    +'<button class="btn" data-abg="1" style="width:100%;margin-top:10px">▶ Bắt đầu auto cược</button>','Đóng');
 }
@@ -1864,8 +1876,197 @@ document.addEventListener('click',e=>{
   if(k==='pk')amtM('🃏 Mức cược Mini Poker',pk.bet,v=>{pk.bet=v;toast('Cược: '+fmt(v))});
   else if(k==='jp')amtM('🎰 Mức cược Jackpot',jp.bet,v=>{jp.bet=v;toast('Cược: '+fmt(v))});
   else if(k==='fi')amtM('🐟 Tiền mỗi phát bắn',fs.bet,v=>{fs.bet=v;toast('Mỗi phát bắn: '+fmt(v))});
+  else if(k==='bl')amtM('🎱 Mức cược Bi-a',bl.bet,v=>{bl.bet=v;toast('Cược: '+fmt(v))});
   else if(k==='ch')amtM('♟ Mức cược mỗi người',(CS&&CS.stake)||1000,v=>{if(v>me.money)return toast('Bạn không đủ tiền cho mức này.');chRun(s=>{if(!s||s.st!=='wait'||s.w!==uid)return null;s.stake=v;s.ok=false;s.t=now();return{s}})});
 });
+
+
+/* ---- Bi-a (9 bi, ESP dự đoán) ---- */
+const BW=800,BH=420,BM=34,BR=11,PR=26,BDT=1/120;
+const BPK=[[28,28],[BW/2,22],[BW-28,28],[28,BH-28],[BW/2,BH-22],[BW-28,BH-28]];
+const BCOL=['#f6f6f2','#f4c20d','#1f5fd1','#e03a3a','#7b3fb5','#f07a1a','#1d8a3c','#8b1a1a','#222','#f4c20d'];
+const bl={bet:1000,on:false,st:'idle',balls:[],shots:10,got:0,stake:0,pt:[],acc:0,last:0,raf:0,drag:null,aim:null,pred:null,auto:false,msg:''};
+const blSpd=p=>80+p*920,blMoving=bs=>bs.some(b=>!b.in&&(b.vx||b.vy));
+function blStep(bs){
+  const pot=[];
+  for(const b of bs){
+    if(b.in)continue;
+    b.x+=b.vx*BDT;b.y+=b.vy*BDT;b.vx*=.99129;b.vy*=.99129;
+    if(b.vx*b.vx+b.vy*b.vy<64){b.vx=b.vy=0}
+    for(const q of BPK){const dx=b.x-q[0],dy=b.y-q[1];if(dx*dx+dy*dy<PR*PR){b.in=true;b.vx=b.vy=0;pot.push(b.n);break}}
+    if(b.in)continue;
+    if(b.x<BM+BR){b.x=BM+BR;b.vx=Math.abs(b.vx)*.86}else if(b.x>BW-BM-BR){b.x=BW-BM-BR;b.vx=-Math.abs(b.vx)*.86}
+    if(b.y<BM+BR){b.y=BM+BR;b.vy=Math.abs(b.vy)*.86}else if(b.y>BH-BM-BR){b.y=BH-BM-BR;b.vy=-Math.abs(b.vy)*.86}
+  }
+  for(let i=0;i<bs.length;i++){const a=bs[i];if(a.in)continue;
+    for(let j=i+1;j<bs.length;j++){const c=bs[j];if(c.in)continue;
+      const dx=c.x-a.x,dy=c.y-a.y,d2=dx*dx+dy*dy;if(d2>=4*BR*BR||d2===0)continue;
+      const d=Math.sqrt(d2),nx=dx/d,ny=dy/d,ov=2*BR-d;
+      a.x-=nx*ov/2;a.y-=ny*ov/2;c.x+=nx*ov/2;c.y+=ny*ov/2;
+      const rv=(a.vx-c.vx)*nx+(a.vy-c.vy)*ny;
+      if(rv>0){const k=rv*.97;a.vx-=k*nx;a.vy-=k*ny;c.vx+=k*nx;c.vy+=k*ny}
+    }}
+  return pot;
+}
+function blSim(bs0,ang,pw,light){
+  const bs=bs0.map(b=>({...b})),cue=bs.find(b=>b.n===0);if(!cue||cue.in)return null;
+  const sp=blSpd(pw);cue.vx=Math.cos(ang)*sp;cue.vy=Math.sin(ang)*sp;
+  const tr={};if(!light)for(const b of bs)tr[b.n]=[[b.x,b.y]];
+  const potted=[];let k=0;
+  while(k<1600&&blMoving(bs)){
+    for(const n of blStep(bs))potted.push(n);k++;
+    if(!light&&k%6===0)for(const b of bs)if(!b.in&&(b.vx||b.vy))tr[b.n].push([b.x,b.y]);
+  }
+  if(!light)for(const b of bs)if(tr[b.n].length>1||b.in)tr[b.n].push([b.x,b.y]);
+  return{tr,potted};
+}
+function blRack(){
+  const bs=[{n:0,x:BW*.27,y:BH/2,vx:0,vy:0,in:false}];
+  const rest=[2,3,4,5,6,7,8].map(v=>[Math.random(),v]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]);
+  const rows=[[1],[rest[0],rest[1]],[rest[2],9,rest[3]],[rest[4],rest[5]],[rest[6]]],d=2*BR+.6,ax=BW*.68;
+  rows.forEach((r,i)=>r.forEach((n,j)=>bs.push({n,x:ax+i*d*.866,y:BH/2+(j-(r.length-1)/2)*d,vx:0,vy:0,in:false})));
+  return bs;
+}
+const blPay=()=>Math.floor(bl.stake*(.3*bl.got+(bl.got>=9?3:0)));
+function blInfo(){
+  const e=$('#blInfo');if(!e)return;
+  e.textContent=bl.on?'Lượt còn: '+bl.shots+' · Bi vào: '+bl.got+'/9 · Thưởng tạm: '+fmt(blPay())+(bl.msg?' · '+bl.msg:''):'Chọn mức cược rồi bấm 🎱 Ván mới (cược '+fmt(bl.bet)+')';
+  const idle=bl.on&&bl.st==='idle',fu=idle&&espFull();
+  $('#blAim').hidden=!fu;$('#blFire').hidden=!(fu&&bl.auto&&bl.aim);
+  $('#blGo').textContent=bl.on&&bl.st!=='over'?'🎱 Đang chơi':'🎱 Ván mới';
+}
+function blEspUpd(){
+  const e=$('#blEsp');if(!e)return;
+  if(!espOn()||!(bl.on&&bl.st==='idle')){e.hidden=true;return}
+  e.hidden=false;
+  if(!bl.pred){e.textContent='🔮 ESP: kéo để ngắm, đường bi sẽ hiện ra'+(espFull()?', hoặc bấm 🎯 Tự ngắm':'');return}
+  const o=bl.pred.potted.filter(n=>n>0);
+  e.textContent='🔮 ESP: cú này '+(o.length?'vào '+o.length+' bi ('+o.join(', ')+')':'không có bi nào vào')+(bl.pred.potted.includes(0)?' · ⚠️ bi trắng xuống lỗ':'');
+}
+function blStart(){
+  if(bl.on&&bl.st!=='over')return toast('Đang trong ván.');
+  if(bl.bet<100||me.money<bl.bet)return toast('Không đủ tiền ảo cho mức cược này.');
+  me.money-=bl.bet;earn(-bl.bet);head();dsave();
+  Object.assign(bl,{on:true,st:'idle',balls:blRack(),shots:10,got:0,stake:bl.bet,pt:[],aim:null,pred:null,auto:false,msg:''});
+  blInfo();blEspUpd();
+}
+function blFinish(){
+  if(!bl.on||bl.st==='over')return;
+  bl.st='over';const p=blPay();
+  if(p>0){me.money+=p;earn(p);save()}else head();
+  bl.msg=p>bl.stake?'🎉 Thắng +'+fmt(p-bl.stake):p>0?'Nhận lại '+fmt(p):'😢 Thua -'+fmt(bl.stake);
+  toast(bl.msg+' (thưởng '+fmt(p)+')');sfx(p>bl.stake?'win':'lose');blInfo();blEspUpd();
+}
+blEnd=()=>{if(bl.on&&bl.st!=='over')blFinish()};
+function blShoot(a,p){
+  const c=bl.balls.find(b=>b.n===0);if(!c||c.in||bl.st!=='idle'||!bl.on)return;
+  bl.shots--;c.vx=Math.cos(a)*blSpd(p);c.vy=Math.sin(a)*blSpd(p);
+  bl.pt=[];bl.st='run';bl.acc=0;bl.aim=null;bl.pred=null;bl.auto=false;bl.msg='';sfx('shot');blInfo();blEspUpd();
+}
+function blEndShot(){
+  bl.st='idle';const foul=bl.pt.includes(0),objs=bl.pt.filter(n=>n>0);
+  bl.got+=objs.length;
+  if(foul){
+    const c=bl.balls.find(b=>b.n===0);c.in=false;c.vx=c.vy=0;c.x=BW*.27;c.y=BH/2;
+    for(let k=0;k<30&&bl.balls.some(b=>b!==c&&!b.in&&Math.hypot(b.x-c.x,b.y-c.y)<2*BR+1);k++)c.x+=BR;
+    bl.msg='Lỗi: bi trắng xuống lỗ';
+  }else if(objs.length){bl.shots++;bl.msg='+1 lượt!'}
+  if(bl.got>=9||bl.shots<=0)blFinish();else{blInfo();blEspUpd()}
+}
+function blBall(c,b){
+  const x=b.x,y=b.y,r=BR;
+  c.fillStyle='rgba(0,0,0,.28)';c.beginPath();c.ellipse(x+2,y+4,r,r*.8,0,0,7);c.fill();
+  c.save();c.beginPath();c.arc(x,y,r,0,7);c.clip();
+  c.fillStyle=b.n===9?'#f8f8f2':BCOL[b.n];c.fillRect(x-r,y-r,2*r,2*r);
+  if(b.n===9){c.fillStyle=BCOL[9];c.fillRect(x-r,y-r*.55,2*r,r*1.1)}
+  c.restore();
+  if(b.n>0){c.fillStyle='#fff';c.beginPath();c.arc(x,y,r*.46,0,7);c.fill();c.fillStyle='#111';c.font='bold 7.5px sans-serif';c.textAlign='center';c.textBaseline='middle';c.fillText(b.n,x,y+.5)}
+  const g=c.createRadialGradient(x-r*.4,y-r*.45,1,x,y,r);g.addColorStop(0,'rgba(255,255,255,.75)');g.addColorStop(.35,'rgba(255,255,255,.08)');g.addColorStop(1,'rgba(0,0,0,.35)');
+  c.fillStyle=g;c.beginPath();c.arc(x,y,r,0,7);c.fill();
+}
+function blDraw(){
+  const cv=$('#blCv');if(!cv)return;const c=cv.getContext('2d'),sc=cv.width/BW;
+  c.setTransform(sc,0,0,sc,0,0);c.globalAlpha=1;c.textAlign='left';c.textBaseline='alphabetic';
+  const wd=c.createLinearGradient(0,0,0,BH);wd.addColorStop(0,'#8a5a2b');wd.addColorStop(.5,'#5e3a17');wd.addColorStop(1,'#3d230d');
+  c.fillStyle=wd;c.beginPath();c.roundRect(0,0,BW,BH,22);c.fill();
+  c.strokeStyle='#e9c46a99';c.lineWidth=2;c.beginPath();c.roundRect(6,6,BW-12,BH-12,18);c.stroke();
+  c.fillStyle='#f3d98a';for(let i=1;i<8;i++){if(i===4)continue;for(const y of[BM/2,BH-BM/2]){c.beginPath();c.arc(BW*i/8,y,2.6,0,7);c.fill()}}
+  for(let i=1;i<4;i++)for(const x of[BM/2,BW-BM/2]){c.beginPath();c.arc(x,BH*i/4,2.6,0,7);c.fill()}
+  const f=c.createRadialGradient(BW/2,BH/2,40,BW/2,BH/2,BW*.6);f.addColorStop(0,'#2fa05f');f.addColorStop(1,'#146b3a');
+  c.fillStyle=f;c.fillRect(BM,BM,BW-2*BM,BH-2*BM);
+  c.strokeStyle='rgba(255,255,255,.12)';c.lineWidth=1.5;c.beginPath();c.moveTo(BW*.27,BM);c.lineTo(BW*.27,BH-BM);c.stroke();
+  c.strokeStyle='rgba(0,0,0,.35)';c.lineWidth=3;c.strokeRect(BM,BM,BW-2*BM,BH-2*BM);
+  for(const q of BPK){const g=c.createRadialGradient(q[0],q[1],2,q[0],q[1],22);g.addColorStop(0,'#000');g.addColorStop(1,'#1a1a1a');c.fillStyle=g;c.beginPath();c.arc(q[0],q[1],21,0,7);c.fill();c.strokeStyle='#c9a24a';c.lineWidth=2;c.stroke()}
+  const cue=bl.balls.find(b=>b.n===0);
+  if(bl.on&&bl.st==='idle'&&bl.pred&&espOn()){
+    c.save();c.lineWidth=2;c.lineJoin='round';
+    for(const n in bl.pred.tr){const t=bl.pred.tr[n];if(t.length<2)continue;
+      c.strokeStyle=n==='0'?'rgba(255,255,255,.95)':BCOL[n];c.globalAlpha=n==='0'?1:.85;c.setLineDash(n==='0'?[7,6]:[]);
+      c.beginPath();c.moveTo(t[0][0],t[0][1]);for(const p of t)c.lineTo(p[0],p[1]);c.stroke();
+      if(bl.pred.potted.includes(+n)){const e=t[t.length-1];c.globalAlpha=1;c.setLineDash([]);c.strokeStyle='#7dffb0';c.lineWidth=3;c.beginPath();c.arc(e[0],e[1],17,0,7);c.stroke();c.lineWidth=2}
+    }
+    c.restore();
+  }
+  for(const b of bl.balls)if(!b.in)blBall(c,b);
+  if(bl.on&&bl.st==='idle'&&cue&&!cue.in){
+    const a=bl.aim;
+    if(a){
+      const dx=Math.cos(a.a),dy=Math.sin(a.a);
+      if(!(espOn()&&bl.pred)){c.strokeStyle='rgba(255,255,255,.7)';c.lineWidth=2;c.setLineDash([2,7]);c.lineCap='round';c.beginPath();c.moveTo(cue.x+dx*BR*1.4,cue.y+dy*BR*1.4);c.lineTo(cue.x+dx*170,cue.y+dy*170);c.stroke();c.setLineDash([])}
+      const off=BR+8+a.p*70,sx=cue.x-dx*off,sy=cue.y-dy*off,ex=cue.x-dx*(off+230),ey=cue.y-dy*(off+230);
+      const g=c.createLinearGradient(sx,sy,ex,ey);g.addColorStop(0,'#f1d9a0');g.addColorStop(.06,'#d9a95a');g.addColorStop(1,'#6b3f17');
+      c.strokeStyle=g;c.lineWidth=6;c.lineCap='round';c.beginPath();c.moveTo(sx,sy);c.lineTo(ex,ey);c.stroke();
+      c.fillStyle='rgba(0,0,0,.55)';c.beginPath();c.roundRect(BM+8,BH-BM-22,110,12,6);c.fill();
+      c.fillStyle=a.p>.8?'#ff5a5a':a.p>.45?'#f6c744':'#7dffb0';c.beginPath();c.roundRect(BM+8,BH-BM-22,Math.max(4,110*a.p),12,6);c.fill();
+    }
+  }
+  if(!bl.on||bl.st==='over'){
+    c.fillStyle='rgba(0,0,0,.45)';c.fillRect(BM,BM,BW-2*BM,BH-2*BM);c.fillStyle='#fff';c.textAlign='center';c.font='bold 28px sans-serif';
+    c.fillText(bl.st==='over'?bl.msg:'🎱 Bi-a 9 bi',BW/2,BH/2-6);c.font='16px sans-serif';c.fillText('Bấm "Ván mới" để chơi',BW/2,BH/2+26);
+  }
+}
+function blLoop(ts){
+  if($('#bl').hidden){bl.raf=0;return}
+  const dt=Math.min(.05,(ts-(bl.last||ts))/1000);bl.last=ts;
+  if(bl.st==='run'&&bl.on){
+    bl.acc+=dt;let n=0;
+    while(bl.acc>=BDT&&n<20){bl.acc-=BDT;n++;for(const x of blStep(bl.balls)){bl.pt.push(x);sfx('chip')}if(!blMoving(bl.balls)){blEndShot();break}}
+  }
+  blDraw();bl.raf=requestAnimationFrame(blLoop);
+}
+function blSize(){const cv=$('#blCv');if(!cv)return;const w=Math.round(Math.max(280,Math.min(900,innerWidth-24,(innerHeight-200)*BW/BH))),dp=Math.min(2,window.devicePixelRatio||1),hh=Math.round(w*BH/BW);cv.width=Math.round(w*dp);cv.height=Math.round(hh*dp);cv.style.width=w+'px';cv.style.height=hh+'px'}
+addEventListener('resize',()=>{if(!$('#bl').hidden)blSize()});
+const blPos=e=>{const r=$('#blCv').getBoundingClientRect();return[(e.clientX-r.left)*BW/r.width,(e.clientY-r.top)*BH/r.height]};
+function blDrag(e){
+  if(!bl.drag)return;const q=blPos(e),dx=bl.drag[0]-q[0],dy=bl.drag[1]-q[1],len=Math.hypot(dx,dy);
+  if(len<10){bl.aim=null;bl.pred=null;blEspUpd();return}
+  bl.auto=false;bl.aim={a:Math.atan2(dy,dx),p:Math.min(1,len/170)};
+  bl.pred=espOn()?blSim(bl.balls,bl.aim.a,bl.aim.p):null;blEspUpd();
+}
+$('#blCv').onpointerdown=e=>{if(!(bl.on&&bl.st==='idle'))return;bl.drag=blPos(e);try{$('#blCv').setPointerCapture(e.pointerId)}catch(x){}e.preventDefault()};
+$('#blCv').onpointermove=blDrag;
+$('#blCv').onpointerup=e=>{
+  if(!bl.drag)return;blDrag(e);bl.drag=null;
+  if(bl.aim&&bl.aim.p>.06)blShoot(bl.aim.a,bl.aim.p);else{bl.aim=null;bl.pred=null;blEspUpd()}
+};
+$('#blCv').onpointercancel=()=>{bl.drag=null;bl.aim=null;bl.pred=null};
+$('#blGo').onclick=blStart;
+$('#blAim').onclick=()=>{
+  if(!(bl.on&&bl.st==='idle')||!espFull())return;toast('Đang tính cú đánh tốt nhất...');
+  setTimeout(()=>{
+    let best=null;
+    for(let d=0;d<360;d+=1.5)for(const p of[.5,.75,1]){
+      const a=d*Math.PI/180,s=blSim(bl.balls,a,p,true);if(!s)continue;
+      const sc=s.potted.filter(n=>n>0).length*10-(s.potted.includes(0)?25:0)-p;
+      if(!best||sc>best.sc)best={a,p,sc};
+    }
+    if(!best)return;bl.aim={a:best.a,p:best.p};bl.auto=true;bl.pred=blSim(bl.balls,best.a,best.p);blInfo();blEspUpd();
+  },30);
+};
+$('#blFire').onclick=()=>{if(bl.aim&&bl.auto)blShoot(bl.aim.a,bl.aim.p)};
+$('#bls').onclick=e=>{const b=e.target.closest('[data-lb]');if(b){bl.bet=+b.dataset.lb;toast('Cược: '+fmt(bl.bet));blInfo()}};
+$('#blBack').onclick=()=>{blEnd();clearTimeout(ft);save();show('hub')};
+$('#gBl').onclick=()=>{show('bl');blSize();blInfo();blEspUpd();if(!bl.raf){bl.last=0;bl.raf=requestAnimationFrame(blLoop)}};
 
 /* ---- Vay tiền ---- */
 const MAXDEBT=100000;
