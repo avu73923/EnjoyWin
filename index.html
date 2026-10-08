@@ -497,12 +497,12 @@ const OK=!firebaseConfig.apiKey.startsWith('DIEN');
 const app=initializeApp(OK?firebaseConfig:{apiKey:'x',projectId:'x',appId:'x'}),auth=getAuth(app),fdb=getFirestore(app);
 const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"']/g,c=>'&#'+c.charCodeAt(0)+';');
 const IT=[['🎃','Bầu'],['🦀','Cua'],['🐟','Cá'],['🐓','Gà'],['🦌','Nai'],['🦐','Tôm']];
-const DAILY=[5,10,25,50,75,100,100].map(x=>x*1000),CHIPS=[1000,5000,10000,50000,500000],R=30000,BET=20000,VER='3.1';
-const NEWS=['🎱 Trò mới: Bi-a (9 bi, 10 lượt, thưởng theo số bi vào lỗ) có ESP dự đoán đường bi cho admin và người được tặng ESP, admin có thêm Tự ngắm','♞ Cờ vua làm lại: quân cờ vẽ đẹp, tọa độ, hiệu ứng đi quân, quân bị ăn, danh sách nước đi, chọn quân khi phong cấp','🔑 Đăng ký / đăng nhập bằng email hoặc tên đăng nhập + mật khẩu (bấm ảnh đại diện → Tài khoản đăng nhập để nâng cấp tài khoản khách hoặc Google, giữ nguyên tiền) · 🤖 Admin có nút Auto cược ở Bầu Cua, Tài Xỉu, Đá gà, 3 cây','🎨 Sảnh game căn lại, cuộn ngang mượt hơn (nút ‹ › nằm riêng, có thanh tiến trình) · giao diện bàn cược, chip, sảnh đẹp hơn · số tiền quá lớn được rút gọn (1,35e22)','🎁 Mới: admin có thể tặng ESP dự đoán trước cho người chơi (có thời hạn, hiện huy hiệu 🔮 trên thanh tiền)','🐓 Mới: Đá gà và 3 cây nhiều người · 🎰 Mini Poker và Jackpot có quay nhanh và tự động quay · sảnh game kéo ngang','♞ Mới: Cờ vua 2 người cược tiền ảo · 🏦 nút Vay tiền (nợ hiện số âm màu đỏ, người đang nợ không được lên bảng xếp hạng) · 🥣 bát che xúc xắc, kéo để xem','🎰 Mới: Nổ hũ Jackpot, hũ chung cả lớp, ai nổ 3 số 7 ăn cả hũ','🧹 Tin nhắn chat quá 1 giờ và phòng không hoạt động quá 1 giờ sẽ tự xóa để trang nhẹ hơn','🎴 UNO chơi với người thật (2-4 người)','♠️ Tiến lên · ♦️ Xì dách · 🀄 Mạt chược','🏆 Mỗi tuần người đứng top 1 bảng Tổng tiền bị giảm còn 15.000 (chỉ 1 lần mỗi tuần)'];
+const DAILY=[5,10,25,50,75,100,100].map(x=>x*1000),CHIPS=[1000,5000,10000,50000,500000],R=30000,BET=20000,VER='3.2';
+const NEWS=['💹 Admin chỉnh được hệ số thưởng của Bầu Cua, Tài Xỉu, Đá gà, 3 cây (ví dụ x5 = thắng nhận 5 lần tiền cược), áp dụng cho mọi người chơi · chỉ admin đổi được','🎱 Trò mới: Bi-a (9 bi, 10 lượt, thưởng theo số bi vào lỗ) có ESP dự đoán đường bi cho admin và người được tặng ESP, admin có thêm Tự ngắm','♞ Cờ vua làm lại: quân cờ vẽ đẹp, tọa độ, hiệu ứng đi quân, quân bị ăn, danh sách nước đi, chọn quân khi phong cấp','🔑 Đăng ký / đăng nhập bằng email hoặc tên đăng nhập + mật khẩu (bấm ảnh đại diện → Tài khoản đăng nhập để nâng cấp tài khoản khách hoặc Google, giữ nguyên tiền) · 🤖 Admin có nút Auto cược ở Bầu Cua, Tài Xỉu, Đá gà, 3 cây','🎨 Sảnh game căn lại, cuộn ngang mượt hơn (nút ‹ › nằm riêng, có thanh tiến trình) · giao diện bàn cược, chip, sảnh đẹp hơn · số tiền quá lớn được rút gọn (1,35e22)','🎁 Mới: admin có thể tặng ESP dự đoán trước cho người chơi (có thời hạn, hiện huy hiệu 🔮 trên thanh tiền)','🐓 Mới: Đá gà và 3 cây nhiều người · 🎰 Mini Poker và Jackpot có quay nhanh và tự động quay · sảnh game kéo ngang','♞ Mới: Cờ vua 2 người cược tiền ảo · 🏦 nút Vay tiền (nợ hiện số âm màu đỏ, người đang nợ không được lên bảng xếp hạng) · 🥣 bát che xúc xắc, kéo để xem','🎰 Mới: Nổ hũ Jackpot, hũ chung cả lớp, ai nổ 3 số 7 ăn cả hũ','🧹 Tin nhắn chat quá 1 giờ và phòng không hoạt động quá 1 giờ sẽ tự xóa để trang nhẹ hơn','🎴 UNO chơi với người thật (2-4 người)','♠️ Tiến lên · ♦️ Xì dách · 🀄 Mạt chược','🏆 Mỗi tuần người đứng top 1 bảng Tổng tiền bị giảm còn 15.000 (chỉ 1 lần mỗi tuần)'];
 const mult=()=>[0,6].includes(new Date().getDay())?5:2,AVS=['🎃','🦀','🐟','🐓','🦌','🦐','🐯','🐲'];
 const fmt=n=>{n=+n||0;return Math.abs(n)>=1e15?n.toExponential(2).replace('.',',').replace('e+','e'):n.toLocaleString('vi-VN')},day=d=>new Date(d).toLocaleDateString('sv');
 const ls=(k,v)=>{try{return v===undefined?localStorage.getItem(k):localStorage.setItem(k,v)}catch(e){return null}};
-let shown=false,pend=null,espTm=0,admP=[],hubUpd=()=>{};let blEnd=()=>{};
+let shown=false,pend=null,espTm=0,admP=[],hubUpd=()=>{};let unCfg=null,CFG={};let blEnd=()=>{};
 const abLd=()=>{try{return JSON.parse(ls('bc_ab')||'{}')||{}}catch(e){return{}}};
 let ab=Object.assign({mode:'esp',amt:1000,max:0,tiles:{bc:[0],tx:[1],dg:[0]}},abLd(),{on:false,n:0,net:0,k:''});
 let uid,unM,unC,hb,mref,raw=[],game='bc',rid='',off=0,unMe,ft,hbP,beatN=0,lastAdj=0,busy=false,pendE=0,unK;
@@ -511,7 +511,7 @@ const show=id=>{for(const s of['login','prof','hub','poker','lobby','game','fish
 function toast(t){const e=$('#toast');e.textContent=t;e.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>e.hidden=true,2600)}
 function modal(h,l='Đóng'){return new Promise(r=>{$('#ov').innerHTML='<div class="m">'+h+'<button class="btn" style="width:100%;margin-top:12px" id="ok">'+l+'</button></div>';$('#ov').hidden=false;$('#ok').onclick=()=>{$('#ov').hidden=true;r()}})}
 const cap=c=>{if(game==='fish')return 4;if(game==='chess')return 2;const m=/-(\d{1,2})$/.exec(c||'');const n=m?+m[1]:10,v=n>=2&&n<=10?n:10;return game==='uno'?Math.min(4,v):v};
-function head(){$('#who').textContent=me.name+' · '+me.cls;$('#av').textContent=me.av||(me.name.trim().split(/\s+/).pop()[0]||'?').toUpperCase();$('#wk').hidden=false;$('#wk').textContent=mult()===5?'🔥 Cuối tuần: đoán trúng nhận x5 tiền cược!':'Đoán trúng nhận x2 tiền cược (thứ 7, chủ nhật x5)';$('#mny').textContent=fmt(me.money);$('#dbt').textContent=me.debt?'-'+fmt(me.debt):'';espBadge();{const gb=$('#guestBn');if(gb)gb.hidden=!me.guest;const u=auth.currentUser,av=$('#admVer');if(av)av.hidden=!(u&&u.email&&u.email.toLowerCase()===ADMIN&&!u.emailVerified)}$('#rs').hidden=!(me.money<1000&&me.lastRescue!==day(Date.now()))}
+function head(){$('#who').textContent=me.name+' · '+me.cls;$('#av').textContent=me.av||(me.name.trim().split(/\s+/).pop()[0]||'?').toUpperCase();$('#wk').hidden=false;$('#wk').textContent=payTxt()||(mult()===5?'🔥 Cuối tuần: đoán trúng nhận x5 tiền cược!':'Đoán trúng nhận x2 tiền cược (thứ 7, chủ nhật x5)');$('#mny').textContent=fmt(me.money);$('#dbt').textContent=me.debt?'-'+fmt(me.debt):'';espBadge();{const gb=$('#guestBn');if(gb)gb.hidden=!me.guest;const u=auth.currentUser,av=$('#admVer');if(av)av.hidden=!(u&&u.email&&u.email.toLowerCase()===ADMIN&&!u.emailVerified)}$('#rs').hidden=!(me.money<1000&&me.lastRescue!==day(Date.now()))}
 const AUTHM={'auth/invalid-email':'Email hoặc tên đăng nhập không hợp lệ.','auth/invalid-credential':'Sai tài khoản hoặc mật khẩu.','auth/wrong-password':'Sai tài khoản hoặc mật khẩu.','auth/user-not-found':'Sai tài khoản hoặc mật khẩu.','auth/invalid-login-credentials':'Sai tài khoản hoặc mật khẩu.','auth/email-already-in-use':'Tài khoản hoặc email này đã được đăng ký rồi, hãy bấm Đăng nhập.','auth/weak-password':'Mật khẩu quá yếu, hãy dùng ít nhất 6 ký tự.','auth/too-many-requests':'Thử quá nhiều lần, hãy chờ vài phút rồi thử lại.','auth/network-request-failed':'Mất mạng, hãy kiểm tra kết nối.','auth/requires-recent-login':'Hãy đăng xuất, đăng nhập lại rồi thử lại.','auth/provider-already-linked':'Tài khoản này đã có mật khẩu rồi.','auth/credential-already-in-use':'Email này đã thuộc về một tài khoản khác.','auth/user-disabled':'Tài khoản này đã bị khóa.'};
 const authMsg=e=>{const c=(e&&e.code)||'';return AUTHM[c]||('Lỗi '+(c||e)+'.')};
 const errShow=t=>{const el=$('#err');el.hidden=false;el.textContent=t};
@@ -544,7 +544,7 @@ async function mk(){
 }
 async function start(){
   show('hub');$('#top').hidden=false;$('#adm').hidden=!isAdm();$('#bAnn').hidden=!isAdm();if(!me.createdAt){me.createdAt=Date.now();save()}head();
-  db=1;syncT();watchMe();watchAnn();
+  db=1;syncT();watchMe();watchAnn();watchCfg();
   if(!me.fid){me.fid=gc(6);updateDoc(ref,{fid:me.fid}).catch(()=>{})}
   clearInterval(hbP);beat();hbP=setInterval(beat,90000);
   clearInterval(maTm);maTm=setInterval(maint,300000);sweepRooms();clearInterval(espTm);espTm=setInterval(()=>{if(me)head()},20000);
@@ -599,7 +599,7 @@ function chk(){
 function leave(){clearInterval(tm);cancelAnimationFrame(fs.raf);leaveRoom();code='';show('lobby')}
 const logout=()=>signOut(auth).then(()=>toast('Đã đăng xuất'));
 const lo=()=>{if(Date.now()-loT<3000)return logout();loT=Date.now();toast('Bấm 🚪 lần nữa để đăng xuất')};
-function cleanup(){clearInterval(espTm);clearInterval(tm);clearInterval(hbP);clearInterval(maTm);if(unMe){unMe();unMe=null}if(unAnn){unAnn();unAnn=null}ytStop();cancelAnimationFrame(fs.raf);leaveRoom();code='';if(lbu){lbu();lbu=null}ref=me=null;db=0;lb=[];$('#top').hidden=true;$('#wk').hidden=true;$('#liP').value='';$('#liP2').value='';liReg=false;liUi();show('login')}
+function cleanup(){if(unCfg){unCfg();unCfg=null}CFG={};clearInterval(espTm);clearInterval(tm);clearInterval(hbP);clearInterval(maTm);if(unMe){unMe();unMe=null}if(unAnn){unAnn();unAnn=null}ytStop();cancelAnimationFrame(fs.raf);leaveRoom();code='';if(lbu){lbu();lbu=null}ref=me=null;db=0;lb=[];$('#top').hidden=true;$('#wk').hidden=true;$('#liP').value='';$('#liP2').value='';liReg=false;liUi();show('login')}
 function chatAdd(n,t,m,id='cl',u,ts){
   const l=$('#'+id),d=document.createElement('div'),b=document.createElement('b');
   d.className='cm'+(m?' me':'');b.textContent=n+': ';if(u){b.className='nm';b.dataset.pu=u}if(ts)d.dataset.t=ts;d.append(b,document.createTextNode(t));if(ts){const s=document.createElement('small');s.className='mut';s.style.marginLeft='6px';s.textContent=fmtT(ts);d.append(s)}l.append(d);
@@ -673,14 +673,21 @@ async function getRound(id,rm=rid){
   }
   return null;
 }
+const PAYG={bc:'Bầu Cua',tx:'Tài Xỉu',dg:'Đá gà',tc:'3 cây'};
+function payF(g){const o=+CFG[g];if(o>0)return o;return g==='bc'?1+mult():g==='tx'?mult():1.95}
+function payTxt(){const k=Object.keys(PAYG).filter(x=>+CFG[x]>0);return k.length?'⚙️ Admin chỉnh thưởng: '+k.map(x=>PAYG[x]+' x'+(+CFG[x])).join(' · '):''}
+function watchCfg(){
+  if(unCfg)unCfg();
+  unCfg=onSnapshot(doc(fdb,'config','payout'),s=>{CFG=s.exists()?s.data():{};if(me)head();if(!$('#game').hidden&&!$('#bd').hidden)board()},()=>{});
+}
 function settle(d,b,curRound,g=game){
   let ret=0,stake=0;
   for(const i in b){
     stake+=b[i];
-    if(g==='tx'){if(wins(d)==i)ret+=b[i]*mult()}
-    else if(g==='dg'){if(dgWin(d)==i)ret+=Math.floor(b[i]*1.95)}
-    else if(g==='tc'){const hh=tcPts(tcHand(d[1],d[2],d[0],'house')),mm=tcPts(tcHand(d[1],d[2],d[0],uid));if(mm>hh)ret+=Math.floor(b[i]*1.95);else if(mm===hh)ret+=b[i]}
-    else{const k=d.filter(v=>v==i).length;if(k)ret+=b[i]*(1+mult())}
+    if(g==='tx'){if(wins(d)==i)ret+=b[i]*payF('tx')}
+    else if(g==='dg'){if(dgWin(d)==i)ret+=Math.floor(b[i]*payF('dg'))}
+    else if(g==='tc'){const hh=tcPts(tcHand(d[1],d[2],d[0],'house')),mm=tcPts(tcHand(d[1],d[2],d[0],uid));if(mm>hh)ret+=Math.floor(b[i]*payF('tc'));else if(mm===hh)ret+=b[i]}
+    else{const k=d.filter(v=>v==i).length;if(k)ret+=b[i]*payF('bc')}
   }
   if(curRound){shown=true;board()}
   if(!stake)return;
@@ -825,7 +832,7 @@ async function adminM(){
     admG=s.docs.filter(d=>d.data().guest&&d.id!==uid).map(d=>d.id);admP=s.docs.map(d=>({id:d.id,...d.data()}));
     rows=s.docs.map(d=>{const p=d.data();return '<div class="r" style="flex-wrap:wrap"><span>'+esc(p.name)+' <small class="mut">('+esc(p.cls)+')'+(p.banned?' 🚫':'')+(+p.esp>now()?' 🔮':'')+(d.id===uid?' (tôi)':'')+(p.guest?' · khách':'')+'</small></span><span><input data-u="'+d.id+'" type="number" min="0" value="'+(+p.money||0)+'" style="width:110px;padding:6px"> <button class="btn sm" data-sv="'+d.id+'">Lưu</button> <button class="btn alt sm" data-bn="'+d.id+'" data-b="'+(p.banned?1:0)+'">'+(p.banned?'Mở khóa':'Cấm')+'</button>'+(d.id===uid?'':' <button class="btn alt sm" data-dl="'+d.id+'">Xóa</button>')+'</span></div>'}).join('');
   }catch(e){rows='<p class="mut">Không tải được: '+esc(e.code||'')+'</p>'}
-  modal('<h3>🛠️ Admin</h3>'+espCard()+espGiftCard()+'<div class="card" style="margin:8px 0"><b>🏆 Reset top 1 tuần</b><p class="mut" style="margin:4px 0">Tự chạy một lần mỗi tuần khi bạn đăng nhập. Người đứng đầu bảng Tổng tiền bị giảm còn 15.000.</p><button class="btn alt sm" data-wr="1">Chạy ngay (bấm 2 lần)</button></div><div class="card" style="margin:8px 0"><b>📢 Thông báo cho tất cả</b><textarea id="annt" maxlength="300" rows="2" placeholder="Nội dung thông báo..." style="width:100%;background:#1a0a0e;color:var(--tx);border:1px solid var(--line);border-radius:10px;padding:8px;font:inherit;margin:6px 0"></textarea><button class="btn sm" data-an="1">Gửi</button></div><p class="mut" style="margin:0">Sửa tiền rồi bấm Lưu. Cấm = đăng xuất ngay. Xóa = xóa hồ sơ và chặn không cho đăng ký lại.</p>'+(admG.length?'<button class="btn alt sm" data-dg="1" style="margin:8px 0">🧹 Xóa '+admG.length+' tài khoản khách</button>':'')+rows);
+  modal('<h3>🛠️ Admin</h3>'+espCard()+espGiftCard()+payCard()+'<div class="card" style="margin:8px 0"><b>🏆 Reset top 1 tuần</b><p class="mut" style="margin:4px 0">Tự chạy một lần mỗi tuần khi bạn đăng nhập. Người đứng đầu bảng Tổng tiền bị giảm còn 15.000.</p><button class="btn alt sm" data-wr="1">Chạy ngay (bấm 2 lần)</button></div><div class="card" style="margin:8px 0"><b>📢 Thông báo cho tất cả</b><textarea id="annt" maxlength="300" rows="2" placeholder="Nội dung thông báo..." style="width:100%;background:#1a0a0e;color:var(--tx);border:1px solid var(--line);border-radius:10px;padding:8px;font:inherit;margin:6px 0"></textarea><button class="btn sm" data-an="1">Gửi</button></div><p class="mut" style="margin:0">Sửa tiền rồi bấm Lưu. Cấm = đăng xuất ngay. Xóa = xóa hồ sơ và chặn không cho đăng ký lại.</p>'+(admG.length?'<button class="btn alt sm" data-dg="1" style="margin:8px 0">🧹 Xóa '+admG.length+' tài khoản khách</button>':'')+rows);
 }
 const fmtT=ms=>{const d=new Date(ms),n=new Date(),h=d.toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'});return d.toDateString()===n.toDateString()?h:d.toLocaleDateString('vi-VN',{day:'2-digit',month:'2-digit'})+' '+h};
 const ago=ms=>{const s=Math.max(0,(Date.now()-ms)/1000);if(s<90)return 'vừa xong';if(s<3600)return Math.round(s/60)+' phút trước';if(s<86400)return Math.round(s/3600)+' giờ trước';return new Date(ms).toLocaleDateString('vi-VN')+' ('+Math.round(s/86400)+' ngày trước)'};
@@ -923,6 +930,12 @@ $('#ov').addEventListener('click',async e=>{
     if(ab.mode==='fix'&&game!=='tc'&&!(ab.tiles[game]||[]).length)return toast('Chọn ít nhất 1 cửa.');
     if(ab.amt!=='all'&&!(ab.amt>0))return toast('Nhập số tiền cược hợp lệ.');
     abSave();ab.on=true;ab.n=0;ab.net=0;ab.k='';$('#ov').hidden=true;abUi();toast('🤖 Đã bật auto cược');return;
+  }
+  if(b=g('data-pay')){
+    const o={};
+    if(b.dataset.pay==='1'){for(const k in PAYG){const v=parseFloat(String($('#pay_'+k).value).replace(/^x/i,'').replace(',','.'));if(v>0){if(v>1000)return toast('Hệ số tối đa x1000.');o[k]=v}}}
+    try{await setDoc(doc(fdb,'config','payout'),o);toast(Object.keys(o).length?'Đã lưu hệ số thưởng cho mọi người':'Đã về mặc định')}catch(err){toast('Lỗi: '+(err.code||''))}
+    return adminM();
   }
   if(b=g('data-eg')){
     const id=$('#egu').value,dur=+$('#egd').value;if(!id)return toast('Chọn người nhận trước.');
@@ -2081,6 +2094,10 @@ $('#ln').onclick=loanM;
 
 /* ---- ESP + may mắn (chỉ tài khoản admin) ---- */
 const espAdm=()=>isAdm()&&ls('bc_esp')==='1',espGift=()=>!!me&&(+me.esp||0)>now(),espOn=()=>espAdm()||espGift(),espFull=()=>espAdm(),luckOn=()=>isAdm()&&ls('bc_lk')!=='0';
+function payCard(){
+  const r=Object.keys(PAYG).map(g=>'<div class="r"><span>'+PAYG[g]+' <small class="mut">(mặc định x'+(g==='bc'?1+mult():g==='tx'?mult():1.95).toString().replace('.',',')+')</small></span><span><input id="pay_'+g+'" value="'+(+CFG[g]>0?+CFG[g]:'')+'" placeholder="x?" inputmode="decimal" style="width:70px;padding:6px"></span></div>').join('');
+  return '<div class="card" style="margin:8px 0"><b>💹 Hệ số thưởng khi cược (chỉ admin chỉnh được)</b><p class="mut" style="margin:4px 0">Nhập x5 nghĩa là thắng nhận 5 lần tiền cược (gồm cả tiền gốc). Để trống = dùng mặc định. Áp dụng cho mọi người chơi trong cả 4 trò.</p>'+r+'<div style="display:flex;gap:6px;margin-top:8px"><button class="btn sm" data-pay="1">Lưu hệ số</button> <button class="btn alt sm" data-pay="0">Về mặc định</button></div></div>';
+}
 function espCard(){return '<div class="card" style="margin:8px 0"><b>🔮 ESP và may mắn (chỉ tài khoản admin)</b><p class="mut" style="margin:4px 0">ESP đầy đủ: thấy trước kết quả vòng Bầu Cua/Tài Xỉu/Đá gà/3 cây, ván Poker và lượt quay Jackpot kế tiếp, bài úp nhà cái Xì dách, bài đối thủ UNO và bot Tiến lên, gợi ý nước cờ vua. May mắn: game quay/rút bài được chọn kết quả tốt hơn, hoàn 25% khi thua các game cược theo vòng, bắn cá dễ trúng hơn.</p><button class="btn '+(espAdm()?'':'alt ')+'sm" data-esp="1">ESP: '+(espAdm()?'Bật':'Tắt')+'</button> <button class="btn '+(luckOn()?'':'alt ')+'sm" data-lk="1">May mắn: '+(luckOn()?'Bật':'Tắt')+'</button></div>'}
 const espM={};
 function espTxt(d){
@@ -2547,7 +2564,7 @@ function stageRender(id,ph,sec){
       const w=dice?dgWin(dice):-1,fl=ph==='play'||ph==='wait';
       h+='<div class="dgring'+(fl?' fight':'')+'"><div class="gk red l'+(reveal?(w===0?' win':' lose'):'')+'"><i><u>🐓</u></i><em>ĐỎ</em></div><div class="dgvs">'+(reveal?'':ph==='bet'?'VS':'💥')+'</div><div class="gk blu rt'+(reveal?(w===1?' win':' lose'):'')+'"><i><u>🐓</u></i><em>XANH</em></div></div>';
       let msg=ph==='bet'?'Chọn gà rồi đặt cược. Thắng nhận ×1,95':reveal?'🏆 Gà '+DGN[w]+' thắng!':'Hai chiến kê đang so tài...';
-      if(reveal){const k=Object.keys(bets).find(x=>bets[x]>0);if(k!==undefined){const b=bets[k];msg+=(+k===w?' · Bạn thắng +'+fmt(Math.floor(b*.95)):' · Bạn thua -'+fmt(b))}}
+      if(reveal){const k=Object.keys(bets).find(x=>bets[x]>0);if(k!==undefined){const b=bets[k];msg+=(+k===w?' · Bạn thắng +'+fmt(Math.floor(b*(payF('dg')-1))):' · Bạn thua -'+fmt(b))}}
       h+='<div class="stR">'+msg+'</div>';
     }else{
       const hh=dice?tcHand(dice[1],dice[2],dice[0],'house'):null,mh=dice?tcHand(dice[1],dice[2],dice[0],uid):null;
@@ -2556,7 +2573,7 @@ function stageRender(id,ph,sec){
       if(reveal){
         const hp=tcPts(hh),mp=tcPts(mh),b=bets[0]||0;
         let msg=mp>hp?'🎉 Bạn hơn nhà cái':mp===hp?'🤝 Hòa nhà cái':'😢 Nhà cái hơn bạn';
-        if(b)msg+=mp>hp?' · +'+fmt(Math.floor(b*.95)):mp===hp?' · hoàn tiền':' · -'+fmt(b);
+        if(b)msg+=mp>hp?' · +'+fmt(Math.floor(b*(payF('tc')-1))):mp===hp?' · hoàn tiền':' · -'+fmt(b);
         h+='<div class="stR">'+msg+'</div>';
         const L=peers.filter(p=>!p.isMe&&p.presence.bt===id&&p.presence.b&&p.presence.b[0]>0).map(p=>{const hd=tcHand(dice[1],dice[2],dice[0],p.peer),pt=tcPts(hd),bt=p.presence.b[0];return '<div class="r"><span>'+esc(String(p.presence.n||'?').slice(0,12))+' · '+hd.map(tcTxt).join(' ')+' = '+tcName(pt)+'</span><span>'+(pt>hp?'<b style="color:#6f6">+'+fmt(Math.floor(bt*.95))+'</b>':pt===hp?'hòa':'<b style="color:#f66">-'+fmt(bt)+'</b>')+'</span></div>'});
         h+='<div class="t3o">'+(L.join('')||'<span class="mut">Chưa có người chơi khác cược vòng này.</span>')+'</div>';
