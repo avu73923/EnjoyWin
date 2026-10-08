@@ -206,6 +206,52 @@ h1{background:linear-gradient(180deg,#fff3b0,#f6c744 55%,#c58e12);-webkit-backgr
 @keyframes espPulse{to{box-shadow:0 0 3px #7ef5}}
 @media (prefers-reduced-motion:reduce){.espb{animation:none}}
 select{background:#1a0a0e;color:var(--tx);border:1px solid var(--line);border-radius:10px;padding:8px;font:inherit;max-width:100%}
+
+/* ===== v2.9: giao diện ===== */
+section:not([hidden]){animation:sIn .3s ease both}
+@keyframes sIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+*{scrollbar-width:thin;scrollbar-color:#6b2a33 transparent}
+::-webkit-scrollbar{width:9px;height:9px}::-webkit-scrollbar-thumb{background:#6b2a33;border-radius:6px}::-webkit-scrollbar-track{background:transparent}
+/* sảnh: căn lại */
+.hubbar{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:2px 6px 0;color:var(--mut);font-size:13px}
+.hubnavs{display:flex;gap:8px;flex:none}
+.hubnav{position:static;width:36px;height:36px;border-radius:50%;border:2px solid var(--gold);background:#240d13;color:var(--gold);font-size:22px;line-height:1;cursor:pointer;padding:0;box-shadow:0 3px 8px #000a;transition:transform .12s,opacity .2s,background .2s}
+.hubnav:hover:not(:disabled){transform:scale(1.08);background:#3a1a20}
+.hubnav:disabled{opacity:.3;cursor:default}
+.hubwrap{position:relative}
+.hubg{gap:14px;padding:16px 16px 18px;scroll-padding:0 16px;scroll-snap-type:x mandatory;--ml:18px;--mr:18px;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 var(--ml),#000 calc(100% - var(--mr)),transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 var(--ml),#000 calc(100% - var(--mr)),transparent 100%)}
+.hubg.drag{scroll-snap-type:none}
+.hubg.atS{--ml:0px}.hubg.atE{--mr:0px}
+@media(max-width:560px){.hhero svg{display:none}.hhero p{max-width:100%}}
+.gc{width:clamp(150px,19vw,200px);height:auto;aspect-ratio:3/4}
+.hubprog{position:relative;height:4px;border-radius:3px;background:#ffffff18;margin:0 18px}
+.hubprog i{position:absolute;top:0;bottom:0;border-radius:3px;background:linear-gradient(90deg,var(--gold),#ffe9a0)}
+/* bàn cược */
+.board{position:relative;background:radial-gradient(ellipse at 50% 15%,#25905c,#0d3b26 82%),repeating-linear-gradient(45deg,#0000 0 11px,#ffffff07 11px 12px);border:6px solid #7a4f26;box-shadow:inset 0 0 44px #000b,inset 0 0 0 2px #d7b25a66,0 10px 24px #000a}
+.tile{position:relative;background:linear-gradient(180deg,#ffffff14,#00000044);border:2px solid #e8d9a8aa;border-radius:16px;box-shadow:0 3px 8px #0006,inset 0 1px 0 #ffffff26}
+.tile:hover{border-color:var(--gold)}
+.tile b svg{margin:0 2px;filter:drop-shadow(0 3px 3px #0008)}
+.tile.win{animation:winGlow .9s ease-in-out infinite alternate;border-color:#ffe27a;background:linear-gradient(180deg,#7a5410bb,#2a1706dd)}
+.tile.win::after{content:'🏆';position:absolute;top:4px;right:8px;font-size:22px;filter:drop-shadow(0 2px 3px #000a)}
+@keyframes winGlow{from{box-shadow:0 0 8px #f6c744,0 3px 8px #0006}to{box-shadow:0 0 26px #ffd75e,0 3px 8px #0006}}
+.bet.on{display:block;width:fit-content;min-height:0;margin:4px auto 0;padding:1px 10px;border-radius:12px;background:#000b;border:1px solid var(--gold);box-shadow:0 2px 6px #0008}
+.chip{position:relative;transition:transform .12s,box-shadow .12s}
+.chip::after{content:'';position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 32% 28%,#ffffff66,#fff0 46%);pointer-events:none}
+.chip:hover{transform:translateY(-2px)}
+.chip.on{outline:3px solid var(--gold);transform:scale(1.14);box-shadow:0 0 16px #f6c744aa,0 3px 6px #000a}
+/* phòng chờ, poker, jackpot */
+#gname{font-size:20px;color:var(--gold);text-shadow:0 2px 8px #000a}
+#lobby .card{background:linear-gradient(180deg,#34141c,#220c12);border-color:#8a3a46}
+#lobby h3{margin-bottom:4px}
+.ptable{background:radial-gradient(ellipse at 50% 20%,#25905c,#0d3b26 82%),repeating-linear-gradient(45deg,#0000 0 11px,#ffffff07 11px 12px);box-shadow:inset 0 0 44px #000b,inset 0 0 0 2px #d7b25a66,0 10px 24px #000a}
+#jp .ptable{background:radial-gradient(ellipse at 50% 0,#5a1224,#1a0509 85%);border-color:var(--gold)}
+.reels{padding:14px 12px;background:linear-gradient(#0c0306,#240a12);border:3px solid var(--gold);border-radius:16px;box-shadow:inset 0 0 22px #000,0 6px 16px #000a;width:fit-content;margin:12px auto}
+.reel{background:linear-gradient(90deg,#d8d8d8,#fff 18%,#fff 82%,#d8d8d8);box-shadow:inset 0 10px 14px #0004,inset 0 -10px 14px #0004,0 2px 4px #000a}
+.lgsep{display:flex;align-items:center;gap:10px;color:var(--mut);font-size:13px;margin:2px 0}.lgsep:before,.lgsep:after{content:"";flex:1;height:1px;background:var(--line)}
+#liBox{background:linear-gradient(180deg,#2a1017,#1d0a0f);border:1px solid var(--line);border-radius:14px;padding:12px}
+.gbn{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:0 16px 10px;padding:10px 12px;border-radius:14px;background:linear-gradient(90deg,#4a3a10,#2b1a08);border:1px solid #b88a1c;font-size:14px}
+.accb{margin:10px 0;padding:10px;border-radius:12px;background:#1d0a0f;border:1px solid var(--line)}.accb input{width:100%;margin:4px 0;box-sizing:border-box}
+.accb .cin input{width:auto}
 </style>
 </head>
 <body>
@@ -221,6 +267,14 @@ select{background:#1a0a0e;color:var(--tx);border:1px solid var(--line);border-ra
     <p class="mut" style="text-align:center">Chơi giải trí với tiền ảo 100%, 100M = 1K.</p>
     <p id="err" style="color:#ffb4b4;font-size:14px;overflow-wrap:anywhere;margin:0" hidden></p>
     <button class="btn" id="lg">🔐 Đăng nhập bằng Google</button>
+    <div class="lgsep"><span>hoặc dùng tài khoản của bạn</span></div>
+    <div id="liBox" class="col" style="gap:8px">
+      <input id="liE" placeholder="Email hoặc tên đăng nhập" autocomplete="username" autocapitalize="none" spellcheck="false" maxlength="60">
+      <input id="liP" type="password" placeholder="Mật khẩu (từ 6 ký tự)" autocomplete="current-password" maxlength="60">
+      <input id="liP2" type="password" placeholder="Nhập lại mật khẩu" autocomplete="new-password" maxlength="60" hidden>
+      <button class="btn" id="liGo">🔑 Đăng nhập</button>
+      <div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap"><button class="btn alt sm" id="liSw">Chưa có tài khoản? Đăng ký</button><button class="btn alt sm" id="liForgot">Quên mật khẩu</button></div>
+    </div>
     <button class="btn alt" id="gs">👤 Chơi khách</button>
     <p class="mut" style="font-size:12px;text-align:center;margin:0">Tên miền trang: <b id="host"></b></p>
   </section>
@@ -234,8 +288,10 @@ select{background:#1a0a0e;color:var(--tx);border:1px solid var(--line);border-ra
 
   <section id="hub" hidden>
     <div class="hhero"><h3>🎮 Sảnh game</h3><p>Giải trí với tiền ảo · vuốt hoặc kéo sang ngang để xem thêm trò</p><svg viewBox="0 0 300 90" aria-hidden="true"><g transform="translate(244 46) rotate(-10)"><circle r="32" fill="#c8202f" stroke="#fff" stroke-width="4" stroke-dasharray="9 7"/><circle r="19" fill="none" stroke="#fff" stroke-opacity=".75" stroke-width="2"/><text y="7" text-anchor="middle" font-size="19" font-weight="800" fill="#fff">5k</text></g><g transform="translate(192 56)"><circle r="26" fill="#1d6fd1" stroke="#fff" stroke-width="4" stroke-dasharray="8 6"/><circle r="15" fill="none" stroke="#fff" stroke-opacity=".75" stroke-width="2"/></g><g transform="translate(140 48) rotate(14)"><rect x="-17" y="-25" width="34" height="50" rx="5" fill="#fff"/><text y="6" text-anchor="middle" font-size="26" fill="#c8202f">♥</text></g><g transform="translate(106 54) rotate(-12)"><rect x="-17" y="-25" width="34" height="50" rx="5" fill="#fff"/><text y="6" text-anchor="middle" font-size="26" fill="#111">♠</text></g></svg></div>
-    <div class="hubwrap"><button class="hubnav l" id="hubL" aria-label="Cuộn trái">‹</button><button class="hubnav r" id="hubR" aria-label="Cuộn phải">›</button>
-    <div class="hubg">
+    <div class="gbn" id="guestBn" hidden><span>🟡 Bạn đang chơi khách: đổi máy hoặc xóa dữ liệu là mất tiền.</span><button class="btn sm" id="guestGo">📝 Đăng ký tài khoản</button></div>
+    <div class="hubbar"><span id="hubCnt"></span><span class="hubnavs"><button class="hubnav" id="hubL" aria-label="Cuộn trái">‹</button><button class="hubnav" id="hubR" aria-label="Cuộn phải">›</button></span></div>
+    <div class="hubwrap">
+    <div class="hubg" id="hubg">
       <button class="gc" id="gBc" style="--g1:#1f8a5a"><div class="gart"></div><div class="gbig" style="font-size:clamp(32px,4.6vw,44px)">🎃🦀🐟</div><div class="gt"><span>Bầu Cua</span><small>Phòng 2 đến 10 người</small></div></button>
       <button class="gc" id="gTx" style="--g1:#c8202f"><div class="gart"></div><div class="gbig" style="font-size:clamp(44px,6.5vw,60px)">🎲🎲</div><div class="gt"><span>Tài Xỉu</span><small>Phòng 2 đến 10 người</small></div></button>
       <button class="gc" id="gDg" style="--g1:#d4741a"><div class="gart"></div><div class="gtag">MỚI</div><div class="gbig" style="font-size:clamp(32px,4.6vw,44px)">🐓⚔️🐓</div><div class="gt"><span>Đá gà</span><small>Cược gà Đỏ hoặc Xanh</small></div></button>
@@ -248,7 +304,7 @@ select{background:#1a0a0e;color:var(--tx);border:1px solid var(--line);border-ra
       <button class="gc" id="gTl" style="--g1:#2a8a8a"><div class="gart"></div><div class="gbig" style="font-size:clamp(44px,6.5vw,60px)">♠️♥️</div><div class="gt"><span>Tiến lên</span><small>Đấu với 3 bot</small></div></button>
       <button class="gc" id="gXd" style="--g1:#b8286a"><div class="gart"></div><div class="gbig" style="font-size:clamp(44px,6.5vw,60px)">♦️🂡</div><div class="gt"><span>Xì dách</span><small>Đấu với nhà cái</small></div></button>
       <button class="gc" id="gMj" style="--g1:#3a8a2a"><div class="gart"></div><div class="gbig" style="font-size:clamp(60px,9vw,82px)">🀄</div><div class="gt"><span>Mạt chược</span><small>Xếp cặp quân bài</small></div></button>
-    </div></div>
+    </div></div><div class="hubprog"><i id="hubPi"></i></div>
     <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:14px">
       <button class="btn alt" id="fr">👥 Bạn bè</button><button class="btn alt" id="lbb">🏆 Xếp hạng</button><button class="btn alt" id="wheelb">🎡 Vòng quay</button><button class="btn alt" id="codeb">🎁 Nhập code</button><button class="btn" id="adm" hidden>🛠️ Admin</button>
     </div>
@@ -326,12 +382,12 @@ select{background:#1a0a0e;color:var(--tx);border:1px solid var(--line);border-ra
   <section id="lobby" hidden>
     <div class="bar"><button class="btn alt sm" id="toHub">← Sảnh</button><b id="gname"></b></div>
     <div class="lb2">
-      <div class="card col"><h3>Vào phòng</h3>
+      <div class="card col"><h3>🚪 Vào phòng</h3>
         <input id="rcode" placeholder="Nhập mã phòng" maxlength="20" autocapitalize="characters">
         <button class="btn" id="jn">Vào phòng</button>
         <button class="btn alt" id="rnd">🎲 Vào phòng ngẫu nhiên</button>
       </div>
-      <div class="card col"><h3>Tạo phòng mới</h3>
+      <div class="card col"><h3>➕ Tạo phòng mới</h3>
         <label for="mxr">Số người tối đa: <b id="mxv">6</b></label>
         <input type="range" id="mxr" min="2" max="10" value="6">
         <button class="btn" id="mkr">➕ Tạo phòng</button>
@@ -348,7 +404,7 @@ select{background:#1a0a0e;color:var(--tx);border:1px solid var(--line);border-ra
         <div id="stage" class="stage" hidden></div><div id="espBc" class="mut" hidden style="text-align:center;font-weight:800;color:#7ef;margin-bottom:6px"></div><div class="board" id="bd"></div>
         <div class="chips" id="chips"></div>
         <div class="cin" style="max-width:280px;margin:0 auto 6px"><input id="cbet" inputmode="numeric" placeholder="Nhập tiền cược (vd 20k, 2m)"><button class="btn sm" id="cbg">Đặt</button></div>
-        <div style="text-align:center"><button class="btn alt sm" id="clr">Xóa cược</button></div>
+        <div style="text-align:center"><button class="btn alt sm" id="clr">Xóa cược</button> <button class="btn alt sm" id="abB" hidden>🤖 Auto cược</button></div>
       </div>
       <div class="side">
         <div class="card"><b>Người chơi</b><div id="pl"></div></div>
@@ -369,7 +425,7 @@ select{background:#1a0a0e;color:var(--tx);border:1px solid var(--line);border-ra
 setTimeout(()=>{const e=document.getElementById("err");if(!window.__ok&&e.hidden){e.hidden=false;e.textContent="Chưa tải được thư viện Firebase hoặc cấu hình bị lỗi. Hãy kiểm tra mạng, tắt VPN/trình chặn quảng cáo, và mở bằng link https (không mở file trực tiếp)."}},6000)</script>
 <script type="module">
 import{initializeApp}from'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
-import{getAuth,GoogleAuthProvider,signInWithPopup,signInAnonymously,signOut,onAuthStateChanged}from'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+import{getAuth,GoogleAuthProvider,signInWithPopup,signInAnonymously,signOut,onAuthStateChanged,createUserWithEmailAndPassword,signInWithEmailAndPassword,EmailAuthProvider,linkWithCredential,updatePassword,sendPasswordResetEmail,sendEmailVerification}from'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
 import{getFirestore,doc,getDoc,getDocs,getDocFromServer,where,setDoc,updateDoc,deleteDoc,addDoc,collection,query,orderBy,limit,limitToLast,onSnapshot,serverTimestamp,increment,arrayUnion,runTransaction}from'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
 /* ===== DÁN firebaseConfig CỦA BẠN VÀO ĐÂY (xem HUONG-DAN.md) ===== */
 const firebaseConfig={apiKey:'AIzaSyD_C-8sGqX1fulcJxM9Elz6iC4XReZmnik',authDomain:'baucuatruong-837d0.firebaseapp.com',projectId:'baucuatruong-837d0',appId:'1:739369121129:web:89130959bb8b025afa39f8'};
@@ -377,20 +433,27 @@ const OK=!firebaseConfig.apiKey.startsWith('DIEN');
 const app=initializeApp(OK?firebaseConfig:{apiKey:'x',projectId:'x',appId:'x'}),auth=getAuth(app),fdb=getFirestore(app);
 const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"']/g,c=>'&#'+c.charCodeAt(0)+';');
 const IT=[['🎃','Bầu'],['🦀','Cua'],['🐟','Cá'],['🐓','Gà'],['🦌','Nai'],['🦐','Tôm']];
-const DAILY=[5,10,25,50,75,100,100].map(x=>x*1000),CHIPS=[1000,5000,10000,50000,500000],R=30000,BET=20000,VER='2.9';
-const NEWS=['🎁 Mới: admin có thể tặng ESP dự đoán trước cho người chơi (có thời hạn, hiện huy hiệu 🔮 trên thanh tiền)','🐓 Mới: Đá gà và 3 cây nhiều người · 🎰 Mini Poker và Jackpot có quay nhanh và tự động quay · sảnh game kéo ngang','♞ Mới: Cờ vua 2 người cược tiền ảo · 🏦 nút Vay tiền (nợ hiện số âm màu đỏ, người đang nợ không được lên bảng xếp hạng) · 🥣 bát che xúc xắc, kéo để xem','🎰 Mới: Nổ hũ Jackpot, hũ chung cả lớp, ai nổ 3 số 7 ăn cả hũ','🧹 Tin nhắn chat quá 1 giờ và phòng không hoạt động quá 1 giờ sẽ tự xóa để trang nhẹ hơn','🎴 UNO chơi với người thật (2-4 người)','♠️ Tiến lên · ♦️ Xì dách · 🀄 Mạt chược','🏆 Mỗi tuần người đứng top 1 bảng Tổng tiền bị giảm còn 15.000 (chỉ 1 lần mỗi tuần)'];
+const DAILY=[5,10,25,50,75,100,100].map(x=>x*1000),CHIPS=[1000,5000,10000,50000,500000],R=30000,BET=20000,VER='3.0';
+const NEWS=['🔑 Đăng ký / đăng nhập bằng email hoặc tên đăng nhập + mật khẩu (bấm ảnh đại diện → Tài khoản đăng nhập để nâng cấp tài khoản khách hoặc Google, giữ nguyên tiền) · 🤖 Admin có nút Auto cược ở Bầu Cua, Tài Xỉu, Đá gà, 3 cây','🎨 Sảnh game căn lại, cuộn ngang mượt hơn (nút ‹ › nằm riêng, có thanh tiến trình) · giao diện bàn cược, chip, sảnh đẹp hơn · số tiền quá lớn được rút gọn (1,35e22)','🎁 Mới: admin có thể tặng ESP dự đoán trước cho người chơi (có thời hạn, hiện huy hiệu 🔮 trên thanh tiền)','🐓 Mới: Đá gà và 3 cây nhiều người · 🎰 Mini Poker và Jackpot có quay nhanh và tự động quay · sảnh game kéo ngang','♞ Mới: Cờ vua 2 người cược tiền ảo · 🏦 nút Vay tiền (nợ hiện số âm màu đỏ, người đang nợ không được lên bảng xếp hạng) · 🥣 bát che xúc xắc, kéo để xem','🎰 Mới: Nổ hũ Jackpot, hũ chung cả lớp, ai nổ 3 số 7 ăn cả hũ','🧹 Tin nhắn chat quá 1 giờ và phòng không hoạt động quá 1 giờ sẽ tự xóa để trang nhẹ hơn','🎴 UNO chơi với người thật (2-4 người)','♠️ Tiến lên · ♦️ Xì dách · 🀄 Mạt chược','🏆 Mỗi tuần người đứng top 1 bảng Tổng tiền bị giảm còn 15.000 (chỉ 1 lần mỗi tuần)'];
 const mult=()=>[0,6].includes(new Date().getDay())?5:2,AVS=['🎃','🦀','🐟','🐓','🦌','🦐','🐯','🐲'];
-const fmt=n=>(+n||0).toLocaleString('vi-VN'),day=d=>new Date(d).toLocaleDateString('sv');
+const fmt=n=>{n=+n||0;return Math.abs(n)>=1e15?n.toExponential(2).replace('.',',').replace('e+','e'):n.toLocaleString('vi-VN')},day=d=>new Date(d).toLocaleDateString('sv');
 const ls=(k,v)=>{try{return v===undefined?localStorage.getItem(k):localStorage.setItem(k,v)}catch(e){return null}};
-let shown=false,pend=null,espTm=0,admP=[];let uid,unM,unC,hb,mref,raw=[],game='bc',rid='',off=0,unMe,ft,hbP,beatN=0,lastAdj=0,busy=false,pendE=0,unK;
+let shown=false,pend=null,espTm=0,admP=[],hubUpd=()=>{};
+const abLd=()=>{try{return JSON.parse(ls('bc_ab')||'{}')||{}}catch(e){return{}}};
+let ab=Object.assign({mode:'esp',amt:1000,max:0,tiles:{bc:[0],tx:[1],dg:[0]}},abLd(),{on:false,n:0,net:0,k:''});
+let uid,unM,unC,hb,mref,raw=[],game='bc',rid='',off=0,unMe,ft,hbP,beatN=0,lastAdj=0,busy=false,pendE=0,unK;
 let db,ref,me,code,nr,lbu,joinT=0,lastC=0,loT=0,peers=[],lb=[],bets={},chip=1000,cur=-1,dice=null,tm;
-const show=id=>{for(const s of['login','prof','hub','poker','lobby','game','fish','uno','mj','tl','xd','jp','chess'])$('#'+s).hidden=s!==id;if(id==='hub')hubOn();else hubOff();if(id!=='jp'&&jp.un){jp.un();jp.un=null}};
+const show=id=>{for(const s of['login','prof','hub','poker','lobby','game','fish','uno','mj','tl','xd','jp','chess'])$('#'+s).hidden=s!==id;if(id==='hub'){hubOn();setTimeout(hubUpd,30)}else hubOff();if(id!=='jp'&&jp.un){jp.un();jp.un=null}};
 function toast(t){const e=$('#toast');e.textContent=t;e.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>e.hidden=true,2600)}
 function modal(h,l='Đóng'){return new Promise(r=>{$('#ov').innerHTML='<div class="m">'+h+'<button class="btn" style="width:100%;margin-top:12px" id="ok">'+l+'</button></div>';$('#ov').hidden=false;$('#ok').onclick=()=>{$('#ov').hidden=true;r()}})}
 const cap=c=>{if(game==='fish')return 4;if(game==='chess')return 2;const m=/-(\d{1,2})$/.exec(c||'');const n=m?+m[1]:10,v=n>=2&&n<=10?n:10;return game==='uno'?Math.min(4,v):v};
-function head(){$('#who').textContent=me.name+' · '+me.cls;$('#av').textContent=me.av||(me.name.trim().split(/\s+/).pop()[0]||'?').toUpperCase();$('#wk').hidden=false;$('#wk').textContent=mult()===5?'🔥 Cuối tuần: đoán trúng nhận x5 tiền cược!':'Đoán trúng nhận x2 tiền cược (thứ 7, chủ nhật x5)';$('#mny').textContent=fmt(me.money);$('#dbt').textContent=me.debt?'-'+fmt(me.debt):'';espBadge();$('#rs').hidden=!(me.money<1000&&me.lastRescue!==day(Date.now()))}
+function head(){$('#who').textContent=me.name+' · '+me.cls;$('#av').textContent=me.av||(me.name.trim().split(/\s+/).pop()[0]||'?').toUpperCase();$('#wk').hidden=false;$('#wk').textContent=mult()===5?'🔥 Cuối tuần: đoán trúng nhận x5 tiền cược!':'Đoán trúng nhận x2 tiền cược (thứ 7, chủ nhật x5)';$('#mny').textContent=fmt(me.money);$('#dbt').textContent=me.debt?'-'+fmt(me.debt):'';espBadge();{const gb=$('#guestBn');if(gb)gb.hidden=!me.guest}$('#rs').hidden=!(me.money<1000&&me.lastRescue!==day(Date.now()))}
+const AUTHM={'auth/invalid-email':'Email hoặc tên đăng nhập không hợp lệ.','auth/invalid-credential':'Sai tài khoản hoặc mật khẩu.','auth/wrong-password':'Sai tài khoản hoặc mật khẩu.','auth/user-not-found':'Sai tài khoản hoặc mật khẩu.','auth/invalid-login-credentials':'Sai tài khoản hoặc mật khẩu.','auth/email-already-in-use':'Tài khoản hoặc email này đã được đăng ký rồi, hãy bấm Đăng nhập.','auth/weak-password':'Mật khẩu quá yếu, hãy dùng ít nhất 6 ký tự.','auth/too-many-requests':'Thử quá nhiều lần, hãy chờ vài phút rồi thử lại.','auth/network-request-failed':'Mất mạng, hãy kiểm tra kết nối.','auth/requires-recent-login':'Hãy đăng xuất, đăng nhập lại rồi thử lại.','auth/provider-already-linked':'Tài khoản này đã có mật khẩu rồi.','auth/credential-already-in-use':'Email này đã thuộc về một tài khoản khác.','auth/user-disabled':'Tài khoản này đã bị khóa.'};
+const authMsg=e=>{const c=(e&&e.code)||'';return AUTHM[c]||('Lỗi '+(c||e)+'.')};
+const errShow=t=>{const el=$('#err');el.hidden=false;el.textContent=t};
 function fail(e,pre=''){
   const c=(e&&e.code)||String(e);
+  if(AUTHM[c]){errShow(pre+AUTHM[c]);return}
   const h=c==='auth/unauthorized-domain'?'Vào Firebase → Authentication → Settings → Authorized domains → Add domain, thêm: '+location.hostname
    :/api-key/.test(c)?'apiKey sai. Hãy copy lại từ Firebase → Project settings → General → Your apps → Config.'
    :c==='auth/operation-not-allowed'?'Chưa bật phương thức này ở Authentication → Sign-in method.'
@@ -464,7 +527,7 @@ async function join(c){
   hb=setInterval(()=>{updateDoc(mref,{s:Date.now(),m:me.money}).catch(()=>{});refresh()},60000);
 }
 function refresh(){const t=Date.now()-150000;peers=raw.filter(x=>x.presence.s>t);if(game==='fish')seatUp();plist();chk();voiceSync();if(game!=='fish'&&!$('#game').hidden)board()}
-function leaveRoom(){if(game==='uno')uExit();chExit();clearInterval(uTm);clearInterval(chTm);if(unU){unU();unU=null}if(game==='bc'||game==='tx'||game==='dg'||game==='tc')dropBets();pubRoom(false);micOff(true);clearInterval(hb);if(unM)unM();if(unC)unC();unM=unC=null;if(unK)unK();unK=null;if(mref){deleteDoc(mref).catch(()=>{});mref=null}raw=[];peers=[]}
+function leaveRoom(){ab.on=false;if(game==='uno')uExit();chExit();clearInterval(uTm);clearInterval(chTm);if(unU){unU();unU=null}if(game==='bc'||game==='tx'||game==='dg'||game==='tc')dropBets();pubRoom(false);micOff(true);clearInterval(hb);if(unM)unM();if(unC)unC();unM=unC=null;if(unK)unK();unK=null;if(mref){deleteDoc(mref).catch(()=>{});mref=null}raw=[];peers=[]}
 function chk(){
   const ps=peers.filter(x=>x.presence.t).sort((a,b)=>a.presence.t-b.presence.t||(a.peer<b.peer?-1:1));
   if(ps.findIndex(x=>x.isMe)>=cap(code)){toast('Phòng đã đủ '+cap(code)+' người, hãy chọn phòng khác.');leave()}
@@ -472,7 +535,7 @@ function chk(){
 function leave(){clearInterval(tm);cancelAnimationFrame(fs.raf);leaveRoom();code='';show('lobby')}
 const logout=()=>signOut(auth).then(()=>toast('Đã đăng xuất'));
 const lo=()=>{if(Date.now()-loT<3000)return logout();loT=Date.now();toast('Bấm 🚪 lần nữa để đăng xuất')};
-function cleanup(){clearInterval(espTm);clearInterval(tm);clearInterval(hbP);clearInterval(maTm);if(unMe){unMe();unMe=null}if(unAnn){unAnn();unAnn=null}ytStop();cancelAnimationFrame(fs.raf);leaveRoom();code='';if(lbu){lbu();lbu=null}ref=me=null;db=0;lb=[];$('#top').hidden=true;$('#wk').hidden=true;show('login')}
+function cleanup(){clearInterval(espTm);clearInterval(tm);clearInterval(hbP);clearInterval(maTm);if(unMe){unMe();unMe=null}if(unAnn){unAnn();unAnn=null}ytStop();cancelAnimationFrame(fs.raf);leaveRoom();code='';if(lbu){lbu();lbu=null}ref=me=null;db=0;lb=[];$('#top').hidden=true;$('#wk').hidden=true;$('#liP').value='';$('#liP2').value='';liReg=false;liUi();show('login')}
 function chatAdd(n,t,m,id='cl',u,ts){
   const l=$('#'+id),d=document.createElement('div'),b=document.createElement('b');
   d.className='cm'+(m?' me':'');b.textContent=n+': ';if(u){b.className='nm';b.dataset.pu=u}if(ts)d.dataset.t=ts;d.append(b,document.createTextNode(t));if(ts){const s=document.createElement('small');s.className='mut';s.style.marginLeft='6px';s.textContent=fmtT(ts);d.append(s)}l.append(d);
@@ -519,7 +582,7 @@ function pushBets(now_){
 }
 function board(){
   $('#bd').style.gridTemplateColumns=game==='tx'||game==='dg'?'repeat(2,1fr)':game==='tc'?'1fr':'';const al=document.querySelector('.chip.all');if(al)al.hidden=!(game==='tx'||game==='dg'||game==='tc');
-  $('#bd').innerHTML=tiles().map((x,i)=>'<div class="tile'+(tileWin(i)?' win':'')+'" data-i="'+i+'" tabindex="0"><b>'+x[0]+'</b>'+x[1]+(x[2]?'<small class="mut"> '+x[2]+'</small>':'')+'<div class="bet">'+(bets[i]?fmt(bets[i]):'&nbsp;')+'</div>'+oth(i)+'</div>').join('');
+  $('#bd').innerHTML=tiles().map((x,i)=>'<div class="tile'+(tileWin(i)?' win':'')+'" data-i="'+i+'" tabindex="0"><b>'+x[0]+'</b>'+x[1]+(x[2]?'<small class="mut"> '+x[2]+'</small>':'')+'<div class="bet'+(bets[i]?' on':'')+'">'+(bets[i]?fmt(bets[i]):'&nbsp;')+'</div>'+oth(i)+'</div>').join('');
 }
 function put(i){
   if(now()%R>=BET)return toast('Hết giờ đặt cược.');
@@ -558,7 +621,7 @@ function settle(d,b,curRound,g=game){
   if(curRound){shown=true;board()}
   if(!stake)return;
   me.money+=ret;earn(ret);save();
-  const net=ret-stake;if(net<0&&luckOn()){const bk=Math.floor(-net*0.25);me.money+=bk;earn(bk);save()}
+  const net=ret-stake;if(ab.on)ab.net+=net;if(net<0&&luckOn()){const bk=Math.floor(-net*0.25);me.money+=bk;earn(bk);save()}
   sfx(net>0?'win':net<0?'lose':'chip');
   toast(net>0?'🎉 Thắng +'+fmt(net):net<0?'😢 Thua '+fmt(net):'Hòa vốn');
 }
@@ -575,6 +638,7 @@ function tick(){
     if(pend)flushPend();cur=id;bets={};dice=null;shown=false;board();
     if(had&&old>=0)getRound(old).then(d=>{if(d)settle(d,b,false)});
   }
+  abTick(id,t);abUi();
   if(game==='dg'||game==='tc'){stageTick(id,t);return}
   $('.dish').hidden=false;$('#stage').hidden=true;
   if(t<BET){espBcTick(id);bowlUp(-1);$('#ph').textContent='ĐANG ĐẶT CƯỢC';$('#cd').textContent=Math.ceil((BET-t)/1000);$('#dd').innerHTML=game==='tx'?[2,4,5].map(n=>dieSvg(n,42)).join(''):'<span class="ad">❔</span><span class="ad">❔</span><span class="ad">❔</span>';$('#dd').className='dice shake'}
@@ -588,8 +652,44 @@ function tick(){
 function infoM(){
   const st=!navigator.onLine?'⚪ Mất mạng':me.guest?'🟡 Chơi khách (tài khoản tạm)':'🟢 Đang online';
   const rm=!$('#game').hidden&&code?' · phòng '+esc(code.toUpperCase()):'';
-  modal('<h3>👤 Thông tin của tôi</h3><div class="r"><span>Họ tên</span><b>'+esc(me.name)+'</b></div><div class="r"><span>Lớp</span><b>'+esc(me.cls)+'</b></div><div class="r"><span>Trạng thái</span><b>'+st+rm+'</b></div><div class="r"><span>Tạo tài khoản lúc</span><b>'+new Date(me.createdAt).toLocaleString('vi-VN')+'</b></div><div class="r"><span>Tiền ảo</span><b>'+fmt(me.money)+'</b></div><p class="mut" style="margin:10px 0 4px">Đổi tên hiển thị:</p><div class="cin"><input id="nn" value="'+esc(me.name)+'" maxlength="30"><input id="nc" value="'+esc(me.cls)+'" maxlength="10" style="max-width:80px"></div><button class="btn sm" data-rn="1" style="width:100%;margin:6px 0 10px">Lưu tên</button><p class="mut">Chọn ảnh đại diện:</p><div>'+AVS.map(a=>'<button class="btn alt sm" data-a="'+a+'" style="margin:2px">'+a+'</button>').join('')+'</div><button class="btn alt sm" data-lo="1" style="width:100%;margin-top:12px">🚪 Đăng xuất</button>');
+  modal('<h3>👤 Thông tin của tôi</h3><div class="r"><span>Họ tên</span><b>'+esc(me.name)+'</b></div><div class="r"><span>Lớp</span><b>'+esc(me.cls)+'</b></div><div class="r"><span>Trạng thái</span><b>'+st+rm+'</b></div><div class="r"><span>Tạo tài khoản lúc</span><b>'+new Date(me.createdAt).toLocaleString('vi-VN')+'</b></div><div class="r"><span>Tiền ảo</span><b>'+fmt(me.money)+'</b></div><p class="mut" style="margin:10px 0 4px">Đổi tên hiển thị:</p><div class="cin"><input id="nn" value="'+esc(me.name)+'" maxlength="30"><input id="nc" value="'+esc(me.cls)+'" maxlength="10" style="max-width:80px"></div><button class="btn sm" data-rn="1" style="width:100%;margin:6px 0 10px">Lưu tên</button><p class="mut">Chọn ảnh đại diện:</p><div>'+AVS.map(a=>'<button class="btn alt sm" data-a="'+a+'" style="margin:2px">'+a+'</button>').join('')+'</div>'+accHtml()+'<button class="btn alt sm" data-lo="1" style="width:100%;margin-top:12px">🚪 Đăng xuất</button>');
 }
+function accHtml(){
+  const u=auth.currentUser;if(!u)return'';
+  const hasPw=(u.providerData||[]).some(p=>p.providerId==='password'),em=u.email||'';
+  const pw2='<input id="rgP2" type="password" placeholder="Nhập lại mật khẩu" autocomplete="new-password" maxlength="60">';
+  let b='';
+  if(hasPw){
+    b='<div class="r"><span>Đăng nhập bằng</span><b>'+esc(accShow(em))+'</b></div><p class="mut" style="margin:6px 0 2px">Đổi mật khẩu:</p><div class="cin"><input id="rgP" type="password" placeholder="Mật khẩu mới (từ 6 ký tự)" autocomplete="new-password" maxlength="60"><button class="btn sm" data-rgp="1">Đổi</button></div>'
+     +(em&&!em.endsWith('@enjoywin.vn')&&!u.emailVerified?'<button class="btn alt sm" data-rgv="1" style="width:100%;margin-top:6px">✉️ Gửi email xác nhận</button>':'')
+     +(em.endsWith('@enjoywin.vn')?'<p class="mut" style="font-size:12px;margin:6px 0 0">Tên đăng nhập không có email nên không lấy lại được mật khẩu nếu quên. Hãy nhớ kỹ.</p>':'');
+  }else if(u.isAnonymous){
+    b='<p class="mut" style="margin:0 0 4px">Bạn đang chơi khách. Đăng ký để giữ tiền hiện tại và đăng nhập được ở máy khác (ví dụ tiệm net).</p><input id="rgE" placeholder="Email hoặc tên đăng nhập" autocomplete="username" autocapitalize="none" spellcheck="false" maxlength="60"><input id="rgP" type="password" placeholder="Mật khẩu (từ 6 ký tự)" autocomplete="new-password" maxlength="60">'+pw2+'<button class="btn sm" data-rg="1" style="width:100%;margin-top:4px">📝 Đăng ký, giữ tài khoản này</button>';
+  }else{
+    b='<p class="mut" style="margin:0 0 4px">Bạn đang đăng nhập bằng Google ('+esc(em)+'). Đặt mật khẩu để sau này đăng nhập bằng email này + mật khẩu ở máy khác, không cần Google.</p><input id="rgP" type="password" placeholder="Mật khẩu (từ 6 ký tự)" autocomplete="new-password" maxlength="60">'+pw2+'<button class="btn sm" data-rg="1" style="width:100%;margin-top:4px">🔑 Đặt mật khẩu</button>';
+  }
+  return '<div class="accb"><b>🔐 Tài khoản đăng nhập</b>'+b+'</div>';
+}
+const accEmail=v=>{v=String(v||'').trim().toLowerCase();if(!v)return'';if(v.includes('@'))return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)?v:'';return /^[a-z0-9._-]{3,20}$/.test(v)?v+'@enjoywin.vn':''};
+const accShow=em=>em&&em.endsWith('@enjoywin.vn')?em.slice(0,-11):em;
+async function accReg(){
+  const u=auth.currentUser;if(!u)return;
+  const anon=u.isAnonymous,em=anon?accEmail($('#rgE').value):String(u.email||'').toLowerCase(),pw=$('#rgP').value;
+  if(!em)return toast('Nhập email hoặc tên đăng nhập (3 đến 20 ký tự: a-z, 0-9, dấu . _ -).');
+  if(pw.length<6)return toast('Mật khẩu cần ít nhất 6 ký tự.');
+  if(pw!==$('#rgP2').value)return toast('Hai mật khẩu chưa giống nhau.');
+  try{
+    await linkWithCredential(u,EmailAuthProvider.credential(em,pw));
+    if(anon){me.guest=false;updateDoc(ref,{guest:false}).catch(()=>{});if(!em.endsWith('@enjoywin.vn'))sendEmailVerification(u).catch(()=>{})}
+    head();infoM();toast(anon?'🎉 Đã đăng ký! Lần sau đăng nhập bằng '+accShow(em)+' + mật khẩu.':'🔑 Đã đặt mật khẩu cho '+em);
+  }catch(e){toast(authMsg(e))}
+}
+async function accPw(){
+  const u=auth.currentUser,pw=$('#rgP').value;if(!u)return;
+  if(pw.length<6)return toast('Mật khẩu cần ít nhất 6 ký tự.');
+  try{await updatePassword(u,pw);$('#rgP').value='';toast('Đã đổi mật khẩu.')}catch(e){toast(authMsg(e))}
+}
+async function accVer(){try{await sendEmailVerification(auth.currentUser);toast('Đã gửi email xác nhận, hãy kiểm tra hộp thư (cả thư rác).')}catch(e){toast(authMsg(e))}}
 $('#ov').addEventListener('click',e=>{
   const b=e.target.closest('[data-a]');if(b){me.av=b.dataset.a;save();return toast('Đã đổi ảnh đại diện')}
   const o=e.target.closest('[data-lo]');
@@ -606,6 +706,28 @@ $('#host').textContent=location.hostname||'(mở bằng file)';if(location.proto
 $('#lg').onclick=async()=>{$('#err').hidden=true;if(!OK)return toast('Hãy điền firebaseConfig trước.');try{await signInWithPopup(auth,new GoogleAuthProvider())}catch(e){fail(e)}};
 $('#gs').onclick=async()=>{$('#err').hidden=true;if(!OK)return toast('Hãy điền firebaseConfig trước.');try{await signInAnonymously(auth)}catch(e){fail(e)}};
 $('#mk').onclick=mk;
+let liReg=false;
+function liUi(){$('#liP2').hidden=!liReg;$('#liForgot').hidden=liReg;$('#liGo').textContent=liReg?'📝 Đăng ký tài khoản':'🔑 Đăng nhập';$('#liSw').textContent=liReg?'← Đã có tài khoản? Đăng nhập':'Chưa có tài khoản? Đăng ký';$('#liP').autocomplete=liReg?'new-password':'current-password'}
+$('#liSw').onclick=()=>{liReg=!liReg;liUi();$('#err').hidden=true};
+$('#liGo').onclick=async()=>{
+  $('#err').hidden=true;if(!OK)return toast('Hãy điền firebaseConfig trước.');
+  const em=accEmail($('#liE').value),pw=$('#liP').value;
+  if(!em)return errShow('Nhập email (ví dụ ban@gmail.com) hoặc tên đăng nhập 3 đến 20 ký tự gồm chữ thường, số, dấu . _ -');
+  if(pw.length<6)return errShow('Mật khẩu cần ít nhất 6 ký tự.');
+  if(liReg&&pw!==$('#liP2').value)return errShow('Hai mật khẩu chưa giống nhau.');
+  $('#liGo').disabled=true;
+  try{liReg?await createUserWithEmailAndPassword(auth,em,pw):await signInWithEmailAndPassword(auth,em,pw);$('#liP').value='';$('#liP2').value=''}
+  catch(e){fail(e,liReg?'Đăng ký: ':'Đăng nhập: ')}
+  $('#liGo').disabled=false;
+};
+$('#liP').onkeydown=$('#liP2').onkeydown=$('#liE').onkeydown=e=>{if(e.key==='Enter')$('#liGo').click()};
+$('#liForgot').onclick=async()=>{
+  $('#err').hidden=true;const em=accEmail($('#liE').value);
+  if(!em||em.endsWith('@enjoywin.vn'))return errShow('Quên mật khẩu chỉ dùng được với tài khoản đăng ký bằng email thật: hãy nhập email vào ô trên rồi bấm lại. Tên đăng nhập thì không lấy lại được.');
+  try{await sendPasswordResetEmail(auth,em);toast('Đã gửi email đặt lại mật khẩu, hãy kiểm tra cả thư rác.')}catch(e){fail(e)}
+};
+$('#guestGo').onclick=infoM;
+liUi();
 addEventListener('pagehide',()=>{if(mref)deleteDoc(mref)});
 onAuthStateChanged(auth,async u=>{
   if(!u){cleanup();return}
@@ -709,6 +831,9 @@ $('#ov').addEventListener('click',async e=>{
   if(g('data-rp')){loanRepay();return}
   if(b=g('data-esp')){if(!isAdm())return;ls('bc_esp',espAdm()?'0':'1');b.textContent='ESP: '+(espAdm()?'Bật':'Tắt');b.classList.toggle('alt',!espAdm());return}
   if(b=g('data-lk')){if(!isAdm())return;ls('bc_lk',luckOn()?'0':'1');b.textContent='May mắn: '+(luckOn()?'Bật':'Tắt');b.classList.toggle('alt',!luckOn());return}
+  if(g('data-rg'))return accReg();
+  if(g('data-rgp'))return accPw();
+  if(g('data-rgv'))return accVer();
   if(b=g('data-lt'))return lbm(b.dataset.lt);
   if(g('data-rn')){
     const n=$('#nn').value.trim().slice(0,30),c=$('#nc').value.trim().slice(0,10);
@@ -721,6 +846,16 @@ $('#ov').addEventListener('click',async e=>{
   if(b=g('data-fx')){try{await deleteDoc(doc(fdb,'pairs',b.dataset.fx))}catch(err){toast('Lỗi: '+(err.code||''))}return b.dataset.back?profM(b.dataset.back):friendsM()}
   if(b=g('data-jr')){const[gm,c]=b.dataset.jr.split('|');$('#ov').hidden=true;game=gm;return enter(c)}
   if(!isAdm())return;
+  if(b=g('data-abm')){abRead();ab.mode=b.dataset.abm;abSave();return abM()}
+  if(b=g('data-aba')){abRead();ab.amt=+b.dataset.aba;abSave();return abM()}
+  if(b=g('data-abt')){abRead();const i=+b.dataset.abt,s=ab.tiles[game]||[];ab.tiles[game]=game==='bc'?(s.includes(i)?s.filter(x=>x!==i):[...s,i]):[i];abSave();return abM()}
+  if(g('data-abg')){
+    abRead();
+    if(!AB_G.includes(game)||$('#game').hidden)return toast('Hãy vào phòng Bầu Cua, Tài Xỉu, Đá gà hoặc 3 cây trước.');
+    if(ab.mode==='fix'&&game!=='tc'&&!(ab.tiles[game]||[]).length)return toast('Chọn ít nhất 1 cửa.');
+    if(!(ab.amt>0))return toast('Nhập số tiền cược hợp lệ.');
+    abSave();ab.on=true;ab.n=0;ab.net=0;ab.k='';$('#ov').hidden=true;abUi();toast('🤖 Đã bật auto cược');return;
+  }
   if(b=g('data-eg')){
     const id=$('#egu').value,dur=+$('#egd').value;if(!id)return toast('Chọn người nhận trước.');
     const pl=admP.find(x=>x.id===id),until=now()+dur;
@@ -1545,6 +1680,66 @@ $('#mjBoard').onclick=e=>{
 $('#mjHint').onclick=()=>{if(!M||M.done)return;const mv=mjMoves();if(!mv.length)return toast('Không còn nước đi, hãy bấm Ván mới.');M.sel=mv[0][0];M.hl=mv[0][1];mjRender()};
 $('#gMj').onclick=()=>{show('mj');mjNew()};
 $('#mjNew').onclick=mjNew;$('#mjBack').onclick=()=>{M=null;show('hub')};
+
+/* ---- Auto cược (chỉ admin: Bầu Cua, Tài Xỉu, Đá gà, 3 cây) ---- */
+const AB_G=['bc','tx','dg','tc'];
+const abSave=()=>ls('bc_ab',JSON.stringify({mode:ab.mode,amt:ab.amt,max:ab.max,tiles:ab.tiles}));
+function abStop(msg){ab.on=false;abUi();if(msg)toast(msg)}
+function abUi(){
+  const b=$('#abB');if(!b)return;
+  const sh=!!(me&&isAdm()&&AB_G.includes(game));b.hidden=!sh;if(!sh)return;
+  const t=ab.on?'⏹ Dừng auto · '+ab.n+(ab.max?'/'+ab.max:'')+' ván · '+(ab.net>=0?'+':'')+fmt(ab.net):'🤖 Auto cược';
+  if(b.textContent!==t)b.textContent=t;b.classList.toggle('alt',!ab.on);
+}
+function abPick(d){
+  const a=ab.amt;
+  if(game==='bc')return[...new Set(d)].map(i=>[i,a]);
+  if(game==='tx'){const w=wins(d);return w<0?[]:[[w,a]]}
+  if(game==='dg')return[[dgWin(d),a]];
+  const hh=tcPts(tcHand(d[1],d[2],d[0],'house')),mm=tcPts(tcHand(d[1],d[2],d[0],uid));
+  return mm>hh?[[0,a]]:[];
+}
+const abFix=()=>game==='tc'?[[0,ab.amt]]:(ab.tiles[game]||[]).map(i=>[i,ab.amt]);
+function abPlace(list,id,g,r){
+  if(!ab.on||cur!==id||game!==g||rid!==r||now()%R>=BET)return;
+  if(!list.length)return;
+  const tot=list.reduce((s,x)=>s+x[1],0);
+  if(tot>me.money)return abStop('Không đủ tiền ảo, đã dừng auto cược.');
+  for(const[i,a]of list){me.money-=a;earn(-a);bets[i]=(bets[i]||0)+a}
+  ab.n++;head();dsave();board();pushBets();sfx('chip');abUi();
+}
+function abTick(id,t){
+  if(!ab.on)return;
+  if(!isAdm()||!AB_G.includes(game))return abStop();
+  const k=rid+':'+id;if(ab.k===k||t>=BET-2500)return;
+  ab.k=k;
+  if(Object.keys(bets).some(x=>bets[x]>0))return;
+  if(ab.max&&ab.n>=ab.max)return abStop('🏁 Đã đủ '+ab.max+' ván. Lãi/lỗ: '+(ab.net>=0?'+':'')+fmt(ab.net));
+  const g=game,r=rid;
+  if(ab.mode==='esp')getRound(id,r).then(d=>{if(d)abPlace(abPick(d),id,g,r)});
+  else abPlace(abFix(),id,g,r);
+}
+function abRead(){
+  const a=$('#abA');if(a){const v=parseAmt(a.value);if(v>0)ab.amt=v}
+  const n=$('#abN');if(n)ab.max=Math.max(0,Math.min(9999,parseInt(n.value)||0));
+}
+function abM(){
+  const g=game,ts=tiles(),sel=ab.tiles[g]||[0],m=ab.mode;
+  const nm={bc:'Bầu Cua',tx:'Tài Xỉu',dg:'Đá gà',tc:'3 cây'}[g];
+  const lab=x=>(x[0].startsWith('<')?'🐓':x[0])+' '+x[1];
+  const A=[1000,5000,10000,50000,500000,5e6,5e7],sh=a=>a>=1e6?a/1e6+'m':a/1e3+'k';
+  modal('<h3>🤖 Auto cược · '+nm+'</h3><p class="mut" style="margin:0 0 8px">Mỗi ván tự đặt cược khi vừa mở cửa. Chỉ dùng được khi đang ở trong phòng chơi, bấm nút Dừng để tắt.</p>'
+   +'<div class="r"><span>Chế độ</span><span><button class="btn sm'+(m==='esp'?'':' alt')+'" data-abm="esp">🔮 Theo ESP</button> <button class="btn sm'+(m==='fix'?'':' alt')+'" data-abm="fix">🎯 Cố định</button></span></div>'
+   +(m==='esp'
+     ?'<p class="mut" style="margin:8px 0">ESP: xem trước kết quả ván và chỉ đặt vào cửa thắng'+(g==='tx'?' (gặp bão thì bỏ qua)':g==='tc'?' (nếu bạn thua nhà cái thì bỏ qua)':'')+'.</p>'
+     :g==='tc'?'<p class="mut" style="margin:8px 0">Cược mọi ván vào bài của bạn.</p>'
+     :'<p class="mut" style="margin:8px 0 2px">Chọn cửa'+(g==='bc'?' (được chọn nhiều)':'')+':</p><div>'+ts.map((x,i)=>'<button class="btn sm'+(sel.includes(i)?'':' alt')+'" data-abt="'+i+'" style="margin:2px">'+lab(x)+'</button>').join('')+'</div>')
+   +'<p class="mut" style="margin:8px 0 2px">Tiền cược mỗi cửa:</p><div>'+A.map(a=>'<button class="btn sm'+(a===ab.amt?'':' alt')+'" data-aba="'+a+'" style="margin:2px">'+sh(a)+'</button>').join('')+'</div>'
+   +'<div class="cin" style="margin-top:6px"><input id="abA" value="'+ab.amt+'" inputmode="text" placeholder="Số tiền, ví dụ 20k, 2m"><input id="abN" value="'+(ab.max||'')+'" inputmode="numeric" placeholder="Số ván (trống = không giới hạn)"></div>'
+   +'<button class="btn" data-abg="1" style="width:100%;margin-top:10px">▶ Bắt đầu auto cược</button>','Đóng');
+}
+$('#abB').onclick=()=>{if(ab.on)abStop('Đã dừng auto cược.');else abM()};
+
 /* ---- Vay tiền ---- */
 const MAXDEBT=100000;
 function loanM(){
@@ -1981,15 +2176,28 @@ function hubArt(){
 }
 document.querySelectorAll('.gart').forEach(e=>{e.innerHTML=hubArt()});
 (function(){
-  const g=document.querySelector('.hubg');if(!g)return;
-  $('#hubL').onclick=()=>g.scrollBy({left:-380,behavior:'smooth'});
-  $('#hubR').onclick=()=>g.scrollBy({left:380,behavior:'smooth'});
+  const g=$('#hubg');if(!g)return;
+  const GAP=14,step=()=>{const c=g.querySelector('.gc');return c?c.offsetWidth+GAP:300};
+  $('#hubCnt').textContent=g.querySelectorAll('.gc').length+' trò chơi · kéo ngang hoặc bấm ‹ › để xem thêm';
+  const upd=()=>{
+    const mx=g.scrollWidth-g.clientWidth,x=g.scrollLeft,sw=g.scrollWidth||1;
+    g.classList.toggle('atS',x<=2);g.classList.toggle('atE',x>=mx-2);
+    $('#hubL').disabled=x<=2;$('#hubR').disabled=x>=mx-2;
+    const pi=$('#hubPi');pi.style.width=Math.min(100,g.clientWidth*100/sw)+'%';pi.style.left=(x*100/sw)+'%';
+  };
+  hubUpd=upd;
+  g.addEventListener('scroll',upd,{passive:true});addEventListener('resize',upd);
+  if(typeof ResizeObserver!=='undefined')new ResizeObserver(upd).observe(g);
+  const go=dir=>{const s=step(),n=Math.max(1,Math.floor((g.clientWidth-16)/s));g.scrollTo({left:Math.round(g.scrollLeft/s)*s+dir*n*s,behavior:'smooth'})};
+  $('#hubL').onclick=()=>go(-1);$('#hubR').onclick=()=>go(1);
   let d=0,sx=0,sl=0,mv=0;
-  g.addEventListener('pointerdown',e=>{if(e.pointerType!=='mouse')return;d=1;mv=0;sx=e.clientX;sl=g.scrollLeft});
-  addEventListener('pointermove',e=>{if(!d)return;const dx=e.clientX-sx;if(Math.abs(dx)>6){mv=1;g.classList.add('drag')}if(mv)g.scrollLeft=sl-dx});
-  addEventListener('pointerup',()=>{d=0;g.classList.remove('drag')});
+  g.addEventListener('pointerdown',e=>{if(e.pointerType!=='mouse'||e.button!==0)return;d=1;mv=0;sx=e.clientX;sl=g.scrollLeft});
+  addEventListener('pointermove',e=>{if(!d)return;const dx=e.clientX-sx;if(!mv&&Math.abs(dx)>6){mv=1;g.classList.add('drag')}if(mv)g.scrollLeft=sl-dx});
+  const end=()=>{if(!d)return;d=0;if(mv){const s=step();g.scrollTo({left:Math.round(g.scrollLeft/s)*s,behavior:'smooth'});setTimeout(()=>g.classList.remove('drag'),400)}};
+  addEventListener('pointerup',end);addEventListener('pointercancel',end);
   g.addEventListener('click',e=>{if(mv){e.preventDefault();e.stopPropagation();mv=0}},true);
-  g.addEventListener('wheel',e=>{if(Math.abs(e.deltaY)>Math.abs(e.deltaX)){g.scrollLeft+=e.deltaY;e.preventDefault()}},{passive:false});
+  g.addEventListener('dragstart',e=>e.preventDefault());
+  setTimeout(upd,0);
 })();
 $('#dd').onclick=()=>{if(pend&&!bowlOn()&&(pend.g==='bc'||pend.g==='tx'))revealNow()};
 
@@ -2018,6 +2226,9 @@ function espGiftCard(){
    +'<button class="btn sm" data-eg="1">🎁 Tặng ESP</button>'
    +(act.length?'<div style="margin-top:8px"><b>Đang có ESP ('+act.length+')</b>'+act.map(p=>'<div class="r"><span>'+esc(p.name)+' <small class="mut">('+esc(p.cls)+') · còn '+durTxt(p.esp-now())+'</small></span><button class="btn alt sm" data-er="'+p.id+'">Thu hồi</button></div>').join('')+'</div>':'')+'</div>';
 }
+
+/* ---- Tài Xỉu: biểu tượng xúc xắc ---- */
+TX[0][0]=dieSvg(1,30)+dieSvg(2,30)+dieSvg(3,30);TX[1][0]=dieSvg(4,30)+dieSvg(5,30)+dieSvg(6,30);
 
 window.__ok=1;
 $('#jn').onclick=()=>enter($('#rcode').value);
